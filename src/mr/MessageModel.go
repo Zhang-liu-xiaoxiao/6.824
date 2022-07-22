@@ -25,4 +25,5 @@ type MasterResponse struct {
 	FinishMark   bool
 	TaskType     TaskEnum
 	NReduce      int
+	Bubble       bool
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"time"
 )
 import "net"
 import "os"
@@ -22,6 +23,7 @@ const (
 const (
 	Mapping MasterStatusEnum = iota + 1
 	Reducing
+	Done
 )
 
 type Coordinator struct {
@@ -34,7 +36,6 @@ type Coordinator struct {
 	ReduceTaskNums         int
 	FinishedMapTaskNums    int
 	FinishedReduceTaskNums int
-	LastMapCond            sync.Cond
 	WorkingStatus          MasterStatusEnum
 	WorkingStatusLock      sync.Mutex
 }
@@ -64,51 +65,123 @@ func (c *Coordinator) Example(args *ExampleArgs, reply *ExampleReply) error {
 }
 
 func (c *Coordinator) ReceiveRequest(args *WorkerRequest, reply *MasterResponse) error {
-	go c.ProcessRequest(args, reply)
+	//fmt.Println("master recieve request %v", args)
+	c.ProcessRequest(args, reply)
 	return nil
 }
 
-func (c *Coordinator) ProcessRequest(args *WorkerRequest, reply *MasterResponse) error {
+func (c *Coordinator) ProcessRequest(args *WorkerRequest, reply *MasterResponse) {
+	c.WorkingStatusLock.Lock()
+	if c.WorkingStatus == Done {
+		reply.FinishMark = true
+		return
+	}
+	c.WorkingStatusLock.Unlock()
 	if args.RequestType == AskTask {
 		// schedule a task, map or reduce
-		c.MapTaskLock.Lock()
-		defer c.MapTaskLock.Unlock()
-		for i, task := range c.MapTasks {
-			if task.TaskStatus == Idle {
-				reply.TaskSequence = task.SequenceId
-				reply.TaskType = Map
-				reply.NReduce = c.ReduceTaskNums
-				reply.FileName[0] = task.FileName
-				reply.FinishMark = false
-				c.MapTasks[i].TaskStatus = Working
-				return nil
-			}
+		if c.TryAssignMapTask(reply) {
+			return
 		}
+		if c.TryAssignReduceTask(reply) {
+			return
+		}
+		// Waiting for last few  Reducing tasks finish
+		// just do nothing
+		reply.Bubble = true
+		return
 
 	} else if args.RequestType == FinishTask {
 		if args.TaskType == Map {
-
+			c.FinishMapTask(args.TaskSequence)
 		} else if args.TaskType == Reduce {
-
+			c.FinishReduceTask(args.TaskSequence)
 		}
 	}
-	return nil
+}
+
+func (c *Coordinator) TryAssignReduceTask(reply *MasterResponse) bool {
+	c.WorkingStatusLock.Lock()
+	defer c.WorkingStatusLock.Unlock()
+	if c.WorkingStatus == Reducing {
+		// Mapping finished! assign Reduce Task
+		c.ReduceTaskLock.Lock()
+		defer c.ReduceTaskLock.Unlock()
+		for i, reduceTask := range c.ReduceTasks {
+			if reduceTask.TaskStatus == Idle {
+				reply.TaskSequence = reduceTask.SequenceId
+				reply.TaskType = Reduce
+				reply.NReduce = c.ReduceTaskNums
+				reply.FileName = reduceTask.FileNames
+				reply.FinishMark = false
+				c.ReduceTasks[i].TaskStatus = Working
+				go func(i int) {
+					timer := time.NewTimer(10 * time.Second)
+					<-timer.C
+					c.ReduceTaskLock.Lock()
+					defer c.ReduceTaskLock.Unlock()
+					if c.ReduceTasks[i].TaskStatus != Finish {
+						c.ReduceTasks[i].TaskStatus = Idle
+					}
+				}(i)
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (c *Coordinator) TryAssignMapTask(reply *MasterResponse) (res bool) {
+	c.MapTaskLock.Lock()
+	defer c.MapTaskLock.Unlock()
+	for i, task := range c.MapTasks {
+		if task.TaskStatus == Idle {
+			reply.TaskSequence = task.SequenceId
+			reply.TaskType = Map
+			reply.NReduce = c.ReduceTaskNums
+			//reply.FileName[0] = task.FileName
+			reply.FileName = append(reply.FileName, task.FileName)
+			reply.FinishMark = false
+			c.MapTasks[i].TaskStatus = Working
+			go func(i int) {
+				timer := time.NewTimer(10 * time.Second)
+				<-timer.C
+				c.MapTaskLock.Lock()
+				defer c.MapTaskLock.Unlock()
+				if c.MapTasks[i].TaskStatus != Finish {
+					c.MapTasks[i].TaskStatus = Idle
+				}
+			}(i)
+			return true
+		}
+	}
+	return false
 }
 func (c *Coordinator) FinishMapTask(taskNum int) {
 	c.MapTaskLock.Lock()
+	defer c.MapTaskLock.Unlock()
 	c.MapTasks[taskNum].TaskStatus = Finish
 	c.FinishedMapTaskNums++
-	if c.FinishedMapTaskNums == c.MapTaskNums {
+	fmt.Println("Master Finish Map Task", taskNum, "cur finished Map ", c.FinishedMapTaskNums)
+	if c.FinishedMapTaskNums >= c.MapTaskNums {
 		c.WorkingStatusLock.Lock()
 		c.WorkingStatus = Reducing
 		c.WorkingStatusLock.Unlock()
-		c.LastMapCond.Broadcast()
 	}
-	defer c.MapTaskLock.Unlock()
 }
 
-func (c *Coordinator) FinishReduceTask() {
+func (c *Coordinator) FinishReduceTask(taskNum int) {
+	c.ReduceTaskLock.Lock()
+	defer c.ReduceTaskLock.Unlock()
+	c.ReduceTasks[taskNum].TaskStatus = Finish
+	c.FinishedReduceTaskNums++
+	fmt.Println("Master Finish Reduce Task", taskNum, "cur finished Reduce ", c.FinishedReduceTaskNums)
 
+	if c.FinishedReduceTaskNums >= c.ReduceTaskNums {
+		c.WorkingStatusLock.Lock()
+		fmt.Println("Finished all reduce task!,finished num:", c.FinishedReduceTaskNums, "need num:", c.ReduceTaskNums)
+		c.WorkingStatus = Done
+		c.WorkingStatusLock.Unlock()
+	}
 }
 
 //
@@ -152,6 +225,9 @@ func MakeCoordinator(files []string, nReduce int) *Coordinator {
 	c := Coordinator{}
 	c.MapTasks = make([]MapTask, len(files))
 	c.ReduceTasks = make([]ReduceTask, nReduce)
+	c.ReduceTaskNums = nReduce
+	c.MapTaskNums = len(files)
+	c.WorkingStatus = Mapping
 	// Your code here.
 	for i := range c.MapTasks {
 		c.MapTasks[i].TaskStatus = Idle
@@ -171,9 +247,9 @@ func MakeCoordinator(files []string, nReduce int) *Coordinator {
 		c.ReduceTasks[i].SequenceId = i
 		c.ReduceTasks[i].TaskStatus = Idle
 	}
-	fmt.Printf("files %v \n", files)
-	fmt.Printf("map tasks %v \n", c.MapTasks)
-	fmt.Printf("reduce  tasks %v \n", c.ReduceTasks)
+	//fmt.Printf("files %v \n", files)
+	//fmt.Printf("map tasks %v \n", c.MapTasks)
+	//fmt.Printf("reduce  tasks %v \n", c.ReduceTasks)
 	c.server()
 	return &c
 }

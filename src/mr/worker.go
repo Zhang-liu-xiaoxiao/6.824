@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"sort"
+	"time"
 )
 import "log"
 import "net/rpc"
@@ -40,15 +41,6 @@ func ihash(key string) int {
 //
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
-	//str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	//bytes := []byte(str)
-	//var result []byte
-	//rand.Seed(time.Now().UnixNano() + int64(rand.Intn(100)))
-	//for i := 0; i < 10; i++ {
-	//	result = append(result, bytes[rand.Intn(len(bytes))])
-	//}
-	//name := string(result)
-	// Your worker implementation here.
 
 	// uncomment to send the Example RPC to the coordinator.
 	//CallExample()
@@ -59,51 +51,62 @@ func Worker(mapf func(string, string) []KeyValue,
 		ok := call("Coordinator.ReceiveRequest", &args, &reply)
 		if !ok {
 			fmt.Printf("Ask task call failed!\n")
-		}
-
-		if reply.FinishMark {
 			break
 		}
-
-		if reply.TaskType == Map {
-
-		} else if reply.TaskType == Reduce {
-
+		//fmt.Printf("master response %v\n", reply)
+		if reply.FinishMark == true {
+			break
 		}
+		if reply.Bubble == true {
+			continue
+		}
+		if reply.TaskType == Map {
+			fmt.Printf("Worker recieve Map Task %d\n", reply.TaskSequence)
+			ProcessMapTask(reply, mapf)
+		} else if reply.TaskType == Reduce {
+			fmt.Printf("Worker recieve Reduce Task %d\n", reply.TaskSequence)
+			ProcessReduceTask(reply, reducef)
+		}
+		time.Sleep(time.Duration(1) * time.Second)
 	}
 }
 
-func ProcessMapTask(filename string, mapf func(string, string) []KeyValue, taskSequence int, nReduce int) {
-	intermediate := []KeyValue{}
+func ProcessMapTask(reply MasterResponse, mapf func(string, string) []KeyValue) {
+	var intermediate []KeyValue
 
-	file, err := os.Open(filename)
+	file, err := os.Open(reply.FileName[0])
 	if err != nil {
-		log.Fatalf("cannot open %v", filename)
+		log.Fatalf("cannot open %v", reply.FileName[0])
 	}
 	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatalf("cannot read %v", filename)
+		log.Fatalf("cannot read %v", reply.FileName[0])
 	}
 	defer file.Close()
-	kva := mapf(filename, string(content))
+	kva := mapf(reply.FileName[0], string(content))
 	intermediate = append(intermediate, kva...)
 
+	nReduce := reply.NReduce
 	outFiles := make([]*os.File, nReduce)
 	fileEncs := make([]*json.Encoder, nReduce)
 	for i := 0; i < nReduce; i++ {
-		outFiles[i], _ = ioutil.TempFile("mr-tmp", "mr-tmp-*")
+		outFiles[i], err = ioutil.TempFile("/tmp", "mr-temp")
+		if err != nil {
+			fmt.Printf("error create temp files:  %v\n", err)
+
+		}
 		fileEncs[i] = json.NewEncoder(outFiles[i])
 	}
-
+	//json.Marshal()
 	for _, value := range intermediate {
 		index := ihash(value.Key) % nReduce
-		err := fileEncs[index].Encode(value)
+		err := fileEncs[index].Encode(&value)
 		if err != nil {
-			log.Fatalf("Map task %d Encode fail ", taskSequence)
+			log.Fatalf("Map task %d Encode fail error:%v", reply.TaskSequence, err)
 		}
 	}
-	for i := 0; i < nReduce; i++ {
-		realFileName := fmt.Sprintf("mr-%d-%d", taskSequence, i)
+	for i := 0; i < reply.NReduce; i++ {
+		realFileName := fmt.Sprintf("mr-%d-%d", reply.TaskSequence, i)
 		err := os.Rename(outFiles[i].Name(), realFileName)
 		if err != nil {
 			log.Fatalf("rename file error file :%s to %s", outFiles[i].Name(), realFileName)
@@ -114,7 +117,7 @@ func ProcessMapTask(filename string, mapf func(string, string) []KeyValue, taskS
 		}
 	}
 
-	UpdateFinishTask(taskSequence, Map)
+	UpdateFinishTask(reply.TaskSequence, Map)
 }
 
 func UpdateFinishTask(taskSequence int, taskType TaskEnum) {
@@ -124,32 +127,38 @@ func UpdateFinishTask(taskSequence int, taskType TaskEnum) {
 	args.RequestType = FinishTask
 	args.TaskType = taskType
 	ok := call("Coordinator.ReceiveRequest", &args, &reply)
+	if taskType == Map {
+		fmt.Printf("worker recieve finish map response %d\n", taskSequence)
+	} else {
+		fmt.Printf("worker recieve finish reduce response %d\n", taskSequence)
+	}
 	if !ok {
-		fmt.Printf("Finish task call failed! type:%v\n", taskType)
+		fmt.Printf("worker Finish task call failed! type:%v\n", taskType)
 	}
 }
 
-func ProcessReduceTask(files []string, reducef func(string, []string) string, reduceSequence int) {
+func ProcessReduceTask(reply MasterResponse, reducef func(string, []string) string) {
 
 	var intermediate []KeyValue
-	for i := 0; i < len(files); i++ {
-		file, err := os.Open(files[i])
+	for i := 0; i < len(reply.FileName); i++ {
+		file, err := os.Open(reply.FileName[i])
 		if err != nil {
-			log.Fatalf("Reduce task %d read file:%s error", reduceSequence, files[i])
+			log.Fatalf("Reduce task %d read file:%s error", reply.TaskSequence, reply.FileName[i])
 		}
 		dec := json.NewDecoder(file)
 		for dec.More() {
 			var kv KeyValue
 			err := dec.Decode(&kv)
 			if err != nil {
-				log.Fatalf("Reduce task %d Error decode kv", reduceSequence)
+				log.Fatalf("Reduce task %d Error decode kv", reply.TaskSequence)
 			}
 			intermediate = append(intermediate, kv)
 		}
 	}
 	sort.Sort(ByKey(intermediate))
 
-	tempFile, err := ioutil.TempFile("mr-out-temp", "mr-out-*")
+	tempFile, err := ioutil.TempFile("/tmp", "mr-out-*")
+	fmt.Printf("temp file name :%s\n", tempFile.Name())
 	if err != nil {
 		return
 	}
@@ -174,14 +183,14 @@ func ProcessReduceTask(files []string, reducef func(string, []string) string, re
 		i = j
 	}
 
-	oname := fmt.Sprintf("mr-out-%d", reduceSequence)
+	oname := fmt.Sprintf("mr-out-%d", reply.TaskSequence)
 	err = os.Rename(tempFile.Name(), oname)
 	if err != nil {
 		log.Fatalf("rename file error file :%s to %s", tempFile.Name(), oname)
 	}
 	tempFile.Close()
 
-	UpdateFinishTask(reduceSequence, Reduce)
+	UpdateFinishTask(reply.TaskSequence, Reduce)
 }
 
 //
@@ -232,6 +241,6 @@ func call(rpcname string, args interface{}, reply interface{}) bool {
 		return true
 	}
 
-	fmt.Println(err)
+	fmt.Printf("rpc error %v\n", err)
 	return false
 }
