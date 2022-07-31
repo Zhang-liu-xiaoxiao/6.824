@@ -50,7 +50,7 @@ func Worker(mapf func(string, string) []KeyValue,
 		args.RequestType = AskTask
 		ok := call("Coordinator.ReceiveRequest", &args, &reply)
 		if !ok {
-			fmt.Printf("Ask task call failed!\n")
+			//fmt.Printf("Ask task call failed!\n")
 			break
 		}
 		//fmt.Printf("master response %v\n", reply)
@@ -61,10 +61,10 @@ func Worker(mapf func(string, string) []KeyValue,
 			continue
 		}
 		if reply.TaskType == Map {
-			fmt.Printf("Worker recieve Map Task %d\n", reply.TaskSequence)
+			//fmt.Printf("Worker recieve Map Task %d\n", reply.TaskSequence)
 			ProcessMapTask(reply, mapf)
 		} else if reply.TaskType == Reduce {
-			fmt.Printf("Worker recieve Reduce Task %d\n", reply.TaskSequence)
+			//fmt.Printf("Worker recieve Reduce Task %d\n", reply.TaskSequence)
 			ProcessReduceTask(reply, reducef)
 		}
 		time.Sleep(time.Duration(1) * time.Second)
@@ -128,12 +128,12 @@ func UpdateFinishTask(taskSequence int, taskType TaskEnum) {
 	args.TaskType = taskType
 	ok := call("Coordinator.ReceiveRequest", &args, &reply)
 	if taskType == Map {
-		fmt.Printf("worker recieve finish map response %d\n", taskSequence)
+		//fmt.Printf("worker recieve finish map response %d\n", taskSequence)
 	} else {
-		fmt.Printf("worker recieve finish reduce response %d\n", taskSequence)
+		//fmt.Printf("worker recieve finish reduce response %d\n", taskSequence)
 	}
 	if !ok {
-		fmt.Printf("worker Finish task call failed! type:%v\n", taskType)
+		//fmt.Printf("worker Finish task call failed! type:%v\n", taskType)
 	}
 }
 

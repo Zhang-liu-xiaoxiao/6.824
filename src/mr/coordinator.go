@@ -161,7 +161,7 @@ func (c *Coordinator) FinishMapTask(taskNum int) {
 	defer c.MapTaskLock.Unlock()
 	c.MapTasks[taskNum].TaskStatus = Finish
 	c.FinishedMapTaskNums++
-	fmt.Println("Master Finish Map Task", taskNum, "cur finished Map ", c.FinishedMapTaskNums)
+	//fmt.Println("Master Finish Map Task", taskNum, "cur finished Map ", c.FinishedMapTaskNums)
 	if c.FinishedMapTaskNums >= c.MapTaskNums {
 		c.WorkingStatusLock.Lock()
 		c.WorkingStatus = Reducing
@@ -174,11 +174,11 @@ func (c *Coordinator) FinishReduceTask(taskNum int) {
 	defer c.ReduceTaskLock.Unlock()
 	c.ReduceTasks[taskNum].TaskStatus = Finish
 	c.FinishedReduceTaskNums++
-	fmt.Println("Master Finish Reduce Task", taskNum, "cur finished Reduce ", c.FinishedReduceTaskNums)
+	//fmt.Println("Master Finish Reduce Task", taskNum, "cur finished Reduce ", c.FinishedReduceTaskNums)
 
 	if c.FinishedReduceTaskNums >= c.ReduceTaskNums {
 		c.WorkingStatusLock.Lock()
-		fmt.Println("Finished all reduce task!,finished num:", c.FinishedReduceTaskNums, "need num:", c.ReduceTaskNums)
+		//fmt.Println("Finished all reduce task!,finished num:", c.FinishedReduceTaskNums, "need num:", c.ReduceTaskNums)
 		c.WorkingStatus = Done
 		c.WorkingStatusLock.Unlock()
 	}
