@@ -53,12 +53,6 @@ type ApplyMsg struct {
 }
 
 //
-// A Go object to append logs
-//
-type AppendEntries struct {
-}
-
-//
 // A Go object implementing a single Raft peer.
 //
 type Raft struct {
@@ -74,7 +68,7 @@ type Raft struct {
 	// all servers persistent state
 	currentTerm int
 	voteFor     map[int]int //kv:term,vote for
-	logs        map[int]interface{}
+	logs        []LogEntry
 
 	// all servers volatile state
 	commitIndex int
@@ -97,6 +91,11 @@ func (rf *Raft) GetState() (int, bool) {
 	var isleader bool
 	// Your code here (2A).
 	rf.mu.Lock()
+	term = rf.currentTerm
+	if rf.status == Leader {
+		isleader = true
+	}
+
 	defer rf.mu.Unlock()
 	return term, isleader
 }
@@ -163,140 +162,8 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 // example RequestVote RPC arguments structure.
 // field names must start with capital letters!
 //
-type RequestVoteArgs struct {
-	// Your data here (2A, 2B).
-	Term         int
-	CandidateId  int
-	LastLogIndex int
-	LastLogTerm  int
-}
 
-//
-// example RequestVote RPC reply structure.
-// field names must start with capital letters!
-//
-type RequestVoteReply struct {
-	// Your data here (2A).
-	Term        int
-	VoteGranted bool
-}
-
-func (rf *Raft) AttemptElection() {
-	rf.mu.Lock()
-	rf.currentTerm++
-	candidateId := rf.me
-	term := rf.currentTerm
-	rf.voteFor[term] = candidateId
-	peers := rf.peers
-	serversNum := len(rf.peers)
-	rf.status = Candidate
-	Debug(dInfo, "Candidate [%d] start a election in term %d", candidateId, term)
-	rf.mu.Unlock()
-	// server num must be odd, and ceil it
-	succeedVoteNums := serversNum/2 + 1
-	var collectedVotes int32 = 1
-	for i, _ := range peers {
-		if i == rf.me {
-			continue
-		}
-		args := RequestVoteArgs{}
-		args.CandidateId = candidateId
-		args.Term = term
-		reply := RequestVoteReply{}
-		go func(i int) {
-			ok := rf.sendRequestVote(i, &args, &reply)
-			if ok {
-				atomic.AddInt32(&collectedVotes, 1)
-				Debug(dVote, "[%d] GET vote from server[%d]", args.CandidateId, i)
-			}
-		}(i)
-	}
-	rf.mu.Lock()
-	// receive leaders heartbeat, revert to follower
-	if rf.status != Candidate || collectedVotes < int32(succeedVoteNums) {
-		return
-	}
-	defer rf.mu.Unlock()
-}
-
-//
-// example RequestVote RPC handler.
-//
-func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
-	// Your code here (2A, 2B).
-	rf.mu.Lock()
-	me := rf.me
-	curTerm := rf.currentTerm
-	rf.mu.Unlock()
-	Debug(dInfo, "[%d] PROCESS requestvote from [%d]", me, args.CandidateId)
-	if args.Term < curTerm {
-		reply.VoteGranted = false
-		return
-	}
-
-	if !rf.checkLatestLog(args.LastLogIndex, args.LastLogTerm) {
-		Debug(dLog, "latest log check fail!")
-		reply.VoteGranted = false
-		return
-	}
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-
-	if _, ok := rf.voteFor[curTerm]; ok {
-		reply.VoteGranted = false
-		return
-	}
-
-	reply.VoteGranted = true
-	rf.voteFor[curTerm] = args.CandidateId
-
-}
-
-func (rf *Raft) checkLatestLog(lastLogIndex int, LastLogTerm int) bool {
-	return true
-}
-
-//
-// example code to send a RequestVote RPC to a server.
-// server is the index of the target server in rf.peers[].
-// expects RPC arguments in args.
-// fills in *reply with RPC reply, so caller should
-// pass &reply.
-// the types of the args and reply passed to Call() must be
-// the same as the types of the arguments declared in the
-// handler function (including whether they are pointers).
-//
-// The labrpc package simulates a lossy network, in which servers
-// may be unreachable, and in which requests and replies may be lost.
-// Call() sends a request and waits for a reply. If a reply arrives
-// within a timeout interval, Call() returns true; otherwise
-// Call() returns false. Thus Call() may not return for a while.
-// A false return can be caused by a dead server, a live server that
-// can't be reached, a lost request, or a lost reply.
-//
-// Call() is guaranteed to return (perhaps after a delay) *except* if the
-// handler function on the server side does not return.  Thus there
-// is no need to implement your own timeouts around Call().
-//
-// look at the comments in ../labrpc/labrpc.go for more details.
-//
-// if you're having trouble getting RPC to work, check that you've
-// capitalized all field names in structs passed over RPC, and
-// that the caller passes the address of the reply struct with &, not
-// the struct itself.
-//
-func (rf *Raft) sendRequestVote(server int, args *RequestVoteArgs, reply *RequestVoteReply) bool {
-	Debug(dInfo, "[%d] ASK vote request to server[%d]", args.CandidateId, server)
-	ok := rf.peers[server].Call("Raft.HandleRequestVote", args, reply)
-	Debug(dInfo, "[%d] FINISH vote request to server[%d]", args.CandidateId, server)
-	if !ok {
-		Debug(dError, "RPC REPLY ERROR [%d] ASK vote request to server[%d]", args.CandidateId, server)
-		return false
-	}
-	if !reply.VoteGranted {
-		Debug(dVote, "[%d] LOSS vote from server[%d]", args.CandidateId, server)
-		return false
-	}
+func (rf *Raft) CheckLatestLog(lastLogIndex int, LastLogTerm int) bool {
 	return true
 }
 
@@ -347,28 +214,56 @@ func (rf *Raft) killed() bool {
 
 // The ticker go routine starts a new election if this peer hasn't received
 // heartsbeats recently.
-func (rf *Raft) ticker(electionInternal int, heartbeat int) {
+func (rf *Raft) ticker(heartbeat int) {
+	times := 1
+	randomNumber := rand.Intn(201) + 300
+
 	for rf.killed() == false {
 
+		//randomNumber := rand.Intn(201) + 300
 		// Your code here to check if a leader election should
 		// be started and to randomize sleeping time using
 		// time.Sleep().
-		time.Sleep(time.Duration(electionInternal) * time.Millisecond)
+		//time.Sleep(time.Duration(randomNumber) * time.Millisecond)
 		rf.mu.Lock()
-		status := rf.status
-		rf.mu.Unlock()
-		switch status {
+		me := rf.me
+		currentTerm := rf.currentTerm
+		Debug(dTimer, "[%d] Ticker times:%d", me, times)
+		times++
+		switch rf.status {
 		case Follower:
-			time.Sleep(time.Duration(electionInternal) * time.Millisecond)
-			if !rf.checkHeartbeat() {
-				rf.mu.Lock()
+			rf.mu.Unlock()
+			time.Sleep(time.Duration(randomNumber) * time.Millisecond)
+			rf.mu.Lock()
+			if rf.accumulatedHb == 0 {
+				Debug(dTimer, "Follower [%d] election timeout ", me)
 				rf.status = Candidate
-				rf.mu.Unlock()
 				go rf.AttemptElection()
+			} else {
+				Debug(dTimer, "Follower [%d] Remain follower ", me)
+				rf.accumulatedHb = 0
 			}
+			rf.mu.Unlock()
 		case Leader:
+			reqs := rf.GenerateAppendReq(true, me)
+			rf.mu.Unlock()
 			time.Sleep(time.Duration(heartbeat) * time.Millisecond)
-			rf.broadcast()
+			Debug(dTimer, "Leader[%d] start broadcast in term:%d", me, currentTerm)
+			rf.Broadcast(me, reqs)
+		case Candidate:
+			rf.mu.Unlock()
+			time.Sleep(time.Duration(randomNumber) * time.Millisecond)
+			Debug(dTimer, "Candidate [%d] judge election result ", me)
+			rf.mu.Lock()
+			Debug(dTest, "Candidate [%d] judge election result ", me)
+
+			if rf.status == Leader {
+				Debug(dTimer, "Ticker check Candidate [%d] Success  elect", me)
+			} else {
+				Debug(dTimer, "Ticker check Candidate [%d] elect duration timeout ,revert to follower and reset gap time", me)
+				randomNumber = rand.Intn(201) + 300
+			}
+			rf.mu.Unlock()
 		default:
 			continue
 		}
@@ -376,19 +271,14 @@ func (rf *Raft) ticker(electionInternal int, heartbeat int) {
 	}
 }
 
-func (rf *Raft) broadcast() {
-
-}
-
-func (rf *Raft) checkHeartbeat() bool {
+func (rf *Raft) RevertToFollower(term int, isReElect bool) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	hb := rf.accumulatedHb
-	if hb == 0 {
-		return false
+	rf.status = Follower
+	if !isReElect {
+		rf.accumulatedHb++
 	}
-	rf.accumulatedHb = 0
-	return true
+	rf.currentTerm = term
 }
 
 //
@@ -408,16 +298,23 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.peers = peers
 	rf.persister = persister
 	rf.me = me
+	rf.status = Follower
+	rf.currentTerm = 0
+	rf.voteFor = make(map[int]int)
 
+	go StartHTTPDebuger()
+
+	//rf.
+	//Debug(dLog, "Make Raft [%d]", rf.me)
 	// Your initialization code here (2A, 2B, 2C).
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
+	//Debug(dLog, "Reading Persist [%d]", rf.me)
 
 	// start ticker goroutine to start elections
-	randomNumber := rand.Intn(201) + 300
 
-	go rf.ticker(randomNumber, 100)
+	go rf.ticker(100)
 
 	return rf
 }

@@ -7,10 +7,11 @@ for i in $(seq 1 $2); do
     echo -ne "\r$i / $2"
     LOG="$1_$i.txt"
     # Failed go test return nonzero exit codes
-    go test -run $1 &> $LOG
+#    VERBOSE=1
+    go test -run $1 -race &> $LOG
     if [[ $? -eq 0 ]]; then
         rm $LOG
     else
-        echo "Failed at iter $i, saving log at $LOG"
+        echo " Failed at iter $i, saving log at $LOG"
     fi
 done
