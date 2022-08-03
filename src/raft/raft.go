@@ -227,8 +227,8 @@ func (rf *Raft) ticker(heartbeat int) {
 		//time.Sleep(time.Duration(randomNumber) * time.Millisecond)
 		rf.mu.Lock()
 		me := rf.me
+		//Debug(dTimer, "[%d] Ticker times:%d", me, times)
 		currentTerm := rf.currentTerm
-		Debug(dTimer, "[%d] Ticker times:%d", me, times)
 		times++
 		switch rf.status {
 		case Follower:
@@ -238,33 +238,24 @@ func (rf *Raft) ticker(heartbeat int) {
 			if rf.accumulatedHb == 0 {
 				Debug(dTimer, "Follower [%d] election timeout ", me)
 				rf.status = Candidate
+				rf.mu.Unlock()
 				go rf.AttemptElection()
 			} else {
+				rf.mu.Unlock()
 				Debug(dTimer, "Follower [%d] Remain follower ", me)
 				rf.accumulatedHb = 0
 			}
-			rf.mu.Unlock()
 		case Leader:
 			reqs := rf.GenerateAppendReq(true, me)
+			//var reqs []RequestAppendEntries
+			peerNums := len(rf.peers)
 			rf.mu.Unlock()
 			time.Sleep(time.Duration(heartbeat) * time.Millisecond)
 			Debug(dTimer, "Leader[%d] start broadcast in term:%d", me, currentTerm)
-			rf.Broadcast(me, reqs)
-		case Candidate:
-			rf.mu.Unlock()
-			time.Sleep(time.Duration(randomNumber) * time.Millisecond)
-			Debug(dTimer, "Candidate [%d] judge election result ", me)
-			rf.mu.Lock()
-			Debug(dTest, "Candidate [%d] judge election result ", me)
-
-			if rf.status == Leader {
-				Debug(dTimer, "Ticker check Candidate [%d] Success  elect", me)
-			} else {
-				Debug(dTimer, "Ticker check Candidate [%d] elect duration timeout ,revert to follower and reset gap time", me)
-				randomNumber = rand.Intn(201) + 300
-			}
-			rf.mu.Unlock()
+			go rf.Broadcast(me, reqs, peerNums)
 		default:
+			//time.Sleep(time.Duration(50) * time.Millisecond)
+			rf.mu.Unlock()
 			continue
 		}
 
@@ -302,7 +293,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.currentTerm = 0
 	rf.voteFor = make(map[int]int)
 
-	go StartHTTPDebuger()
+	//go StartHTTPDebuger()
 
 	//rf.
 	//Debug(dLog, "Make Raft [%d]", rf.me)

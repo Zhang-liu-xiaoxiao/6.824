@@ -1,8 +1,9 @@
 package raft
 
 import (
-	"sync"
+	"math/rand"
 	"sync/atomic"
+	"time"
 )
 
 type RequestVoteArgs struct {
@@ -24,87 +25,98 @@ type RequestVoteReply struct {
 }
 
 func (rf *Raft) AttemptElection() {
-	rf.mu.Lock()
-	rf.currentTerm++
-	candidateId := rf.me
-	term := rf.currentTerm
-	rf.voteFor[term] = candidateId
-	peers := rf.peers
-	serversNum := len(rf.peers)
-	rf.status = Candidate
-	succeedVoteNums := serversNum/2 + 1
-	Debug(dInfo, "Candidate [%d] start a election in term %d", candidateId, term)
-	//rf.mu.Unlock()
-	// server num must be odd, and ceil it
-	voteGroup := sync.WaitGroup{}
-	var collectedVotes uint32 = 1
-	for i, _ := range peers {
-		if i == rf.me {
-			continue
-		}
-		args := RequestVoteArgs{}
-		args.CandidateId = candidateId
-		args.Term = term
-		reply := RequestVoteReply{}
-		voteGroup.Add(1)
-		go func(i int) {
-			ok := rf.SendRequestVote(i, &args, &reply)
-			defer voteGroup.Done()
-			if !ok {
-				return
-			}
-			if reply.Term > term {
-				Debug(dLog, "Get Bigger Term when ask votes ,[%d] REVERT to follower", args.CandidateId)
-				rf.RevertToFollower(reply.Term, false)
-				return
-			}
-			if reply.VoteGranted {
-				curV := atomic.AddUint32(&collectedVotes, 1)
-				Debug(dVote, "[%d] GET vote from server[%d],cur votes :%d", args.CandidateId, i, curV)
-			} else {
-				Debug(dVote, "[%d] LOSS vote from server[%d]", args.CandidateId, i)
-			}
+	randomNumber := rand.Intn(201) + 300
 
-		}(i)
-	}
-	voteGroup.Wait()
-	//rf.mu.Lock()
-	Debug(dLog, "Candidate [%d] election in term:%d need %d,get %d", candidateId, term, succeedVoteNums, collectedVotes)
-	// receive leaders heartbeat, revert to follower
-	if rf.status != Candidate || collectedVotes < uint32(succeedVoteNums) {
-		Debug(dLog, "Candidate [%d] fail elect,votes:%d,need:%d,status:%d", collectedVotes, succeedVoteNums)
-		return
-	}
-	rf.status = Leader
-	Debug(dInfo, "[%d] Become leader in term %d", candidateId, term)
-	//reqs := rf.GenerateAppendReq(true,candidateId)
-	//reqs := make([]RequestAppendEntries, len(rf.peers)-1)
-	var reqs []RequestAppendEntries
-	for i := 0; i < serversNum; i++ {
-		req := RequestAppendEntries{
-			Term:        term,
-			LeaderID:    candidateId,
-			IsHeartBeat: true,
+	for !rf.killed() {
+		rf.mu.Lock()
+		rf.currentTerm++
+		candidateId := rf.me
+		term := rf.currentTerm
+		rf.voteFor[term] = candidateId
+		peers := rf.peers
+		serversNum := len(rf.peers)
+		rf.status = Candidate
+		succeedVoteNums := serversNum/2 + 1
+		Debug(dInfo, "Candidate [%d] start a election in term %d", candidateId, term)
+		rf.mu.Unlock()
+		// server num must be odd, and ceil it
+
+		var collectedVotes uint32 = 1
+		for i, _ := range peers {
+			if i == rf.me {
+				continue
+			}
+			args := RequestVoteArgs{}
+			args.CandidateId = candidateId
+			args.Term = term
+			reply := RequestVoteReply{}
+			rf.mu.Lock()
+			if rf.status != Candidate {
+				Debug(dVote, "[%d] No longer candidate Stop Election,term:%d", rf.me, rf.currentTerm)
+				rf.mu.Unlock()
+				return
+			}
+			rf.mu.Unlock()
+			go func(i int) {
+				ok := rf.SendRequestVote(i, &args, &reply)
+				if !ok {
+					return
+				}
+				if reply.Term > term {
+					Debug(dLog, "Get Bigger Term when ask votes ,[%d] REVERT to follower", args.CandidateId)
+					rf.RevertToFollower(reply.Term, false)
+					return
+				}
+				var curV uint32
+				if reply.VoteGranted {
+					curV = atomic.AddUint32(&collectedVotes, 1)
+					Debug(dVote, "[%d] GET vote from server[%d],cur votes :%d", args.CandidateId, i, curV)
+				} else {
+					Debug(dVote, "[%d] LOSS vote from server[%d]", args.CandidateId, i)
+				}
+				rf.mu.Lock()
+				if rf.status == Candidate && atomic.LoadUint32(&collectedVotes) >= uint32(succeedVoteNums) {
+					rf.status = Leader
+					Debug(dInfo, "[%d] Become leader in term %d", candidateId, term)
+					reqs := rf.GenerateAppendReq(true, candidateId)
+					peerNums := len(rf.peers)
+					go rf.Broadcast(candidateId, reqs, peerNums)
+					rf.mu.Unlock()
+					return
+				}
+				rf.mu.Unlock()
+
+			}(i)
 		}
-		reqs = append(reqs, req)
+		time.Sleep(time.Duration(randomNumber) * time.Millisecond)
+		rf.mu.Lock()
+		if rf.status == Leader {
+			rf.mu.Unlock()
+			return
+		}
+		rf.mu.Unlock()
+		randomNumber = rand.Intn(201) + 300
 	}
-	//for i := 0; i < len(reqs); i++ {
-	//	if i == candidateId {
-	//		continue
-	//	}
-	//	req := RequestAppendEntries{
-	//		Term:              rf.currentTerm,
-	//		LeaderID:          rf.me,
-	//		LeaderCommitIndex: rf.commitIndex,
-	//		IsHeartBeat:       true,
-	//	}
-	//	reqs = append(reqs, req)
-	//}
-	Debug(dTest, "[%d] Become leader in term %d", candidateId, term)
-	go rf.Broadcast(candidateId, reqs)
-	rf.mu.Unlock()
+	//reqGroup.Wait()
+	//rf.onElected(candidateId, term, succeedVoteNums, collectedVotes)
 
 }
+
+//func (rf *Raft) onElected(candidateId int, term int, succeedVoteNums int, collectedVotes uint32) {
+//	rf.mu.Lock()
+//	Debug(dLog, "Candidate [%d] election in term:%d need %d,get %d", candidateId, term, succeedVoteNums, collectedVotes)
+//	// receive leaders heartbeat, revert to follower
+//	if rf.status != Candidate || collectedVotes < uint32(succeedVoteNums) {
+//		Debug(dLog, "Candidate [%d] fail elect,votes:%d,need:%d", candidateId, collectedVotes, succeedVoteNums)
+//		return
+//	}
+//	rf.status = Leader
+//	Debug(dInfo, "[%d] Become leader in term %d", candidateId, term)
+//	reqs := rf.GenerateAppendReq(true, candidateId)
+//	peerNums := len(rf.peers)
+//	go rf.Broadcast(candidateId, reqs, peerNums)
+//	rf.mu.Unlock()
+//}
 
 //
 // example RequestVote RPC handler.
@@ -117,29 +129,34 @@ func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply
 	rf.accumulatedHb++
 	rf.mu.Unlock()
 	Debug(dInfo, "[%d] PROCESS requestvote from [%d]", me, args.CandidateId)
-	reply.Term = curTerm
 	if args.Term < curTerm {
 		reply.VoteGranted = false
+		Debug(dInfo, "[%d] Receive vote request from [d] lower term{%d}<curterm{%d}", me, args.CandidateId, args.Term, curTerm)
 		return
 	}
 
+	reply.Term = curTerm
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if args.Term > curTerm {
+		rf.currentTerm = args.Term
+		rf.status = Follower
+		Debug(dInfo, " [%d] Receive vote request from [%d] higher term{%d}>curterm{%d} reverse to follower", me, args.CandidateId, args.Term, curTerm)
+
+	}
 	if !rf.CheckLatestLog(args.LastLogIndex, args.LastLogTerm) {
 		Debug(dLog, "latest log check fail!")
 		reply.VoteGranted = false
 		return
 	}
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-	if args.Term > curTerm {
-		rf.currentTerm = args.Term
-	}
-	if _, ok := rf.voteFor[curTerm]; ok {
+	if _, ok := rf.voteFor[rf.currentTerm]; ok {
 		reply.VoteGranted = false
+		Debug(dVote, "[%d] in term:%d already vote for [%d]", me, rf.currentTerm, rf.voteFor[curTerm])
 		return
 	}
 
 	reply.VoteGranted = true
-	rf.voteFor[curTerm] = args.CandidateId
+	rf.voteFor[rf.currentTerm] = args.CandidateId
 	Debug(dVote, "[%d] VOTE for [%d] in term %d", me, args.CandidateId, args.Term)
 }
 
