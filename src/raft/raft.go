@@ -68,7 +68,8 @@ type Raft struct {
 	// all servers persistent state
 	currentTerm int
 	voteFor     map[int]int //kv:term,vote for
-	logs        []LogEntry
+	logs        []LogEntry  // index start from 1
+	applyCh     chan ApplyMsg
 
 	// all servers volatile state
 	commitIndex int
@@ -159,15 +160,6 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 }
 
 //
-// example RequestVote RPC arguments structure.
-// field names must start with capital letters!
-//
-
-func (rf *Raft) CheckLatestLog(lastLogIndex int, LastLogTerm int) bool {
-	return true
-}
-
-//
 // the service using Raft (e.g. a k/v server) wants to start
 // agreement on the next command to be appended to Raft's log. if this
 // server isn't the leader, returns false. otherwise start the
@@ -187,6 +179,16 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	isLeader := true
 
 	// Your code here (2B).
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if term, isLeader = rf.GetState(); isLeader {
+		index = len(rf.logs)
+		entry := LogEntry{}
+		entry.Term = rf.currentTerm
+		entry.Command = command
+		entry.Index = index
+		rf.ProcessNewCommands(entry)
+	}
 
 	return index, term, isLeader
 }
@@ -235,7 +237,7 @@ func (rf *Raft) ticker(heartbeat int) {
 			rf.mu.Unlock()
 			time.Sleep(time.Duration(randomNumber) * time.Millisecond)
 			rf.mu.Lock()
-			if rf.accumulatedHb == 0 {
+			if rf.accumulatedHb == 0 && rf.status == Follower {
 				Debug(dTimer, "Follower [%d] election timeout ", me)
 				rf.status = Candidate
 				rf.mu.Unlock()
@@ -246,13 +248,14 @@ func (rf *Raft) ticker(heartbeat int) {
 				rf.accumulatedHb = 0
 			}
 		case Leader:
-			reqs := rf.GenerateAppendReq(true, me)
+			//reqs := rf.GenerateAppendReq(true, me)
 			//var reqs []RequestAppendEntries
+			term := rf.currentTerm
 			peerNums := len(rf.peers)
 			rf.mu.Unlock()
 			time.Sleep(time.Duration(heartbeat) * time.Millisecond)
 			Debug(dTimer, "Leader[%d] start broadcast in term:%d", me, currentTerm)
-			go rf.Broadcast(me, reqs, peerNums)
+			go rf.Broadcast(me, term, peerNums, true)
 		default:
 			//time.Sleep(time.Duration(50) * time.Millisecond)
 			rf.mu.Unlock()
@@ -292,7 +295,13 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.status = Follower
 	rf.currentTerm = 0
 	rf.voteFor = make(map[int]int)
-
+	rf.applyCh = applyCh
+	rf.nextIndex = make([]int, len(peers))
+	rf.matchIndex = make([]int, len(peers))
+	for i := range rf.nextIndex {
+		rf.nextIndex[i] = 0
+		rf.matchIndex[i] = 0
+	}
 	//go StartHTTPDebuger()
 
 	//rf.
@@ -306,6 +315,25 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// start ticker goroutine to start elections
 
 	go rf.ticker(100)
-
+	go rf.checkCommit()
 	return rf
+}
+
+func (rf *Raft) checkCommit() {
+	for {
+		rf.mu.Lock()
+		if rf.commitIndex > rf.lastApplied {
+			Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.commitIndex, rf.lastApplied)
+			rf.lastApplied++
+		}
+		rf.mu.Unlock()
+		time.Sleep(time.Duration(15) * time.Millisecond)
+	}
+
+}
+
+// last rules for learder in figuer 2
+// need to be lock
+func (rf *Raft) UpdateCommitIndex() {
+
 }

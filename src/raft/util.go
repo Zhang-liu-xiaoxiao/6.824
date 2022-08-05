@@ -28,6 +28,7 @@ const (
 )
 
 const (
+	dApply   logTopic = "APPL"
 	dClient  logTopic = "CLNT"
 	dCommit  logTopic = "CMIT"
 	dDrop    logTopic = "DROP"
