@@ -176,17 +176,20 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index := -1
 	term := -1
-	isLeader := true
+	isLeader := false
 
 	// Your code here (2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	if term, isLeader = rf.GetState(); isLeader {
-		index = len(rf.logs)
+	term = rf.currentTerm
+	if rf.status == Leader {
+		isLeader = true
+		index = len(rf.logs) + 1
 		entry := LogEntry{}
 		entry.Term = rf.currentTerm
 		entry.Command = command
 		entry.Index = index
+		Debug(dLeader, "[%d] get client command, term:%d,log.index:%d", rf.me, rf.currentTerm, index)
 		rf.ProcessNewCommands(entry)
 	}
 
@@ -218,7 +221,7 @@ func (rf *Raft) killed() bool {
 // heartsbeats recently.
 func (rf *Raft) ticker(heartbeat int) {
 	times := 1
-	randomNumber := rand.Intn(201) + 300
+	randomNumber := rand.Intn(401) + 400
 
 	for rf.killed() == false {
 
@@ -240,12 +243,12 @@ func (rf *Raft) ticker(heartbeat int) {
 			if rf.accumulatedHb == 0 && rf.status == Follower {
 				Debug(dTimer, "Follower [%d] election timeout ", me)
 				rf.status = Candidate
-				rf.mu.Unlock()
 				go rf.AttemptElection()
-			} else {
 				rf.mu.Unlock()
+			} else {
 				Debug(dTimer, "Follower [%d] Remain follower ", me)
 				rf.accumulatedHb = 0
+				rf.mu.Unlock()
 			}
 		case Leader:
 			//reqs := rf.GenerateAppendReq(true, me)
@@ -254,8 +257,14 @@ func (rf *Raft) ticker(heartbeat int) {
 			peerNums := len(rf.peers)
 			rf.mu.Unlock()
 			time.Sleep(time.Duration(heartbeat) * time.Millisecond)
+			rf.mu.Lock()
+			if rf.status != Leader {
+				rf.mu.Unlock()
+				continue
+			}
 			Debug(dTimer, "Leader[%d] start broadcast in term:%d", me, currentTerm)
 			go rf.Broadcast(me, term, peerNums, true)
+			rf.mu.Unlock()
 		default:
 			//time.Sleep(time.Duration(50) * time.Millisecond)
 			rf.mu.Unlock()
@@ -263,16 +272,6 @@ func (rf *Raft) ticker(heartbeat int) {
 		}
 
 	}
-}
-
-func (rf *Raft) RevertToFollower(term int, isReElect bool) {
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-	rf.status = Follower
-	if !isReElect {
-		rf.accumulatedHb++
-	}
-	rf.currentTerm = term
 }
 
 //
@@ -298,6 +297,8 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.applyCh = applyCh
 	rf.nextIndex = make([]int, len(peers))
 	rf.matchIndex = make([]int, len(peers))
+	rf.lastApplied = 0
+	rf.commitIndex = 0
 	for i := range rf.nextIndex {
 		rf.nextIndex[i] = 0
 		rf.matchIndex[i] = 0
@@ -315,19 +316,19 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// start ticker goroutine to start elections
 
 	go rf.ticker(100)
-	go rf.checkCommit()
 	return rf
 }
 
-func (rf *Raft) checkCommit() {
-	for {
-		rf.mu.Lock()
-		if rf.commitIndex > rf.lastApplied {
-			Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.commitIndex, rf.lastApplied)
-			rf.lastApplied++
+func (rf *Raft) applyCommit() {
+	for rf.commitIndex > rf.lastApplied {
+		Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.me, rf.commitIndex, rf.lastApplied)
+		rf.lastApplied++
+		msg := ApplyMsg{
+			CommandValid: true,
+			Command:      rf.logs[rf.lastApplied-1].Command,
+			CommandIndex: rf.lastApplied,
 		}
-		rf.mu.Unlock()
-		time.Sleep(time.Duration(15) * time.Millisecond)
+		rf.applyCh <- msg
 	}
 
 }
@@ -335,5 +336,49 @@ func (rf *Raft) checkCommit() {
 // last rules for learder in figuer 2
 // need to be lock
 func (rf *Raft) UpdateCommitIndex() {
+	ldCommitIndex := rf.commitIndex
+	// increment
+	// key : whose index > commitindex
+	// value: frequency
+	Debug(dLeader, "[%d] Update commit index"+
+		"cur match index:%v,"+
+		"cur commit index:%d"+
+		"cur term:%d", rf.me, rf.matchIndex, rf.commitIndex, rf.currentTerm)
+	frequencyMap := make(map[int]int)
+	count := len(rf.peers) / 2
+	for i := 0; i < len(rf.matchIndex); i++ {
+		if rf.matchIndex[i] > ldCommitIndex {
+			if i == rf.me {
+				continue
+			}
+			if _, ok := frequencyMap[rf.matchIndex[i]]; !ok {
+				frequencyMap[rf.matchIndex[i]] = 1
+			} else {
+				for k := range frequencyMap {
+					if k >= rf.matchIndex[i] {
+						frequencyMap[k] = frequencyMap[k] + 1
+					}
+				}
+
+			}
+		}
+	}
+	update := -1
+	for k := range frequencyMap {
+		if frequencyMap[k] >= count {
+			update = k
+		} else {
+			break
+		}
+	}
+	if update == -1 {
+		return
+	}
+	if rf.logs[update-1].Term == rf.currentTerm {
+		rf.commitIndex = update
+		Debug(dLeader, "[%d] update commit index "+
+			"to %d,term:%d", rf.me, rf.commitIndex, rf.currentTerm)
+	}
+	rf.applyCommit()
 
 }

@@ -177,6 +177,7 @@ func TestRPCBytes2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): RPC byte count")
+	Debug(dTest, "------------------Test (2B): RPC byte count -------------------")
 
 	cfg.one(99, servers, false)
 	bytes0 := cfg.bytesTotal()
@@ -211,6 +212,7 @@ func For2023TestFollowerFailure2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): test progressive failure of followers")
+	Debug(dTest, "------------------Test (2B): test progressive failure of followers -------------------")
 
 	cfg.one(101, servers, false)
 
@@ -301,12 +303,14 @@ func TestFailAgree2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): agreement after follower reconnects")
+	Debug(dTest, "------------------Test (2B): agreement after follower reconnects -------------------")
 
 	cfg.one(101, servers, false)
 
 	// disconnect one follower from the network.
 	leader := cfg.checkOneLeader()
 	cfg.disconnect((leader + 1) % servers)
+	Debug(dTest, "------------------Test (2B): disconnect [%d],agreement after follower reconnects -------------------", (leader+1)%servers)
 
 	// the leader and remaining follower should be
 	// able to agree despite the disconnected follower.
@@ -318,6 +322,7 @@ func TestFailAgree2B(t *testing.T) {
 
 	// re-connect
 	cfg.connect((leader + 1) % servers)
+	Debug(dTest, "------------------Test (2B): REconnect [%d],agreement after follower reconnects -------------------", (leader+1)%servers)
 
 	// the full set of servers should preserve
 	// previous agreements, and be able to agree
@@ -335,6 +340,7 @@ func TestFailNoAgree2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): no agreement if too many followers disconnect")
+	Debug(dTest, "------------------Test (2B): no agreement if too many followers disconnect -------------------")
 
 	cfg.one(10, servers, false)
 
@@ -343,6 +349,7 @@ func TestFailNoAgree2B(t *testing.T) {
 	cfg.disconnect((leader + 1) % servers)
 	cfg.disconnect((leader + 2) % servers)
 	cfg.disconnect((leader + 3) % servers)
+	Debug(dTest, "------------------Test (2B):Disconnect [%d][%d][%d] no agreement if too many followers disconnect -------------------", (leader+1)%servers, (leader+2)%servers, (leader+3)%servers)
 
 	index, _, ok := cfg.rafts[leader].Start(20)
 	if ok != true {
@@ -363,6 +370,7 @@ func TestFailNoAgree2B(t *testing.T) {
 	cfg.connect((leader + 1) % servers)
 	cfg.connect((leader + 2) % servers)
 	cfg.connect((leader + 3) % servers)
+	Debug(dTest, "------------------Test (2B):Reconnect [%d][%d][%d] no agreement if too many followers disconnect -------------------", (leader+1)%servers, (leader+2)%servers, (leader+3)%servers)
 
 	// the disconnected majority may have chosen a leader from
 	// among their own ranks, forgetting index 2.
@@ -386,6 +394,7 @@ func TestConcurrentStarts2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): concurrent Start()s")
+	Debug(dTest, "------------------Test (2B): concurrent Start()s -------------------")
 
 	var success bool
 loop:
@@ -487,6 +496,7 @@ func TestRejoin2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): rejoin of partitioned leader")
+	Debug(dTest, "------------------Test (2B): rejoin of partitioned leader -------------------")
 
 	cfg.one(101, servers, true)
 
@@ -525,17 +535,23 @@ func TestBackup2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): leader backs up quickly over incorrect follower Logs")
+	Debug(dTest, "------------------Test (2B): leader backs up quickly over incorrect follower Logs -------------------")
 
 	cfg.one(rand.Int(), servers, true)
 
 	// put leader and one follower in a partition
 	leader1 := cfg.checkOneLeader()
+	Debug(dTest, "TestBackup2B leader1[%d]", leader1)
+
 	cfg.disconnect((leader1 + 2) % servers)
 	cfg.disconnect((leader1 + 3) % servers)
 	cfg.disconnect((leader1 + 4) % servers)
+	Debug(dTest, "------------------Test (2B): Disconnect [%d][%d][%d]TestBackup2B -------------------", (leader1+2)%servers, (leader1+3)%servers, (leader1+4)%servers)
 
 	// submit lots of commands that won't commit
 	for i := 0; i < 50; i++ {
+		Debug(dTest, "TestBackup2B START A Failed agreement")
+
 		cfg.rafts[leader1].Start(rand.Int())
 	}
 
@@ -543,27 +559,36 @@ func TestBackup2B(t *testing.T) {
 
 	cfg.disconnect((leader1 + 0) % servers)
 	cfg.disconnect((leader1 + 1) % servers)
+	Debug(dTest, "------------------Test (2B): Disconnect [%d][%d]TestBackup2B -------------------", (leader1+0)%servers, (leader1+1)%servers)
 
 	// allow other partition to recover
 	cfg.connect((leader1 + 2) % servers)
 	cfg.connect((leader1 + 3) % servers)
 	cfg.connect((leader1 + 4) % servers)
 
+	Debug(dTest, "------------------Test (2B): REconnect [%d][%d][%d]TestBackup2B -------------------", (leader1+2)%servers, (leader1+3)%servers, (leader1+4)%servers)
+
 	// lots of successful commands to new group.
 	for i := 0; i < 50; i++ {
+		Debug(dTest, "TestBackup2B START A Successful agreement [%d][%d][%d]", (leader1+2)%servers, (leader1+3)%servers, (leader1+4)%servers)
 		cfg.one(rand.Int(), 3, true)
 	}
 
 	// now another partitioned leader and one follower
 	leader2 := cfg.checkOneLeader()
+
 	other := (leader1 + 2) % servers
 	if leader2 == other {
 		other = (leader2 + 1) % servers
 	}
+	Debug(dTest, "TestBackup2B leader2[%d] other[%d]", leader2, other)
 	cfg.disconnect(other)
+	Debug(dTest, "------------------Test (2B): Disconnect [%d]TestBackup2B -------------------", other)
 
 	// lots more commands that won't commit
 	for i := 0; i < 50; i++ {
+		Debug(dTest, "TestBackup2B START A Failed agreement")
+
 		cfg.rafts[leader2].Start(rand.Int())
 	}
 
@@ -576,9 +601,12 @@ func TestBackup2B(t *testing.T) {
 	cfg.connect((leader1 + 0) % servers)
 	cfg.connect((leader1 + 1) % servers)
 	cfg.connect(other)
+	Debug(dTest, "------------------Test (2B): REconnect [%d][%d][%d]TestBackup2B -------------------", (leader1+0)%servers, (leader1+1)%servers, other)
 
 	// lots of successful commands to new group.
 	for i := 0; i < 50; i++ {
+		Debug(dTest, "TestBackup2B New Group START A Successful agreement[%d][%d][%d]", (leader1+0)%servers, (leader1+1)%servers, other)
+
 		cfg.one(rand.Int(), 3, true)
 	}
 
@@ -586,6 +614,8 @@ func TestBackup2B(t *testing.T) {
 	for i := 0; i < servers; i++ {
 		cfg.connect(i)
 	}
+	Debug(dTest, "------------------Test (2B): REconnect All TestBackup2B -------------------")
+
 	cfg.one(rand.Int(), servers, true)
 
 	cfg.end()
@@ -597,6 +627,7 @@ func TestCount2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): RPC counts aren't too high")
+	Debug(dTest, "------------------Test (2B): RPC counts aren't too high -------------------")
 
 	rpcs := func() (n int) {
 		for j := 0; j < servers; j++ {
