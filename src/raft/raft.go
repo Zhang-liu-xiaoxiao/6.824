@@ -18,6 +18,8 @@ package raft
 //
 
 import (
+	"6.824/labgob"
+	"bytes"
 	"math/rand"
 	"time"
 
@@ -66,10 +68,12 @@ type Raft struct {
 	// state a Raft server must maintain.
 
 	// all servers persistent state
-	currentTerm int
-	voteFor     map[int]int //kv:term,vote for
-	logs        []LogEntry  // index start from 1
-	applyCh     chan ApplyMsg
+	CurrentTerm int
+	VoteFor     map[int]int //kv:term,vote for
+	Logs        []LogEntry  // index start from 1
+
+	// notification
+	applyCh chan ApplyMsg
 
 	// all servers volatile state
 	commitIndex int
@@ -84,7 +88,7 @@ type Raft struct {
 	accumulatedHb int
 }
 
-// return currentTerm and whether this server
+// return CurrentTerm and whether this server
 // believes it is the leader.
 func (rf *Raft) GetState() (int, bool) {
 
@@ -92,13 +96,19 @@ func (rf *Raft) GetState() (int, bool) {
 	var isleader bool
 	// Your code here (2A).
 	rf.mu.Lock()
-	term = rf.currentTerm
+	term = rf.CurrentTerm
 	if rf.status == Leader {
 		isleader = true
 	}
 
 	defer rf.mu.Unlock()
 	return term, isleader
+}
+
+func (rf *Raft) needPersist(termNeedPersist *bool) {
+	if *termNeedPersist == true {
+		rf.persist()
+	}
 }
 
 //
@@ -115,6 +125,14 @@ func (rf *Raft) persist() {
 	// e.Encode(rf.yyy)
 	// data := w.Bytes()
 	// rf.persister.SaveRaftState(data)
+
+	writer := new(bytes.Buffer)
+	e := labgob.NewEncoder(writer)
+	e.Encode(rf.CurrentTerm)
+	e.Encode(rf.VoteFor)
+	e.Encode(rf.Logs)
+	data := writer.Bytes()
+	rf.persister.SaveRaftState(data)
 }
 
 //
@@ -137,6 +155,21 @@ func (rf *Raft) readPersist(data []byte) {
 	//   rf.xxx = xxx
 	//   rf.yyy = yyy
 	// }
+	reader := bytes.NewBuffer(data)
+	d := labgob.NewDecoder(reader)
+	var CurrentTerm int
+	var VoteFor map[int]int
+	var Logs []LogEntry
+	if d.Decode(&CurrentTerm) != nil ||
+		d.Decode(&VoteFor) != nil ||
+		d.Decode(&Logs) != nil {
+
+	} else {
+		rf.CurrentTerm = CurrentTerm
+		rf.VoteFor = VoteFor
+		rf.Logs = Logs
+	}
+
 }
 
 //
@@ -181,15 +214,15 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	// Your code here (2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	term = rf.currentTerm
+	term = rf.CurrentTerm
 	if rf.status == Leader {
 		isLeader = true
-		index = len(rf.logs) + 1
+		index = len(rf.Logs) + 1
 		entry := LogEntry{}
-		entry.Term = rf.currentTerm
+		entry.Term = rf.CurrentTerm
 		entry.Command = command
 		entry.Index = index
-		Debug(dLeader, "[%d] get client command, term:%d,log.index:%d", rf.me, rf.currentTerm, index)
+		Debug(dLeader, "[%d] get client command, term:%d,log.index:%d", rf.me, rf.CurrentTerm, index)
 		rf.ProcessNewCommands(entry)
 	}
 
@@ -233,7 +266,7 @@ func (rf *Raft) ticker(heartbeat int) {
 		rf.mu.Lock()
 		me := rf.me
 		//Debug(dTimer, "[%d] Ticker times:%d", me, times)
-		currentTerm := rf.currentTerm
+		currentTerm := rf.CurrentTerm
 		times++
 		switch rf.status {
 		case Follower:
@@ -253,7 +286,7 @@ func (rf *Raft) ticker(heartbeat int) {
 		case Leader:
 			//reqs := rf.GenerateAppendReq(true, me)
 			//var reqs []RequestAppendEntries
-			term := rf.currentTerm
+			term := rf.CurrentTerm
 			peerNums := len(rf.peers)
 			rf.mu.Unlock()
 			time.Sleep(time.Duration(heartbeat) * time.Millisecond)
@@ -292,8 +325,8 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.persister = persister
 	rf.me = me
 	rf.status = Follower
-	rf.currentTerm = 0
-	rf.voteFor = make(map[int]int)
+	rf.CurrentTerm = 0
+	rf.VoteFor = make(map[int]int)
 	rf.applyCh = applyCh
 	rf.nextIndex = make([]int, len(peers))
 	rf.matchIndex = make([]int, len(peers))
@@ -325,7 +358,7 @@ func (rf *Raft) applyCommit() {
 		rf.lastApplied++
 		msg := ApplyMsg{
 			CommandValid: true,
-			Command:      rf.logs[rf.lastApplied-1].Command,
+			Command:      rf.Logs[rf.lastApplied-1].Command,
 			CommandIndex: rf.lastApplied,
 		}
 		rf.applyCh <- msg
@@ -343,7 +376,7 @@ func (rf *Raft) UpdateCommitIndex() {
 	Debug(dLeader, "[%d] Update commit index"+
 		"cur match index:%v,"+
 		"cur commit index:%d"+
-		"cur term:%d", rf.me, rf.matchIndex, rf.commitIndex, rf.currentTerm)
+		"cur term:%d", rf.me, rf.matchIndex, rf.commitIndex, rf.CurrentTerm)
 	frequencyMap := make(map[int]int)
 	count := len(rf.peers) / 2
 	for i := 0; i < len(rf.matchIndex); i++ {
@@ -355,7 +388,7 @@ func (rf *Raft) UpdateCommitIndex() {
 				frequencyMap[rf.matchIndex[i]] = 1
 			} else {
 				for k := range frequencyMap {
-					if k >= rf.matchIndex[i] {
+					if k <= rf.matchIndex[i] {
 						frequencyMap[k] = frequencyMap[k] + 1
 					}
 				}
@@ -374,10 +407,10 @@ func (rf *Raft) UpdateCommitIndex() {
 	if update == -1 {
 		return
 	}
-	if rf.logs[update-1].Term == rf.currentTerm {
+	if rf.Logs[update-1].Term == rf.CurrentTerm {
 		rf.commitIndex = update
 		Debug(dLeader, "[%d] update commit index "+
-			"to %d,term:%d", rf.me, rf.commitIndex, rf.currentTerm)
+			"to %d,term:%d", rf.me, rf.commitIndex, rf.CurrentTerm)
 	}
 	rf.applyCommit()
 

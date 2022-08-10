@@ -31,12 +31,12 @@ type RequestAppendEntries struct {
 func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppendEntries) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.currentTerm, args)
+	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.CurrentTerm, args)
 	reply.Succeeded = true
-	if args.Term < rf.currentTerm {
+	if args.Term < rf.CurrentTerm {
 		reply.Succeeded = false
-		reply.Term = rf.currentTerm
-		Debug(dInfo, "[%d] REJECT APPEND RPC from lower leader [%d] in term:%d, me.term:%d", rf.me, args.LeaderID, args.Term, rf.currentTerm)
+		reply.Term = rf.CurrentTerm
+		Debug(dInfo, "[%d] REJECT APPEND RPC from lower leader [%d] in term:%d, me.term:%d", rf.me, args.LeaderID, args.Term, rf.CurrentTerm)
 		return
 	}
 
@@ -46,12 +46,18 @@ func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppe
 		//return
 	}
 
+	// use to reduce expensive persist
+	termChanged := args.Term > rf.CurrentTerm
+
 	rf.status = Follower
 	rf.accumulatedHb++
-	rf.currentTerm = args.Term
-	reply.Term = rf.currentTerm
+	rf.CurrentTerm = args.Term
+	reply.Term = rf.CurrentTerm
 
 	if !reply.Succeeded {
+		if termChanged {
+			rf.persist()
+		}
 		return
 	}
 	Debug(dInfo, "[%d] CheckPrevLog from leader [%d] args:%+v", rf.me, args.LeaderID, args)
@@ -62,17 +68,18 @@ func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppe
 	} else {
 		Debug(dLog, "[%d] log Conflict with append rpc IN index:%d! "+
 			"from leader [%d],commit index:%d,prev log index:%d, "+
-			"args.log.len:%d server logs.len:%d",
-			rf.me, index, args.LeaderID, args.LeaderCommitIndex, args.PrevLogIndex, len(args.Logs), len(rf.logs))
+			"args.log.len:%d server Logs.len:%d",
+			rf.me, index, args.LeaderID, args.LeaderCommitIndex, args.PrevLogIndex, len(args.Logs), len(rf.Logs))
 		// conflict ,use rule 3 to delete all the log following
-		logsCp := rf.logs[:index+args.PrevLogIndex]
+		logsCp := rf.Logs[:index+args.PrevLogIndex]
 		logsCp = append(logsCp, args.Logs[index:]...)
-		rf.logs = logsCp
+		rf.Logs = logsCp
+		rf.persist()
 	}
 	// rule 5 for append rpc
 	if args.LeaderCommitIndex > rf.commitIndex {
-		if args.LeaderCommitIndex > len(rf.logs) {
-			rf.commitIndex = len(rf.logs)
+		if args.LeaderCommitIndex > len(rf.Logs) {
+			rf.commitIndex = len(rf.Logs)
 		} else {
 			rf.commitIndex = args.LeaderCommitIndex
 		}
@@ -89,14 +96,14 @@ func (rf *Raft) checkIfConflict(args *RequestAppendEntries) int {
 	if argsLength == 0 {
 		return -1
 	}
-	serverLogLength := len(rf.logs)
+	serverLogLength := len(rf.Logs)
 	for i := 0; i < argsLength; i++ {
 		// exceed server's length
 		if i+args.PrevLogIndex >= serverLogLength {
 			return i
 		}
 		// conflict in i
-		if rf.logs[i+args.PrevLogIndex].Term != args.Logs[i].Term {
+		if rf.Logs[i+args.PrevLogIndex].Term != args.Logs[i].Term {
 			return i
 		}
 	}
@@ -111,20 +118,20 @@ func (rf *Raft) CheckPrevLog(args *RequestAppendEntries, reply *ReplyAppendEntri
 	if args.PrevLogIndex == 0 {
 		return true
 	}
-	if len(rf.logs) < args.PrevLogIndex {
+	if len(rf.Logs) < args.PrevLogIndex {
 		Debug(dLog, "append rpc from leader:[%d] prevlogindex > server[%d] Logs length", args.LeaderID,
 			rf.me)
-		reply.ConflictIndex = len(rf.logs)
+		reply.ConflictIndex = len(rf.Logs)
 		reply.ConflictTerm = -1
 		return false
 	}
-	if rf.logs[args.PrevLogIndex-1].Term != args.PrevLogTerm {
+	if rf.Logs[args.PrevLogIndex-1].Term != args.PrevLogTerm {
 		Debug(dLog, "Not Equal! leader:[%d] log[%d].Term=[%d], "+
 			"server:[%d] log[%d].Term=[%d]",
 			args.LeaderID, args.PrevLogIndex, args.PrevLogTerm,
-			rf.me, args.PrevLogIndex, rf.logs[args.PrevLogIndex-1].Term)
-		reply.ConflictTerm = rf.logs[args.PrevLogIndex-1].Term
-		for i, log := range rf.logs {
+			rf.me, args.PrevLogIndex, rf.Logs[args.PrevLogIndex-1].Term)
+		reply.ConflictTerm = rf.Logs[args.PrevLogIndex-1].Term
+		for i, log := range rf.Logs {
 			if log.Term == reply.ConflictTerm {
 				reply.ConflictIndex = i + 1
 				break
@@ -140,23 +147,23 @@ func (rf *Raft) GenerateAppendReq(leaderId, peerId int, heartbeat bool) RequestA
 	//rf.mu.Lock()
 	var req RequestAppendEntries
 	req.LeaderID = leaderId
-	req.Term = rf.currentTerm
+	req.Term = rf.CurrentTerm
 	req.Logs = []LogEntry{}
 	//req.PrevLogIndex = rf.nextIndex[peerId] - 1
 	//if req.PrevLogIndex > 0 {
-	//	req.PrevLogTerm = rf.logs[req.PrevLogIndex-1].Term
-	//	req.Logs = rf.logs[req.PrevLogIndex-1:]
+	//	req.PrevLogTerm = rf.Logs[req.PrevLogIndex-1].Term
+	//	req.Logs = rf.Logs[req.PrevLogIndex-1:]
 	//}
 	if rf.nextIndex[peerId] <= 1 {
-		req.Logs = rf.logs
+		req.Logs = rf.Logs
 		req.PrevLogIndex = 0
 		req.PrevLogTerm = 0
 
 	} else {
 		req.PrevLogIndex = rf.nextIndex[peerId] - 1
-		req.PrevLogTerm = rf.logs[req.PrevLogIndex-1].Term
-		req.Logs = rf.logs[req.PrevLogIndex:]
-		if req.PrevLogIndex >= len(rf.logs) {
+		req.PrevLogTerm = rf.Logs[req.PrevLogIndex-1].Term
+		req.Logs = rf.Logs[req.PrevLogIndex:]
+		if req.PrevLogIndex >= len(rf.Logs) {
 			req.Logs = []LogEntry{}
 		}
 	}
@@ -174,19 +181,26 @@ func (rf *Raft) Broadcast(leaderId int, term int, peerNums int, heartbeat bool) 
 		}
 		rf.mu.Lock()
 		if rf.status != Leader {
-			Debug(dLeader, "[%d] For Range No longer leader in broadcast to [%d] ,term %d", leaderId, i, rf.currentTerm)
+			Debug(dLeader, "[%d] For Range No longer leader in broadcast to [%d] ,term %d", leaderId, i, rf.CurrentTerm)
 			rf.mu.Unlock()
 			return
 		}
 		rf.mu.Unlock()
 
 		go func(i int) {
+			termNeedPersist := false
+			counts := 0
+			defer rf.mu.Unlock()
+			defer rf.needPersist(&termNeedPersist)
 			for {
 				reply := ReplyAppendEntries{}
 				rf.mu.Lock()
+				if counts >= 5 {
+					return
+				}
 				if rf.status != Leader {
-					//Debug(dLeader, "[%d] No longer leader in broadcast to [%d],term %d", leaderId, i, rf.currentTerm)
-					rf.mu.Unlock()
+					//Debug(dLeader, "[%d] No longer leader in broadcast to [%d],term %d", leaderId, i, rf.CurrentTerm)
+					//rf.mu.Unlock()
 					return
 				}
 				args := rf.GenerateAppendReq(leaderId, i, heartbeat)
@@ -194,24 +208,26 @@ func (rf *Raft) Broadcast(leaderId int, term int, peerNums int, heartbeat bool) 
 
 				if ok := rf.SendAppendEntries(i, &args, &reply); !ok {
 					//Debug(dLeader, "[%d] Send RPC RESPONSE ERROR,continue")
+					counts++
 					continue
 				}
 
 				rf.mu.Lock()
 				// old term rpc reply
-				if rf.currentTerm != args.Term {
-					Debug(dLeader, "[%d] leader term != args.term!,leader.term=%d,args.term=%d", leaderId, rf.currentTerm, args.Term)
-					rf.mu.Unlock()
+				if rf.CurrentTerm != args.Term {
+					Debug(dLeader, "[%d] leader term != args.term!,leader.term=%d,args.term=%d", leaderId, rf.CurrentTerm, args.Term)
+					//rf.mu.Unlock()
 					return
 				}
 				// bigger term! return
-				if reply.Term > rf.currentTerm {
+				if reply.Term > rf.CurrentTerm {
 					Debug(dLeader, "[%d] Get Bigger Term when broadcast heartbeat To [%d] , REVERT to follower", leaderId, i)
 
 					rf.status = Follower
 					rf.accumulatedHb++
-					rf.currentTerm = reply.Term
-					rf.mu.Unlock()
+					termNeedPersist = true
+					//rf.CurrentTerm = reply.Term
+					//rf.mu.Unlock()
 					return
 				}
 				if reply.Succeeded {
@@ -219,7 +235,7 @@ func (rf *Raft) Broadcast(leaderId int, term int, peerNums int, heartbeat bool) 
 					rf.matchIndex[i] = args.PrevLogIndex + len(args.Logs)
 					rf.nextIndex[i] = rf.matchIndex[i] + 1
 					rf.UpdateCommitIndex()
-					rf.mu.Unlock()
+					//rf.mu.Unlock()
 					return
 				}
 				rf.UpdateNextIndex(i, reply, leaderId, args)
@@ -262,6 +278,7 @@ func (rf *Raft) SendAppendEntries(me int, args *RequestAppendEntries, reply *Rep
 }
 
 func (rf *Raft) ProcessNewCommands(entry LogEntry) {
-	rf.logs = append(rf.logs, entry)
-	go rf.Broadcast(rf.me, rf.currentTerm, len(rf.peers), false)
+	rf.Logs = append(rf.Logs, entry)
+	rf.persist()
+	go rf.Broadcast(rf.me, rf.CurrentTerm, len(rf.peers), false)
 }

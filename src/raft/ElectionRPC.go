@@ -33,13 +33,14 @@ func (rf *Raft) AttemptElection() {
 			rf.mu.Unlock()
 			return
 		}
-		rf.currentTerm++
+		rf.CurrentTerm++
 		candidateId := rf.me
-		rf.voteFor[rf.currentTerm] = candidateId
+		rf.VoteFor[rf.CurrentTerm] = candidateId
+		rf.persist()
 		peers := rf.peers
 		serversNum := len(rf.peers)
 		succeedVoteNums := serversNum/2 + 1
-		Debug(dInfo, "Candidate [%d] start a election in term %d", candidateId, rf.currentTerm)
+		Debug(dInfo, "Candidate [%d] start a election in term %d", candidateId, rf.CurrentTerm)
 		rf.mu.Unlock()
 		// server num must be odd, and ceil it
 
@@ -51,16 +52,16 @@ func (rf *Raft) AttemptElection() {
 			rf.mu.Lock()
 			args := RequestVoteArgs{}
 			args.CandidateId = candidateId
-			args.Term = rf.currentTerm
+			args.Term = rf.CurrentTerm
 			args.LastLogTerm = 0
 			args.LastLogIndex = 0
-			if len(rf.logs) > 0 {
-				args.LastLogIndex = len(rf.logs)
-				args.LastLogTerm = rf.logs[len(rf.logs)-1].Term
+			if len(rf.Logs) > 0 {
+				args.LastLogIndex = len(rf.Logs)
+				args.LastLogTerm = rf.Logs[len(rf.Logs)-1].Term
 			}
 			reply := RequestVoteReply{}
 			if rf.status != Candidate {
-				Debug(dVote, "[%d] No longer candidate Stop Election,term:%d", rf.me, rf.currentTerm)
+				Debug(dVote, "[%d] No longer candidate Stop Election,term:%d", rf.me, rf.CurrentTerm)
 				rf.mu.Unlock()
 				return
 			}
@@ -71,16 +72,18 @@ func (rf *Raft) AttemptElection() {
 					return
 				}
 				rf.mu.Lock()
+				termNeedPersist := false
 				defer rf.mu.Unlock()
-
-				if rf.currentTerm != args.Term {
+				defer rf.needPersist(&termNeedPersist)
+				if rf.CurrentTerm != args.Term {
 					return
 				}
-				if reply.Term > rf.currentTerm {
+				if reply.Term > rf.CurrentTerm {
 					Debug(dLog, "Get Bigger Term when ask votes ,[%d] REVERT to follower", args.CandidateId)
 					rf.status = Follower
 					//rf.accumulatedHb++
-					rf.currentTerm = reply.Term
+					rf.CurrentTerm = reply.Term
+					termNeedPersist = true
 					return
 				}
 				var curV uint32
@@ -93,12 +96,12 @@ func (rf *Raft) AttemptElection() {
 				}
 				if rf.status == Candidate && atomic.LoadUint32(&collectedVotes) >= uint32(succeedVoteNums) {
 					rf.status = Leader
-					Debug(dInfo, "[%d] Become leader in term %d", candidateId, rf.currentTerm)
+					Debug(dInfo, "[%d] Become leader in term %d", candidateId, rf.CurrentTerm)
 					peerNums := len(rf.peers)
 					for i := 0; i < len(rf.nextIndex); i++ {
-						rf.nextIndex[i] = len(rf.logs) + 1
+						rf.nextIndex[i] = len(rf.Logs) + 1
 					}
-					go rf.Broadcast(candidateId, rf.currentTerm, peerNums, true)
+					go rf.Broadcast(candidateId, rf.CurrentTerm, peerNums, true)
 					return
 				}
 			}(i)
@@ -139,23 +142,28 @@ func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
+	termNeedPersist := false
+
+	defer rf.needPersist(&termNeedPersist)
+
 	me := rf.me
 	Debug(dInfo, "[%d] PROCESS requestvote from [%d]", me, args.CandidateId)
-	//reply.Term = rf.currentTerm
+	//reply.Term = rf.CurrentTerm
 
 	// reject instantly
-	if args.Term < rf.currentTerm {
+	if args.Term < rf.CurrentTerm {
 		reply.VoteGranted = false
-		reply.Term = rf.currentTerm
+		reply.Term = rf.CurrentTerm
 
-		Debug(dInfo, "[%d] Receive vote request from [%d] lower term{%d}<curterm{%d}", me, args.CandidateId, args.Term, rf.currentTerm)
+		Debug(dInfo, "[%d] Receive vote request from [%d] lower term{%d}<curterm{%d}", me, args.CandidateId, args.Term, rf.CurrentTerm)
 		return
 	}
 
 	// handle bigger term first
-	if args.Term > rf.currentTerm {
-		Debug(dInfo, " [%d] Receive vote request from [%d] higher term{%d}>curterm{%d} ", me, args.CandidateId, args.Term, rf.currentTerm)
-		rf.currentTerm = args.Term
+	if args.Term > rf.CurrentTerm {
+		Debug(dInfo, " [%d] Receive vote request from [%d] higher term{%d}>curterm{%d} ", me, args.CandidateId, args.Term, rf.CurrentTerm)
+		rf.CurrentTerm = args.Term
+		termNeedPersist = true
 		rf.status = Follower
 	}
 
@@ -165,14 +173,16 @@ func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply
 		reply.VoteGranted = false
 		return
 	}
-	if _, ok := rf.voteFor[rf.currentTerm]; ok {
+	if _, ok := rf.VoteFor[rf.CurrentTerm]; ok {
 		reply.VoteGranted = false
-		Debug(dVote, "[%d] in term:%d already vote for [%d]", me, rf.currentTerm, rf.voteFor[rf.currentTerm])
+		Debug(dVote, "[%d] in term:%d already vote for [%d]", me, rf.CurrentTerm, rf.VoteFor[rf.CurrentTerm])
 		return
 	}
 
 	rf.accumulatedHb++
-	rf.voteFor[rf.currentTerm] = args.CandidateId
+	rf.VoteFor[rf.CurrentTerm] = args.CandidateId
+	rf.persist()
+	termNeedPersist = false // already persist below
 	reply.VoteGranted = true
 	rf.status = Follower
 
@@ -182,18 +192,18 @@ func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply
 // need to be locked
 func (rf *Raft) CheckLatestLog(args *RequestVoteArgs) bool {
 
-	if len(rf.logs) == 0 {
+	if len(rf.Logs) == 0 {
 		Debug(dVote, "Candidate[%d] empty log checked by[%d]", args.CandidateId, rf.me)
 		return true
 	}
 	Debug(dVote, "Candidate[%d]log checked by[%d] ,args:%+v, rf.latest term:%d,rf.latestindex:%d",
-		args.CandidateId, rf.me, args, rf.logs[len(rf.logs)-1].Term, len(rf.logs))
-	if args.LastLogTerm > rf.logs[len(rf.logs)-1].Term {
+		args.CandidateId, rf.me, args, rf.Logs[len(rf.Logs)-1].Term, len(rf.Logs))
+	if args.LastLogTerm > rf.Logs[len(rf.Logs)-1].Term {
 		return true
-	} else if args.LastLogTerm < rf.logs[len(rf.logs)-1].Term {
+	} else if args.LastLogTerm < rf.Logs[len(rf.Logs)-1].Term {
 		return false
 	} else {
-		return args.LastLogIndex >= len(rf.logs)
+		return args.LastLogIndex >= len(rf.Logs)
 	}
 
 }
@@ -244,7 +254,7 @@ func (rf *Raft) SendRequestVote(server int, args *RequestVoteArgs, reply *Reques
 //	for !ok && times < 100000 {
 //		times++
 //		rf.mu.Lock()
-//		args.Term = rf.currentTerm
+//		args.Term = rf.CurrentTerm
 //		rf.mu.Unlock()
 //		ok = rf.peers[server].Call("Raft.HandleRequestVote", args, reply)
 //		//Debug(dInfo, "Candidate [%d] Retry vote request to [%d]", rf.me, server)
