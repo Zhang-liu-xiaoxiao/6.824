@@ -86,6 +86,10 @@ type Raft struct {
 
 	// followers heartbeat count
 	accumulatedHb int
+
+	// for snapshot
+	LastIncludedIndex int
+	LastIncludedTerm  int
 }
 
 // return CurrentTerm and whether this server
@@ -189,7 +193,22 @@ func (rf *Raft) CondInstallSnapshot(lastIncludedTerm int, lastIncludedIndex int,
 // that index. Raft should now trim its log as much as possible.
 func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// Your code here (2D).
+	rf.mu.Lock()
+	Debug(dSnap, "[%d] Get snapshot from service,index:%d,"+
+		"last included index :%d"+
+		"last included term :%d", rf.me, index, rf.LastIncludedIndex, rf, rf.LastIncludedTerm)
+	defer rf.mu.Unlock()
 
+	rf.LastIncludedIndex = index
+	rf.LastIncludedTerm = rf.Logs[rf.log2sliceIndex(index)].Term
+	Debug(dSnap, "[%d] Update last included index:%d"+
+		"last included term:%d", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm)
+	logsNew := rf.Logs[index-rf.LastIncludedIndex:]
+	rf.Logs = nil
+	rf.Logs = logsNew
+
+	rf.persister.SaveStateAndSnapshot(nil, snapshot)
+	rf.persist()
 }
 
 //
@@ -217,7 +236,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	term = rf.CurrentTerm
 	if rf.status == Leader {
 		isLeader = true
-		index = len(rf.Logs) + 1
+		index = rf.maxLogIndex() + 1
 		entry := LogEntry{}
 		entry.Term = rf.CurrentTerm
 		entry.Command = command
@@ -336,6 +355,8 @@ func Make(peers []*labrpc.ClientEnd, me int,
 		rf.nextIndex[i] = 0
 		rf.matchIndex[i] = 0
 	}
+	rf.LastIncludedIndex = 0
+	rf.LastIncludedTerm = 0
 	//go StartHTTPDebuger()
 
 	//rf.
@@ -358,7 +379,7 @@ func (rf *Raft) applyCommit() {
 		rf.lastApplied++
 		msg := ApplyMsg{
 			CommandValid: true,
-			Command:      rf.Logs[rf.lastApplied-1].Command,
+			Command:      rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
 			CommandIndex: rf.lastApplied,
 		}
 		rf.applyCh <- msg
