@@ -63,7 +63,7 @@ type Raft struct {
 	persister *Persister          // Object to hold this peer's persisted state
 	me        int                 // this peer's index into peers[]
 	dead      int32               // set by Kill()
-	// Your data here (2A, 2B, 2C).
+	// Your Data here (2A, 2B, 2C).
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
 
@@ -127,8 +127,8 @@ func (rf *Raft) persist() {
 	// e := labgob.NewEncoder(w)
 	// e.Encode(rf.xxx)
 	// e.Encode(rf.yyy)
-	// data := w.Bytes()
-	// rf.persister.SaveRaftState(data)
+	// Data := w.Bytes()
+	// rf.persister.SaveRaftState(Data)
 
 	writer := new(bytes.Buffer)
 	e := labgob.NewEncoder(writer)
@@ -148,7 +148,7 @@ func (rf *Raft) readPersist(data []byte) {
 	}
 	// Your code here (2C).
 	// Example:
-	// r := bytes.NewBuffer(data)
+	// r := bytes.NewBuffer(Data)
 	// d := labgob.NewDecoder(r)
 	// var xxx
 	// var yyy
@@ -194,18 +194,26 @@ func (rf *Raft) CondInstallSnapshot(lastIncludedTerm int, lastIncludedIndex int,
 func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// Your code here (2D).
 	rf.mu.Lock()
+	if rf.killed() {
+		return
+	}
+	if rf.LastIncludedIndex >= index {
+		Debug(dSnap, "[%d] already snap for index %d", rf.me, index)
+		return
+	}
+
 	Debug(dSnap, "[%d] Get snapshot from service,index:%d,"+
-		"last included index :%d"+
-		"last included term :%d", rf.me, index, rf.LastIncludedIndex, rf, rf.LastIncludedTerm)
+		"last included index :%d "+
+		"last included term :%d "+
+		"cur rf logs:%+v ", rf.me, index, rf.LastIncludedIndex, rf.LastIncludedTerm, rf.Logs)
 	defer rf.mu.Unlock()
 
+	rf.LastIncludedTerm = rf.getLogIndexTerm(index)
+	rf.deleteSnappedLog(index)
 	rf.LastIncludedIndex = index
-	rf.LastIncludedTerm = rf.Logs[rf.log2sliceIndex(index)].Term
-	Debug(dSnap, "[%d] Update last included index:%d"+
-		"last included term:%d", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm)
-	logsNew := rf.Logs[index-rf.LastIncludedIndex:]
-	rf.Logs = nil
-	rf.Logs = logsNew
+
+	Debug(dSnap, "[%d] Update last included index:%d "+
+		"last included term:%d, cur log:%+v", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm, rf.Logs)
 
 	rf.persister.SaveStateAndSnapshot(nil, snapshot)
 	rf.persist()
@@ -370,10 +378,12 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// start ticker goroutine to start elections
 
 	go rf.ticker(100)
+	//go rf.applyCommit()
 	return rf
 }
 
 func (rf *Raft) applyCommit() {
+	//rf.mu.Lock()
 	for rf.commitIndex > rf.lastApplied {
 		Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.me, rf.commitIndex, rf.lastApplied)
 		rf.lastApplied++
@@ -382,8 +392,12 @@ func (rf *Raft) applyCommit() {
 			Command:      rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
 			CommandIndex: rf.lastApplied,
 		}
+		//rf.mu.Unlock()
 		rf.applyCh <- msg
+		//rf.mu.Lock()
 	}
+	//rf.mu.Unlock()
+	time.Sleep(10 * time.Millisecond)
 
 }
 
@@ -428,7 +442,7 @@ func (rf *Raft) UpdateCommitIndex() {
 	if update == -1 {
 		return
 	}
-	if rf.Logs[update-1].Term == rf.CurrentTerm {
+	if rf.getLogIndexTerm(update) == rf.CurrentTerm {
 		rf.commitIndex = update
 		Debug(dLeader, "[%d] update commit index "+
 			"to %d,term:%d", rf.me, rf.commitIndex, rf.CurrentTerm)
