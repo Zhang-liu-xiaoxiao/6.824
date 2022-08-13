@@ -135,6 +135,8 @@ func (rf *Raft) persist() {
 	e.Encode(rf.CurrentTerm)
 	e.Encode(rf.VoteFor)
 	e.Encode(rf.Logs)
+	e.Encode(rf.LastIncludedIndex)
+	e.Encode(rf.LastIncludedTerm)
 	data := writer.Bytes()
 	rf.persister.SaveRaftState(data)
 }
@@ -164,14 +166,20 @@ func (rf *Raft) readPersist(data []byte) {
 	var CurrentTerm int
 	var VoteFor map[int]int
 	var Logs []LogEntry
+	var LastIncludedIndex int
+	var LastIncludedTerm int
 	if d.Decode(&CurrentTerm) != nil ||
 		d.Decode(&VoteFor) != nil ||
-		d.Decode(&Logs) != nil {
+		d.Decode(&Logs) != nil ||
+		d.Decode(&LastIncludedIndex) != nil ||
+		d.Decode(&LastIncludedTerm) != nil {
 
 	} else {
 		rf.CurrentTerm = CurrentTerm
 		rf.VoteFor = VoteFor
 		rf.Logs = Logs
+		rf.LastIncludedIndex = LastIncludedIndex
+		rf.LastIncludedTerm = LastIncludedTerm
 	}
 
 }
@@ -194,19 +202,18 @@ func (rf *Raft) CondInstallSnapshot(lastIncludedTerm int, lastIncludedIndex int,
 func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// Your code here (2D).
 	rf.mu.Lock()
+	defer rf.mu.Unlock()
 	if rf.killed() {
 		return
 	}
-	if rf.LastIncludedIndex >= index {
-		Debug(dSnap, "[%d] already snap for index %d", rf.me, index)
-		return
-	}
-
 	Debug(dSnap, "[%d] Get snapshot from service,index:%d,"+
 		"last included index :%d "+
 		"last included term :%d "+
 		"cur rf logs:%+v ", rf.me, index, rf.LastIncludedIndex, rf.LastIncludedTerm, rf.Logs)
-	defer rf.mu.Unlock()
+	if rf.LastIncludedIndex >= index {
+		Debug(dSnap, "[%d] already snap for index %d", rf.me, index)
+		return
+	}
 
 	rf.LastIncludedTerm = rf.getLogIndexTerm(index)
 	rf.deleteSnappedLog(index)
@@ -366,19 +373,23 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.LastIncludedIndex = 0
 	rf.LastIncludedTerm = 0
 	//go StartHTTPDebuger()
-
+	//persister.ReadSnapshot()
 	//rf.
 	//Debug(dLog, "Make Raft [%d]", rf.me)
 	// Your initialization code here (2A, 2B, 2C).
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
+	if rf.LastIncludedIndex > 0 {
+		rf.lastApplied = rf.LastIncludedIndex
+		rf.commitIndex = rf.LastIncludedIndex
+	}
 	//Debug(dLog, "Reading Persist [%d]", rf.me)
 
 	// start ticker goroutine to start elections
 
 	go rf.ticker(100)
-	//go rf.applyCommit()
+	go rf.ApplyCommit()
 	return rf
 }
 
@@ -401,17 +412,38 @@ func (rf *Raft) applyCommit() {
 
 }
 
+func (rf *Raft) ApplyCommit() {
+	for {
+		rf.mu.Lock()
+		for rf.commitIndex > rf.lastApplied {
+			rf.lastApplied++
+			Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.me, rf.commitIndex, rf.lastApplied)
+			msg := ApplyMsg{
+				CommandValid: true,
+				Command:      rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
+				CommandIndex: rf.lastApplied,
+			}
+			rf.mu.Unlock()
+			rf.applyCh <- msg
+			rf.mu.Lock()
+		}
+		rf.mu.Unlock()
+		time.Sleep(15 * time.Millisecond)
+	}
+
+}
+
 // last rules for learder in figuer 2
 // need to be lock
-func (rf *Raft) UpdateCommitIndex() {
+func (rf *Raft) UpdateCommitIndex(i int) {
 	ldCommitIndex := rf.commitIndex
 	// increment
 	// key : whose index > commitindex
 	// value: frequency
-	Debug(dLeader, "[%d] Update commit index"+
+	Debug(dLeader, "[%d] Update commit index from reply [%d] "+
 		"cur match index:%v,"+
 		"cur commit index:%d"+
-		"cur term:%d", rf.me, rf.matchIndex, rf.commitIndex, rf.CurrentTerm)
+		"cur term:%d", rf.me, i, rf.matchIndex, rf.commitIndex, rf.CurrentTerm)
 	frequencyMap := make(map[int]int)
 	count := len(rf.peers) / 2
 	for i := 0; i < len(rf.matchIndex); i++ {
@@ -447,6 +479,6 @@ func (rf *Raft) UpdateCommitIndex() {
 		Debug(dLeader, "[%d] update commit index "+
 			"to %d,term:%d", rf.me, rf.commitIndex, rf.CurrentTerm)
 	}
-	rf.applyCommit()
+	//rf.applyCommit()
 
 }
