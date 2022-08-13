@@ -28,6 +28,15 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	rf.CurrentTerm = req.Term
 	resp.Term = rf.CurrentTerm
 
+	if req.LastIncludedIndex <= rf.lastApplied {
+		Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, req.LastIncludedIndex)
+		return
+	}
+
+	if req.LastIncludedIndex <= rf.LastIncludedIndex {
+		Debug(dSnap, "[%d] last included index = req.last included index,just return")
+		return
+	}
 	if index := rf.checkIsExistSnapshot(req); index != -1 {
 		// req is index of the committed log
 		Debug(dSnap, "[%d] discard preceding , exist in :%d "+
@@ -38,40 +47,39 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 				"> leader send install rpc:%d ", rf.me, rf.LastIncludedIndex, req.LastIncludedIndex)
 			return
 		}
-		rf.LastIncludedIndex = req.LastIncludedIndex
-		rf.LastIncludedTerm = req.LastIncludedTerm
-
 		var logsCp []LogEntry
 		logsCp = append(logsCp, rf.Logs[index+1:]...)
 		rf.Logs = logsCp
-		if rf.commitIndex < req.LastIncludedIndex {
-			rf.commitIndex = req.LastIncludedIndex
-		}
-		if rf.lastApplied < req.LastIncludedIndex {
-			rf.lastApplied = req.LastIncludedIndex
-		}
-		rf.persister.SaveStateAndSnapshot(nil, req.Data)
-		rf.persist()
-		//return
 	} else {
 		rf.Logs = []LogEntry{}
-		rf.LastIncludedIndex = req.LastIncludedIndex
-		rf.LastIncludedTerm = req.LastIncludedTerm
-		msg := ApplyMsg{
-			CommandValid:  false,
-			SnapshotValid: true,
-			Snapshot:      req.Data,
-			SnapshotIndex: req.LastIncludedIndex,
-			SnapshotTerm:  req.LastIncludedTerm,
-		}
-		rf.commitIndex = req.LastIncludedIndex
-		rf.lastApplied = req.LastIncludedIndex
 		Debug(dSnap, "[%d] discard all log,update Applied and Commit index to :%d", rf.me, req.LastIncludedIndex)
-		rf.applyCh <- msg
 	}
+	rf.LastIncludedIndex = req.LastIncludedIndex
+	rf.LastIncludedTerm = req.LastIncludedTerm
+	msg := ApplyMsg{
+		CommandValid:  false,
+		SnapshotValid: true,
+		Snapshot:      req.Data,
+		SnapshotIndex: req.LastIncludedIndex,
+		SnapshotTerm:  req.LastIncludedTerm,
+	}
+	if rf.commitIndex < req.LastIncludedIndex {
+		rf.commitIndex = req.LastIncludedIndex
+	}
+	if rf.lastApplied < req.LastIncludedIndex {
+		rf.lastApplied = req.LastIncludedIndex
+	}
+
+	rf.persister.SaveStateAndSnapshot(nil, req.Data)
+	rf.persist()
+	rf.mu.Unlock()
+	rf.applyCh <- msg
+	rf.mu.Lock()
+
 }
 
 func (rf *Raft) checkIsExistSnapshot(req *InstallSnapShotReq) int {
+
 	for i, log := range rf.Logs {
 		if log.Index == req.LastIncludedIndex && log.Term == req.LastIncludedTerm {
 			return i
@@ -100,4 +108,6 @@ func (rf *Raft) processSnapshotRPCReply(i int, req InstallSnapShotReq, leaderId 
 	}
 	rf.matchIndex[i] = req.LastIncludedIndex
 	rf.nextIndex[i] = req.LastIncludedIndex + 1
+	rf.UpdateCommitIndex(i)
+
 }

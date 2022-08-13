@@ -31,6 +31,7 @@ const (
 	dApply   logTopic = "APPL"
 	dClient  logTopic = "CLNT"
 	dCommit  logTopic = "CMIT"
+	dConfig  logTopic = "CONF"
 	dDrop    logTopic = "DROP"
 	dError   logTopic = "ERRO"
 	dInfo    logTopic = "INFO"
