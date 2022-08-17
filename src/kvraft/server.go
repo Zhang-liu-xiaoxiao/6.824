@@ -7,22 +7,29 @@ import (
 	"log"
 	"sync"
 	"sync/atomic"
+	"time"
 )
 
-const Debug = false
+const Debug1 = false
 
 func DPrintf(format string, a ...interface{}) (n int, err error) {
-	if Debug {
+	if Debug1 {
 		log.Printf(format, a...)
 	}
 	return
 }
 
-
 type Op struct {
 	// Your definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
+	Key        string
+	Value      string
+	Operation  string
+	ClientID   int64
+	Seq        int32
+	ReplyCh    chan ApplyRes
+	SubmitTerm int
 }
 
 type KVServer struct {
@@ -35,15 +42,48 @@ type KVServer struct {
 	maxraftstate int // snapshot if log grows this big
 
 	// Your definitions here.
-}
+	// client id -> [seq -> exist]
+	kvs       map[string]string
+	dupDetect map[int64]map[int32]bool
+	leaderCh  chan Op
 
+	replyCh map[int]chan ApplyRes
+}
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
+	reply.Err = OK
+	Debug(dServer, "[%d] GET req from [%d], args:%+v", kv.me, args.ClientID, args)
+	term, _ := kv.rf.GetState()
+
+	op := Op{
+		Key:        args.Key,
+		Operation:  GET,
+		ClientID:   args.ClientID,
+		Seq:        args.Seq,
+		ReplyCh:    make(chan ApplyRes, 3),
+		SubmitTerm: term,
+	}
+	kv.submitGetOp(op, args, reply)
+
 }
 
 func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
+	reply.Err = OK
+
+	Debug(dServer, "[%d] PutAppend req from [%d], args:%+v", kv.me, args.ClientID, args)
+	term, _ := kv.rf.GetState()
+	op := Op{
+		Key:        args.Key,
+		Value:      args.Value,
+		Operation:  args.Op,
+		ClientID:   args.ClientID,
+		Seq:        args.Seq,
+		ReplyCh:    make(chan ApplyRes, 3),
+		SubmitTerm: term,
+	}
 	// Your code here.
+	kv.submitPutAppendOp(op, args, reply)
 }
 
 //
@@ -94,8 +134,147 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 
 	kv.applyCh = make(chan raft.ApplyMsg)
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
-
+	kv.dupDetect = make(map[int64]map[int32]bool)
+	kv.kvs = make(map[string]string)
+	kv.replyCh = make(map[int]chan ApplyRes)
 	// You may need initialization code here.
-
+	go kv.ReadChannel()
 	return kv
+}
+
+func (kv *KVServer) ReadChannel() {
+	for m := range kv.applyCh {
+		if m.SnapshotValid {
+
+		} else if m.CommandValid {
+			Debug(dServer, "[%d] Get Op :%+v", kv.me, m.Command.(Op))
+
+			op, _ := m.Command.(Op)
+			kv.mu.Lock()
+			var err Err = OK
+			v := kv.doGet(op)
+			if kv.CheckAndFillDupMap(op.ClientID, op.Seq) {
+				err = ErrDupReq
+			} else {
+				Debug(dServer, "[%d] Apply req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+
+				if op.Operation == PUT || op.Operation == APPEND {
+					kv.doPutOrAppend(op)
+				}
+			}
+			kv.mu.Unlock()
+			curTerm, isLeader := kv.rf.GetState()
+			if isLeader && curTerm == op.SubmitTerm {
+				res := ApplyRes{
+					Value: v,
+					Err:   err,
+				}
+				op.ReplyCh <- res
+				Debug(dServer, "[%d] After send to channel req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+
+				//kv.mu.Lock()
+				//kv.replyCh[m.CommandIndex] <- res
+				//kv.mu.Unlock()
+			}
+		}
+	}
+}
+
+// return if already exist
+func (kv *KVServer) CheckAndFillDupMap(clientID int64, seq int32) bool {
+	if _, ok := kv.dupDetect[clientID]; !ok {
+		kv.dupDetect[clientID] = make(map[int32]bool)
+		kv.dupDetect[clientID][seq] = true
+		return false
+	} else {
+		if _, ok := kv.dupDetect[clientID][seq]; !ok {
+			kv.dupDetect[clientID][seq] = true
+			return false
+		} else {
+			Debug(dServer, "[%d] Receive duplicate req :%d from [%d]", kv.me, seq, clientID)
+			return true
+		}
+	}
+}
+
+func (kv *KVServer) doPutOrAppend(op Op) {
+	if op.Operation == PUT {
+		kv.kvs[op.Key] = op.Value
+	} else if op.Operation == APPEND {
+		if _, exist := kv.kvs[op.Key]; exist {
+			kv.kvs[op.Key] = kv.kvs[op.Key] + op.Value
+		} else {
+			kv.kvs[op.Key] = op.Value
+		}
+	}
+}
+func (kv *KVServer) doGet(op Op) string {
+	if _, exist := kv.kvs[op.Key]; exist {
+		return kv.kvs[op.Key]
+	} else {
+		return ""
+	}
+}
+
+func (kv *KVServer) submitPutAppendOp(op Op, args *PutAppendArgs, reply *PutAppendReply) {
+
+	if _, term, ok := kv.rf.Start(op); ok {
+		//var ch chan ApplyRes
+		//kv.mu.Lock()
+		//kv.replyCh[index] = make(chan ApplyRes, 1)
+		//ch = kv.replyCh[index]
+		//kv.mu.Unlock()
+		for {
+			select {
+			case res := <-op.ReplyCh:
+				reply.Err = res.Err
+				return
+			case <-time.After(3 * time.Second):
+				Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
+				newTerm, isLeader := kv.rf.GetState()
+				if isLeader && newTerm == term {
+					reply.Err = ErrLeaderTimeOut
+				} else {
+					reply.Err = ErrWrongLeader
+				}
+				return
+			}
+		}
+	} else {
+		//Debug(dServer, "[%d] No leader , reqs:%+v return", kv.me, args)
+		reply.Err = ErrWrongLeader
+		return
+	}
+}
+
+func (kv *KVServer) submitGetOp(op Op, args *GetArgs, reply *GetReply) {
+
+	if _, term, ok := kv.rf.Start(op); ok {
+		//var ch chan ApplyRes
+		//kv.mu.Lock()
+		//kv.replyCh[index] = make(chan ApplyRes, 1)
+		//ch = kv.replyCh[index]
+		//kv.mu.Unlock()
+		for {
+			select {
+			case res := <-op.ReplyCh:
+				reply.Value = res.Value
+				reply.Err = res.Err
+				return
+			case <-time.After(3 * time.Second):
+				Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
+				newTerm, isLeader := kv.rf.GetState()
+				if isLeader && newTerm == term {
+					reply.Err = ErrLeaderTimeOut
+				} else {
+					reply.Err = ErrWrongLeader
+				}
+				return
+			}
+		}
+	} else {
+		Debug(dServer, "[%d] No leader , reqs:%+v return", kv.me, args)
+		reply.Err = ErrWrongLeader
+		return
+	}
 }
