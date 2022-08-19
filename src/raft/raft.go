@@ -22,7 +22,6 @@ import (
 	"bytes"
 	"math/rand"
 	"time"
-
 	//	"bytes"
 	"sync"
 	"sync/atomic"
@@ -138,6 +137,9 @@ func (rf *Raft) persist() {
 	e.Encode(rf.LastIncludedIndex)
 	e.Encode(rf.LastIncludedTerm)
 	data := writer.Bytes()
+	Debug(dSnap, "[%d] Raft logs Snapshot bytes:{%d} log size:{%d} "+
+		"VoteFor size{%d}",
+		rf.me, len(data), len(rf.Logs), len(rf.VoteFor))
 	rf.persister.SaveRaftState(data)
 }
 
@@ -209,7 +211,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	Debug(dSnap, "[%d] Get snapshot from service,index:%d,"+
 		"last included index :%d "+
 		"last included term :%d "+
-		"cur rf logs:%+v ", rf.me, index, rf.LastIncludedIndex, rf.LastIncludedTerm, rf.Logs)
+		" ", rf.me, index, rf.LastIncludedIndex, rf.LastIncludedTerm)
 	if rf.LastIncludedIndex >= index {
 		Debug(dSnap, "[%d] already snap for index %d", rf.me, index)
 		return
@@ -220,7 +222,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	rf.LastIncludedIndex = index
 
 	Debug(dSnap, "[%d] Update last included index:%d "+
-		"last included term:%d, cur log:%+v", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm, rf.Logs)
+		"last included term:%d", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm)
 
 	rf.persister.SaveStateAndSnapshot(nil, snapshot)
 	rf.persist()
@@ -393,25 +395,6 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	return rf
 }
 
-func (rf *Raft) applyCommit() {
-	//rf.mu.Lock()
-	for rf.commitIndex > rf.lastApplied {
-		Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.me, rf.commitIndex, rf.lastApplied)
-		rf.lastApplied++
-		msg := ApplyMsg{
-			CommandValid: true,
-			Command:      rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
-			CommandIndex: rf.lastApplied,
-		}
-		//rf.mu.Unlock()
-		rf.applyCh <- msg
-		//rf.mu.Lock()
-	}
-	//rf.mu.Unlock()
-	time.Sleep(10 * time.Millisecond)
-
-}
-
 func (rf *Raft) ApplyCommit() {
 	for {
 		rf.mu.Lock()
@@ -481,4 +464,8 @@ func (rf *Raft) UpdateCommitIndex(i int) {
 	}
 	//rf.applyCommit()
 
+}
+
+func (rf *Raft) GetStateSize() int {
+	return rf.persister.RaftStateSize()
 }

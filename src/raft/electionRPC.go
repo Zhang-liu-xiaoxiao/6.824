@@ -181,12 +181,20 @@ func (rf *Raft) HandleRequestVote(args *RequestVoteArgs, reply *RequestVoteReply
 
 	rf.accumulatedHb++
 	rf.VoteFor[rf.CurrentTerm] = args.CandidateId
+	rf.clearVoteForMap()
 	rf.persist()
 	termNeedPersist = false // already persist below
 	reply.VoteGranted = true
 	rf.status = Follower
-
 	Debug(dVote, "[%d] VOTE for [%d] in term %d", me, args.CandidateId, args.Term)
+}
+
+func (rf *Raft) clearVoteForMap() {
+	for k := range rf.VoteFor {
+		if k < rf.CurrentTerm {
+			delete(rf.VoteFor, k)
+		}
+	}
 }
 
 // need to be locked

@@ -196,6 +196,7 @@ func partitioner(t *testing.T, cfg *config, ch chan bool, done *int32) {
 			}
 		}
 		cfg.partition(pa[0], pa[1])
+		Debug(dTest, "3B partition {%+v}{%+v}", pa[0], pa[1])
 		time.Sleep(electionTimeout + time.Duration(rand.Int63()%200)*time.Millisecond)
 	}
 }
@@ -322,6 +323,7 @@ func GenericTest(t *testing.T, part string, nclients int, nservers int, unreliab
 			// log.Printf("shutdown servers\n")
 			for i := 0; i < nservers; i++ {
 				cfg.ShutdownServer(i)
+				Debug(dTest, "3B Crash[%d]", i)
 			}
 			// Wait for a while for servers to shutdown, since
 			// shutdown isn't a real crash and isn't instantaneous
@@ -330,6 +332,7 @@ func GenericTest(t *testing.T, part string, nclients int, nservers int, unreliab
 			// crash and re-start all
 			for i := 0; i < nservers; i++ {
 				cfg.StartServer(i)
+				Debug(dTest, "3B Start[%d]", i)
 			}
 			cfg.ConnectAll()
 		}

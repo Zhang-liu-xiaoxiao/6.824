@@ -16,7 +16,7 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	Debug(dSnap, "[%d] RECEIVE Install SNAP RPC from leader [%d],"+
-		" me.term:%d, reqs:%+v", rf.me, req.LeaderId, rf.CurrentTerm, req)
+		" me.term:%d,", rf.me, req.LeaderId, rf.CurrentTerm)
 	if req.Term < rf.CurrentTerm {
 		resp.Term = rf.CurrentTerm
 		Debug(dSnap, "[%d] REJECT Install SNAP RPC from lower leader [%d],"+
@@ -29,7 +29,7 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	resp.Term = rf.CurrentTerm
 
 	if req.LastIncludedIndex <= rf.lastApplied {
-		Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, req.LastIncludedIndex)
+		Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, rf.lastApplied, req.LastIncludedIndex)
 		return
 	}
 

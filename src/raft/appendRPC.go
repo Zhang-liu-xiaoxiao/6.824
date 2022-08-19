@@ -31,7 +31,7 @@ type RequestAppendEntries struct {
 func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppendEntries) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.CurrentTerm, args)
+	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.CurrentTerm)
 	reply.Succeeded = true
 	if args.Term < rf.CurrentTerm {
 		reply.Succeeded = false
@@ -41,7 +41,7 @@ func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppe
 	}
 
 	if !rf.CheckPrevLog(args, reply) {
-		Debug(dInfo, "[%d] CheckPrevLog from leader [%d] fail args:%+v", rf.me, args.LeaderID, args)
+		Debug(dInfo, "[%d] CheckPrevLog from leader [%d] fail args:%+v", rf.me, args.LeaderID)
 		reply.Succeeded = false
 		//return
 	}
@@ -60,7 +60,7 @@ func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppe
 		}
 		return
 	}
-	Debug(dInfo, "[%d] CheckPrevLog from leader [%d] args:%+v", rf.me, args.LeaderID, args)
+	Debug(dInfo, "[%d] CheckPrevLog from leader [%d] args:%+v", rf.me, args.LeaderID)
 	index := rf.checkIfConflict(args)
 	if index == -1 {
 		Debug(dInfo, "[%d] No conflict with append rpc from [%d]!", rf.me, args.LeaderID)
@@ -164,6 +164,13 @@ func (rf *Raft) GenerateAppendReq(leaderId, peerId int, heartbeat bool) (Request
 	//	req.PrevLogTerm = rf.Logs[req.PrevLogIndex-1].Term
 	//	req.Logs = rf.Logs[req.PrevLogIndex-1:]
 	//}
+	if rf.nextIndex[peerId] <= rf.LastIncludedIndex {
+		Debug(dLeader, "[%d] send Install rpc to [%d],last include index %d"+
+			" prev log index:%d", rf.me, peerId, rf.LastIncludedIndex, req.PrevLogIndex)
+		return RequestAppendEntries{}, false
+
+	}
+
 	if rf.nextIndex[peerId] <= 1 {
 		req.Logs = rf.Logs
 		req.PrevLogIndex = 0
@@ -175,11 +182,11 @@ func (rf *Raft) GenerateAppendReq(leaderId, peerId int, heartbeat bool) (Request
 		if req.PrevLogIndex >= rf.maxLogIndex() {
 			req.Logs = []LogEntry{}
 		}
-		if req.PrevLogIndex < rf.LastIncludedIndex {
-			Debug(dLeader, "[%d] send Install rpc to [%d],last include index %d"+
-				" prev log index:%d", rf.me, peerId, rf.LastIncludedIndex, req.PrevLogIndex)
-			return RequestAppendEntries{}, false
-		}
+		//if req.PrevLogIndex < rf.LastIncludedIndex {
+		//	Debug(dLeader, "[%d] send Install rpc to [%d],last include index %d"+
+		//		" prev log index:%d", rf.me, peerId, rf.LastIncludedIndex, req.PrevLogIndex)
+		//	return RequestAppendEntries{}, false
+		//}
 		req.Logs = rf.Logs[rf.log2sliceIndex(req.PrevLogIndex+1):]
 	}
 	req.IsHeartBeat = heartbeat
