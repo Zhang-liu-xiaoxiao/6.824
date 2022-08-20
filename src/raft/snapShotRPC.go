@@ -15,8 +15,8 @@ type InstallSnapShotResp struct {
 func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapShotResp) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	Debug(dSnap, "[%d] RECEIVE Install SNAP RPC from leader [%d],"+
-		" me.term:%d,", rf.me, req.LeaderId, rf.CurrentTerm)
+	Debug(dSnap, "[%d] RECEIVE Install SNAP RPC from leader [%d], req.last included index:%d"+
+		" me.term:%d,", rf.me, req.LeaderId, req.LastIncludedIndex, rf.CurrentTerm)
 	if req.Term < rf.CurrentTerm {
 		resp.Term = rf.CurrentTerm
 		Debug(dSnap, "[%d] REJECT Install SNAP RPC from lower leader [%d],"+
@@ -29,7 +29,7 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	resp.Term = rf.CurrentTerm
 
 	if req.LastIncludedIndex <= rf.lastApplied {
-		Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, rf.lastApplied, req.LastIncludedIndex)
+		Debug(dSnap, "[%d] Apply %d >= req.last included index:%d,just return", rf.me, rf.lastApplied, req.LastIncludedIndex)
 		return
 	}
 
@@ -73,6 +73,7 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	rf.persister.SaveStateAndSnapshot(nil, req.Data)
 	rf.persist()
 	rf.mu.Unlock()
+	Debug(dSnap, "[%d] send snap ch to service,msg :%+v", rf.me, msg)
 	rf.applyCh <- msg
 	rf.mu.Lock()
 

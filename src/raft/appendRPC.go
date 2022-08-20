@@ -31,7 +31,7 @@ type RequestAppendEntries struct {
 func (rf *Raft) HandleAppendEntries(args *RequestAppendEntries, reply *ReplyAppendEntries) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.CurrentTerm)
+	Debug(dInfo, "[%d] RECEIVE APPEND RPC from leader [%d] me.term:%d, args:%+v", rf.me, args.LeaderID, rf.CurrentTerm, args)
 	reply.Succeeded = true
 	if args.Term < rf.CurrentTerm {
 		reply.Succeeded = false

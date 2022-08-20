@@ -1,0 +1,988 @@
+023994 SERV [2] append x 15 19 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 19 y
+023994 SERV [2] Get Op :{Key:17 Value:x 17 19 y Operation:Append ClientID:430258968771641921 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:926
+023995 SERV [2] Apply req :48 from [430258968771641921] command index:926
+023995 SERV [2] append x 17 19 y to key:17, result:x 17 0 yx 17 1 yx 17 2 yx 17 3 yx 17 4 yx 17 5 yx 17 6 yx 17 7 yx 17 8 yx 17 9 yx 17 10 yx 17 11 yx 17 12 yx 17 13 yx 17 14 yx 17 15 yx 17 16 yx 17 17 yx 17 18 yx 17 19 y
+023996 LEAD [1] Update commit index from reply [2] cur match index:[935 0 924 933 927],cur commit index:933cur term:1
+023996 LEAD [1] Update commit index from reply [2] cur match index:[935 0 924 933 927],cur commit index:933cur term:1
+023997 LEAD [1] Update commit index from reply [2] cur match index:[935 0 924 933 927],cur commit index:933cur term:1
+023999 SERV [2] install snapshot ,snap index%!(EXTRA int=924)
+024004 LEAD [1] Update commit index from reply [2] cur match index:[935 0 924 933 927],cur commit index:933cur term:1
+024020 TIMR Follower [3] Remain follower 
+024042 APPL [3] commitIndex:926,lastApplied:926
+024042 SERV [3] Get Op :{Key:17 Value:x 17 19 y Operation:Append ClientID:430258968771641921 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:926
+024042 SERV [3] Apply req :48 from [430258968771641921] command index:926
+024042 SERV [3] append x 17 19 y to key:17, result:x 17 0 yx 17 1 yx 17 2 yx 17 3 yx 17 4 yx 17 5 yx 17 6 yx 17 7 yx 17 8 yx 17 9 yx 17 10 yx 17 11 yx 17 12 yx 17 13 yx 17 14 yx 17 15 yx 17 16 yx 17 17 yx 17 18 yx 17 19 y
+024043 SNAP [3] Make Snapshot Raft state size :{1468} Encode bytes:{3775}, dup map size:{20} kvs size{20} , last command index:926
+024044 SNAP [3] Get snapshot from service,index:926,last included index :913 last included term :1  
+024044 SNAP [3] Update last included index:926 last included term:1
+024044 SNAP [3] Raft logs Snapshot bytes:{716} log size:{9} VoteFor size{1}
+023903 LEAD [1] leader broadcast in term 1
+024098 APPL [1] commitIndex:933,lastApplied:927
+024098 APPL [1] commitIndex:933,lastApplied:928
+024098 SNAP [4] Raft logs Snapshot bytes:{1188} log size:{17} VoteFor size{1}
+024098 SERV [1] Get Op :{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:0xc00048d4a0 SubmitTerm:1},command index:927
+024098 SERV [1] Apply req :47 from [4571692801809747475] command index:927
+024098 SERV [1] append x 7 16 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 y
+024098 SERV [1] Leader send to Raft channel req :47 from [4571692801809747475]
+024098 SERV [1] Get Op :{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:0xc0004e7c80 SubmitTerm:1},command index:928
+024099 SERV [1] Apply req :46 from [392981217975752362] command index:928
+024099 SERV [1] append x 6 26 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 y
+024099 SERV [1] Leader send to Raft channel req :46 from [392981217975752362]
+024099 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:922 PrevLogTerm:1 Logs:[{Term:1 Index:923 Command:{Key:12 Value:x 12 21 y Operation:Append ClientID:405217578442606627 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:924 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:925 Command:{Key:15 Value:x 15 19 y Operation:Append ClientID:3915534648868102800 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:926 Command:{Key:17 Value:x 17 19 y Operation:Append ClientID:430258968771641921 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:927 Command:{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024099 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024099 INFO [2] max log index :926
+024099 LOG1 [2] log Conflict with append rpc IN index:4! from leader [1],commit index:926,prev log index:922, args.log.len:8 server Logs.max_index:926server cur log length :2
+024100 SNAP [2] Raft logs Snapshot bytes:{566} log size:{6} VoteFor size{1}
+024100 SERV [1] PutAppend req from [392981217975752362], args:&{Key:6 Value:x 6 27 y Op:Append ClientID:392981217975752362 Seq:47}
+024099 LEAD [1] success append to [4] ,previndex 926 
+024101 LEAD [1] Update commit index from reply [4] cur match index:[935 0 924 933 930],cur commit index:933cur term:1
+024101 LEAD [1] success append to [2] ,previndex 922 
+024101 LEAD [1] Update commit index from reply [2] cur match index:[935 0 930 933 930],cur commit index:933cur term:1
+024101 LEAD [1] get client command, term:1,log.index:936
+024101 SNAP [1] Raft logs Snapshot bytes:{909} log size:{12} VoteFor size{1}
+024102 LEAD [1] leader broadcast in term 1
+024103 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024103 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024103 INFO [4] max log index :930
+024103 APPL [1] commitIndex:933,lastApplied:929
+024103 APPL [1] commitIndex:933,lastApplied:930
+024104 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:933 PrevLogTerm:1 Logs:[{Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024105 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024105 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024105 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:935 PrevLogTerm:1 Logs:[{Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024105 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024105 INFO [0] max log index :935
+024105 LOG1 [0] log Conflict with append rpc IN index:0! from leader [1],commit index:933,prev log index:935, args.log.len:1 server Logs.max_index:935server cur log length :13
+024105 SNAP [0] Raft logs Snapshot bytes:{1024} log size:{14} VoteFor size{1}
+024105 LOG1 [0] Update commit index from 926 to 933
+024106 LEAD [1] success append to [0] ,previndex 935 
+024106 LEAD [1] Update commit index from reply [0] cur match index:[936 0 930 933 930],cur commit index:933cur term:1
+024106 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:935 PrevLogTerm:1 Logs:[{Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024106 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024106 INFO [0] max log index :936
+024106 INFO [0] No conflict with append rpc from [1]!
+024107 LEAD [1] success append to [0] ,previndex 935 
+024107 LEAD [1] Update commit index from reply [0] cur match index:[936 0 930 933 930],cur commit index:933cur term:1
+024107 SERV [1] PutAppend req from [4571692801809747475], args:&{Key:7 Value:x 7 17 y Op:Append ClientID:4571692801809747475 Seq:48}
+024107 LEAD [1] get client command, term:1,log.index:937
+024108 SNAP [1] Raft logs Snapshot bytes:{972} log size:{13} VoteFor size{1}
+024108 LEAD [1] leader broadcast in term 1
+024105 INFO [3] max log index :935
+024108 LOG1 [3] log Conflict with append rpc IN index:2! from leader [1],commit index:933,prev log index:933, args.log.len:3 server Logs.max_index:935server cur log length :9
+024109 SNAP [3] Raft logs Snapshot bytes:{779} log size:{10} VoteFor size{1}
+024109 LOG1 [3] Update commit index from 926 to 933
+024109 LEAD [1] success append to [3] ,previndex 933 
+024103 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:933,prev log index:930, args.log.len:6 server Logs.max_index:930server cur log length :17
+023903 LEAD [1] leader broadcast in term 1
+024110 SNAP [4] Raft logs Snapshot bytes:{1531} log size:{23} VoteFor size{1}
+024110 LOG1 [4] Update commit index from 926 to 933
+024110 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024110 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024110 INFO [0] max log index :936
+024110 LOG1 [0] log Conflict with append rpc IN index:0! from leader [1],commit index:933,prev log index:936, args.log.len:1 server Logs.max_index:936server cur log length :14
+024110 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:927 PrevLogTerm:1 Logs:[{Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024110 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024110 INFO [4] max log index :936
+024110 INFO [4] No conflict with append rpc from [1]!
+024108 SERV [1] Get Op :{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:0xc00048d7a0 SubmitTerm:1},command index:929
+024110 SERV [1] Apply req :47 from [3114232046717081181] command index:929
+024110 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:927 PrevLogTerm:1 Logs:[{Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024110 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:933 PrevLogTerm:1 Logs:[{Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024109 LEAD [1] Update commit index from reply [3] cur match index:[936 0 930 936 930],cur commit index:933cur term:1
+024110 LEAD [1] update commit index to 936,term:1
+024111 LEAD [1] success append to [4] ,previndex 930 
+024111 LEAD [1] Update commit index from reply [4] cur match index:[936 0 930 936 936],cur commit index:936cur term:1
+024110 SNAP [0] Raft logs Snapshot bytes:{1087} log size:{15} VoteFor size{1}
+024112 LEAD [1] success append to [0] ,previndex 936 
+024112 LEAD [1] Update commit index from reply [0] cur match index:[937 0 930 936 936],cur commit index:936cur term:1
+024112 SERV [1] GET req from [998484006340595878], args:&{Key:10 ClientID:998484006340595878 Seq:46}
+024112 LEAD [1] get client command, term:1,log.index:938
+024110 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024113 INFO [4] max log index :936
+024113 INFO [4] No conflict with append rpc from [1]!
+024113 SNAP [1] Raft logs Snapshot bytes:{1023} log size:{14} VoteFor size{1}
+024113 LEAD [1] success append to [4] ,previndex 927 
+024113 LEAD [1] Update commit index from reply [4] cur match index:[937 0 930 936 931],cur commit index:936cur term:1
+024113 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:927 PrevLogTerm:1 Logs:[{Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024113 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024113 INFO [4] max log index :936
+024113 INFO [4] No conflict with append rpc from [1]!
+024113 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:927 PrevLogTerm:1 Logs:[{Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024113 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024114 INFO [4] max log index :936
+024114 INFO [4] No conflict with append rpc from [1]!
+024114 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:927 PrevLogTerm:1 Logs:[{Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024114 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024114 SERV [1] GET req from [154814549369455169], args:&{Key:16 ClientID:154814549369455169 Seq:46}
+024114 LEAD [1] get client command, term:1,log.index:939
+024114 INFO [4] max log index :936
+024114 INFO [4] No conflict with append rpc from [1]!
+024114 APPL [4] commitIndex:933,lastApplied:922
+024114 SNAP [1] Raft logs Snapshot bytes:{1074} log size:{15} VoteFor size{1}
+024114 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024114 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024114 INFO [4] max log index :936
+024115 LOG1 [4] log Conflict with append rpc IN index:6! from leader [1],commit index:933,prev log index:930, args.log.len:7 server Logs.max_index:936server cur log length :23
+024115 SNAP [4] Raft logs Snapshot bytes:{1594} log size:{24} VoteFor size{1}
+024114 LEAD [1] leader broadcast in term 1
+024116 LEAD [1] success append to [4] ,previndex 930 
+024116 LEAD [1] Update commit index from reply [4] cur match index:[937 0 930 936 937],cur commit index:936cur term:1
+024116 LEAD [1] update commit index to 937,term:1
+024116 SERV [1] PutAppend req from [2681727385298587641], args:&{Key:14 Value:x 14 16 y Op:Append ClientID:2681727385298587641 Seq:47}
+024116 LEAD [1] get client command, term:1,log.index:940
+024116 SNAP [1] Raft logs Snapshot bytes:{1139} log size:{16} VoteFor size{1}
+024116 LEAD [1] leader broadcast in term 1
+024117 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:931 PrevLogTerm:1 Logs:[{Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:936 IsHeartBeat:false}
+024117 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024117 INFO [4] max log index :937
+024117 LOG1 [4] log Conflict with append rpc IN index:6! from leader [1],commit index:936,prev log index:931, args.log.len:8 server Logs.max_index:937server cur log length :24
+024118 SNAP [4] Raft logs Snapshot bytes:{1696} log size:{26} VoteFor size{1}
+024118 LOG1 [4] Update commit index from 933 to 936
+024118 LEAD [1] success append to [4] ,previndex 931 
+024118 LEAD [1] Update commit index from reply [4] cur match index:[937 0 930 936 939],cur commit index:937cur term:1
+024118 LEAD [1] leader broadcast in term 1
+024119 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:937 PrevLogTerm:1 Logs:[{Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024119 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024119 INFO [4] max log index :939
+024119 LOG1 [4] log Conflict with append rpc IN index:2! from leader [1],commit index:937,prev log index:937, args.log.len:3 server Logs.max_index:939server cur log length :26
+024120 SNAP [4] Raft logs Snapshot bytes:{1761} log size:{27} VoteFor size{1}
+024120 LOG1 [4] Update commit index from 936 to 937
+024121 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:939 PrevLogTerm:1 Logs:[{Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024121 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024121 INFO [4] max log index :940
+024121 INFO [4] No conflict with append rpc from [1]!
+024121 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:926 PrevLogTerm:1 Logs:[{Term:1 Index:927 Command:{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024121 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024121 SERV [1] GET req from [1474178570005764206], args:&{Key:8 ClientID:1474178570005764206 Seq:46}
+024121 INFO [0] max log index :937
+024121 INFO [0] No conflict with append rpc from [1]!
+024110 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024122 INFO [3] max log index :936
+024122 INFO [3] No conflict with append rpc from [1]!
+024121 LEAD [1] success append to [4] ,previndex 937 
+024122 LEAD [1] Update commit index from reply [4] cur match index:[937 0 930 936 940],cur commit index:937cur term:1
+024122 LEAD [1] success append to [4] ,previndex 927 
+024122 LEAD [1] Update commit index from reply [4] cur match index:[937 0 930 936 934],cur commit index:937cur term:1
+024122 LEAD [1] get client command, term:1,log.index:941
+024122 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:926 PrevLogTerm:1 Logs:[{Term:1 Index:927 Command:{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:928 Command:{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:929 Command:{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:930 Command:{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:926 IsHeartBeat:false}
+024123 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024123 INFO [3] max log index :936
+024123 INFO [3] No conflict with append rpc from [1]!
+024123 SNAP [1] Raft logs Snapshot bytes:{1189} log size:{17} VoteFor size{1}
+024123 LEAD [1] success append to [3] ,previndex 926 
+024123 LEAD [1] Update commit index from reply [3] cur match index:[937 0 930 930 934],cur commit index:937cur term:1
+024123 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:936 IsHeartBeat:false}
+024123 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024123 INFO [3] max log index :936
+024123 LOG1 [3] log Conflict with append rpc IN index:0! from leader [1],commit index:936,prev log index:936, args.log.len:1 server Logs.max_index:936server cur log length :10
+024123 SNAP [1] Make Snapshot Raft state size :{1189} Encode bytes:{3791}, dup map size:{20} kvs size{20} , last command index:929
+024124 SNAP [1] Get snapshot from service,index:929,last included index :924 last included term :1  
+024124 SNAP [1] Update last included index:929 last included term:1
+024124 SNAP [3] Raft logs Snapshot bytes:{842} log size:{11} VoteFor size{1}
+024124 LOG1 [3] Update commit index from 933 to 936
+024124 SNAP [1] Raft logs Snapshot bytes:{882} log size:{12} VoteFor size{1}
+024124 SERV [1] Leader send to Raft channel req :47 from [3114232046717081181]
+024124 SERV [1] Get Op :{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:0xc00048d980 SubmitTerm:1},command index:930
+024124 SERV [1] Apply req :48 from [525196837221099390] command index:930
+024124 SERV [1] append x 2 22 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 y
+024124 SERV [1] Leader send to Raft channel req :48 from [525196837221099390]
+024124 LEAD [1] success append to [3] ,previndex 936 
+024124 LEAD [1] Update commit index from reply [3] cur match index:[937 0 930 937 934],cur commit index:937cur term:1
+024124 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:936 IsHeartBeat:false}
+024124 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024125 INFO [3] max log index :937
+024125 LOG1 [3] log Conflict with append rpc IN index:1! from leader [1],commit index:936,prev log index:936, args.log.len:3 server Logs.max_index:937server cur log length :11
+024125 SNAP [3] Raft logs Snapshot bytes:{944} log size:{13} VoteFor size{1}
+024125 SERV [1] PutAppend req from [525196837221099390], args:&{Key:2 Value:x 2 23 y Op:Append ClientID:525196837221099390 Seq:49}
+024125 LEAD [1] get client command, term:1,log.index:942
+024105 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024126 INFO [2] max log index :930
+024126 SNAP [1] Raft logs Snapshot bytes:{945} log size:{13} VoteFor size{1}
+024126 LOG1 [2] log Conflict with append rpc IN index:0! from leader [1],commit index:933,prev log index:930, args.log.len:6 server Logs.max_index:930server cur log length :6
+024126 LEAD [1] success append to [3] ,previndex 936 
+024126 LEAD [1] Update commit index from reply [3] cur match index:[937 0 930 939 934],cur commit index:937cur term:1
+024126 SNAP [2] Raft logs Snapshot bytes:{909} log size:{12} VoteFor size{1}
+024126 SERV [1] GET req from [1020216884932067422], args:&{Key:19 ClientID:1020216884932067422 Seq:47}
+024126 LOG1 [2] Update commit index from 926 to 933
+024126 LEAD [1] get client command, term:1,log.index:943
+024127 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:933 IsHeartBeat:false}
+024127 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024127 INFO [2] max log index :936
+024127 INFO [2] No conflict with append rpc from [1]!
+024127 SNAP [1] Raft logs Snapshot bytes:{996} log size:{14} VoteFor size{1}
+024128 LEAD [1] success append to [2] ,previndex 930 
+024128 LEAD [1] Update commit index from reply [2] cur match index:[937 0 936 939 934],cur commit index:937cur term:1
+024128 LEAD [1] success append to [4] ,previndex 939 
+024128 LEAD [1] Update commit index from reply [4] cur match index:[937 0 936 939 940],cur commit index:937cur term:1
+024127 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024128 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024128 INFO [2] max log index :936
+024128 LEAD [1] leader broadcast in term 1
+024128 LOG1 [2] log Conflict with append rpc IN index:6! from leader [1],commit index:937,prev log index:930, args.log.len:12 server Logs.max_index:936server cur log length :12
+024128 SNAP [2] Raft logs Snapshot bytes:{1252} log size:{18} VoteFor size{1}
+024129 LOG1 [2] Update commit index from 933 to 937
+024129 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:936 IsHeartBeat:false}
+024129 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024129 APPL [4] commitIndex:937,lastApplied:923
+024129 INFO [2] max log index :942
+024129 INFO [2] No conflict with append rpc from [1]!
+024129 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:936 IsHeartBeat:false}
+024130 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024130 LEAD [1] leader broadcast in term 1
+024130 INFO [4] max log index :940
+024130 INFO [4] No conflict with append rpc from [1]!
+024130 SERV [1] PutAppend req from [2895900521174901390], args:&{Key:9 Value:x 9 20 y Op:Append ClientID:2895900521174901390 Seq:48}
+024129 SERV [1] PutAppend req from [3937107831004704350], args:&{Key:13 Value:x 13 24 y Op:Append ClientID:3937107831004704350 Seq:47}
+024130 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:939 PrevLogTerm:1 Logs:[{Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024130 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024130 INFO [4] max log index :940
+024130 INFO [4] No conflict with append rpc from [1]!
+024131 SERV [1] PutAppend req from [3114232046717081181], args:&{Key:11 Value:x 11 21 y Op:Append ClientID:3114232046717081181 Seq:48}
+024131 LEAD [1] leader broadcast in term 1
+024131 SERV [4] Get Op :{Key:1 Value:x 1 18 y Operation:Append ClientID:1461939644003585659 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:922
+024131 SERV [4] Apply req :47 from [1461939644003585659] command index:922
+024131 SERV [4] append x 1 18 y to key:1, result:x 1 0 yx 1 1 yx 1 2 yx 1 3 yx 1 4 yx 1 5 yx 1 6 yx 1 7 yx 1 8 yx 1 9 yx 1 10 yx 1 11 yx 1 12 yx 1 13 yx 1 14 yx 1 15 yx 1 16 yx 1 17 yx 1 18 y
+024128 LEAD [1] success append to [4] ,previndex 927 
+024131 LEAD [1] Update commit index from reply [4] cur match index:[937 0 936 939 933],cur commit index:937cur term:1
+024131 LEAD [1] success append to [0] ,previndex 926 
+024131 LEAD [1] Update commit index from reply [0] cur match index:[930 0 936 939 933],cur commit index:937cur term:1
+024131 LEAD [1] success append to [3] ,previndex 933 
+024131 LEAD [1] Update commit index from reply [3] cur match index:[930 0 936 936 933],cur commit index:937cur term:1
+024131 SERV [1] GET req from [2627355592479439439], args:&{Key:0 ClientID:2627355592479439439 Seq:47}
+024131 LEAD [1] get client command, term:1,log.index:944
+024131 SNAP [4] Make Snapshot Raft state size :{1761} Encode bytes:{3748}, dup map size:{20} kvs size{20} , last command index:922
+024131 SNAP [4] Get snapshot from service,index:922,last included index :913 last included term :1  
+024132 SNAP [4] Update last included index:922 last included term:1
+024132 SNAP [1] Raft logs Snapshot bytes:{1046} log size:{15} VoteFor size{1}
+024132 LEAD [1] leader broadcast in term 1
+024132 SNAP [4] Raft logs Snapshot bytes:{1254} log size:{18} VoteFor size{1}
+024132 SERV [4] Get Op :{Key:12 Value:x 12 21 y Operation:Append ClientID:405217578442606627 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:923
+024132 SERV [4] Apply req :47 from [405217578442606627] command index:923
+024132 SERV [4] append x 12 21 y to key:12, result:x 12 0 yx 12 1 yx 12 2 yx 12 3 yx 12 4 yx 12 5 yx 12 6 yx 12 7 yx 12 8 yx 12 9 yx 12 10 yx 12 11 yx 12 12 yx 12 13 yx 12 14 yx 12 15 yx 12 16 yx 12 17 yx 12 18 yx 12 19 yx 12 20 yx 12 21 y
+024132 SNAP [4] Make Snapshot Raft state size :{1254} Encode bytes:{3757}, dup map size:{20} kvs size{20} , last command index:923
+024132 SNAP [4] Get snapshot from service,index:923,last included index :922 last included term :1  
+024133 SNAP [4] Update last included index:923 last included term:1
+024133 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024133 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024133 INFO [0] max log index :937
+024133 LOG1 [0] log Conflict with append rpc IN index:7! from leader [1],commit index:937,prev log index:930, args.log.len:13 server Logs.max_index:937server cur log length :15
+024133 SNAP [0] Raft logs Snapshot bytes:{1418} log size:{21} VoteFor size{1}
+024133 LOG1 [0] Update commit index from 933 to 937
+024134 LEAD [1] success append to [0] ,previndex 930 
+024134 LEAD [1] Update commit index from reply [0] cur match index:[943 0 936 936 933],cur commit index:937cur term:1
+024134 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024134 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:930 PrevLogTerm:1 Logs:[{Term:1 Index:931 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:932 Command:{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:933 Command:{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024134 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024135 INFO [0] max log index :943
+024135 LOG1 [0] log Conflict with append rpc IN index:13! from leader [1],commit index:937,prev log index:930, args.log.len:14 server Logs.max_index:943server cur log length :21
+024133 SNAP [4] Raft logs Snapshot bytes:{1189} log size:{17} VoteFor size{1}
+024135 SNAP [0] Raft logs Snapshot bytes:{1468} log size:{22} VoteFor size{1}
+024136 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024136 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024136 INFO [3] max log index :939
+024136 LOG1 [3] log Conflict with append rpc IN index:3! from leader [1],commit index:937,prev log index:936, args.log.len:8 server Logs.max_index:939server cur log length :13
+024136 LEAD [1] success append to [0] ,previndex 930 
+024136 LEAD [1] Update commit index from reply [0] cur match index:[944 0 936 936 933],cur commit index:937cur term:1
+024137 SNAP [3] Raft logs Snapshot bytes:{1223} log size:{18} VoteFor size{1}
+024137 LOG1 [3] Update commit index from 936 to 937
+024137 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024137 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024137 INFO [3] max log index :944
+024137 INFO [3] No conflict with append rpc from [1]!
+024137 LEAD [1] success append to [3] ,previndex 936 
+024137 LEAD [1] Update commit index from reply [3] cur match index:[944 0 936 944 933],cur commit index:937cur term:1
+024137 LEAD [1] update commit index to 944,term:1
+024135 APPL [4] commitIndex:937,lastApplied:924
+024137 APPL [4] commitIndex:937,lastApplied:925
+024137 SERV [4] Get Op :{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:924
+024137 SERV [4] Apply req :48 from [2334731223169722026] command index:924
+024138 LEAD [1] success append to [3] ,previndex 936 
+024138 APPL [0] commitIndex:937,lastApplied:927
+024138 APPL [0] commitIndex:937,lastApplied:928
+024138 SERV [0] Get Op :{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:927
+024138 SERV [0] Apply req :47 from [4571692801809747475] command index:927
+024138 SERV [0] append x 7 16 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 y
+024138 SNAP [4] Make Snapshot Raft state size :{1189} Encode bytes:{3757}, dup map size:{20} kvs size{20} , last command index:924
+024138 SNAP [4] Get snapshot from service,index:924,last included index :923 last included term :1  
+024138 SNAP [4] Update last included index:924 last included term:1
+024138 SNAP [0] Make Snapshot Raft state size :{1468} Encode bytes:{3783}, dup map size:{20} kvs size{20} , last command index:927
+024138 SNAP [0] Get snapshot from service,index:927,last included index :922 last included term :1  
+024138 SNAP [0] Update last included index:927 last included term:1
+024139 SNAP [4] Raft logs Snapshot bytes:{1139} log size:{16} VoteFor size{1}
+024138 SERV [4] Get Op :{Key:15 Value:x 15 19 y Operation:Append ClientID:3915534648868102800 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:925
+024139 SERV [4] Apply req :48 from [3915534648868102800] command index:925
+024139 SERV [4] append x 15 19 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 19 y
+024139 SNAP [0] Raft logs Snapshot bytes:{1160} log size:{17} VoteFor size{1}
+024139 SERV [0] Get Op :{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:928
+024139 SERV [0] Apply req :46 from [392981217975752362] command index:928
+024139 SERV [0] append x 6 26 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 y
+024139 APPL [0] commitIndex:937,lastApplied:929
+024138 SERV [1] GET req from [1226840347509520762], args:&{Key:4 ClientID:1226840347509520762 Seq:48}
+024138 LEAD [1] Update commit index from reply [3] cur match index:[944 0 936 944 933],cur commit index:944cur term:1
+024236 LEAD [1] success append to [2] ,previndex 930 
+024236 LEAD [1] Update commit index from reply [2] cur match index:[944 0 936 944 933],cur commit index:944cur term:1
+024236 LEAD [1] success append to [4] ,previndex 927 
+024236 LEAD [1] Update commit index from reply [4] cur match index:[944 0 936 944 935],cur commit index:944cur term:1
+024237 LEAD [1] success append to [4] ,previndex 927 
+024237 LEAD [1] Update commit index from reply [4] cur match index:[944 0 936 944 933],cur commit index:944cur term:1
+024237 LEAD [1] success append to [2] ,previndex 930 
+024237 LEAD [1] Update commit index from reply [2] cur match index:[944 0 938 944 933],cur commit index:944cur term:1
+024237 LEAD [1] success append to [2] ,previndex 930 
+024237 LEAD [1] Update commit index from reply [2] cur match index:[944 0 942 944 933],cur commit index:944cur term:1
+024139 SERV [1] PutAppend req from [2833456260529463041], args:&{Key:5 Value:x 5 25 y Op:Append ClientID:2833456260529463041 Seq:46}
+024236 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:933 PrevLogTerm:1 Logs:[{Term:1 Index:934 Command:{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:935 Command:{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:936 Command:{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024237 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024237 INFO [4] max log index :940
+024238 LOG1 [4] log Conflict with append rpc IN index:7! from leader [1],commit index:937,prev log index:933, args.log.len:11 server Logs.max_index:940server cur log length :16
+024213 SNAP [4] Make Snapshot Raft state size :{1139} Encode bytes:{3766}, dup map size:{20} kvs size{20} , last command index:925
+024134 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024238 INFO [2] max log index :942
+024238 LOG1 [2] log Conflict with append rpc IN index:6! from leader [1],commit index:937,prev log index:936, args.log.len:8 server Logs.max_index:942server cur log length :18
+024239 SNAP [2] Raft logs Snapshot bytes:{1353} log size:{20} VoteFor size{1}
+024240 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024240 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024240 INFO [0] No conflict with append rpc from [1]!
+024240 LOG1 [0] Update commit index from 937 to 944
+024240 SNAP [4] Raft logs Snapshot bytes:{1353} log size:{20} VoteFor size{1}
+024242 SNAP [4] Get snapshot from service,index:925,last included index :924 last included term :1  
+024242 SNAP [4] Update last included index:925 last included term:1
+024243 SNAP [4] Raft logs Snapshot bytes:{1288} log size:{19} VoteFor size{1}
+024243 APPL [4] commitIndex:937,lastApplied:926
+024243 APPL [4] commitIndex:937,lastApplied:927
+024243 SERV [4] Get Op :{Key:17 Value:x 17 19 y Operation:Append ClientID:430258968771641921 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:926
+024243 SERV [4] Apply req :48 from [430258968771641921] command index:926
+024243 SERV [4] append x 17 19 y to key:17, result:x 17 0 yx 17 1 yx 17 2 yx 17 3 yx 17 4 yx 17 5 yx 17 6 yx 17 7 yx 17 8 yx 17 9 yx 17 10 yx 17 11 yx 17 12 yx 17 13 yx 17 14 yx 17 15 yx 17 16 yx 17 17 yx 17 18 yx 17 19 y
+024244 SNAP [4] Make Snapshot Raft state size :{1288} Encode bytes:{3775}, dup map size:{20} kvs size{20} , last command index:926
+024244 SNAP [4] Get snapshot from service,index:926,last included index :925 last included term :1  
+024244 SNAP [4] Update last included index:926 last included term:1
+024244 SNAP [4] Raft logs Snapshot bytes:{1223} log size:{18} VoteFor size{1}
+024244 SERV [4] Get Op :{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:927
+024245 SERV [4] Apply req :47 from [4571692801809747475] command index:927
+024245 SERV [4] append x 7 16 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 y
+024245 SNAP [4] Make Snapshot Raft state size :{1223} Encode bytes:{3783}, dup map size:{20} kvs size{20} , last command index:927
+024245 SNAP [4] Get snapshot from service,index:927,last included index :926 last included term :1  
+024246 SNAP [4] Update last included index:927 last included term:1
+024246 SNAP [4] Raft logs Snapshot bytes:{1160} log size:{17} VoteFor size{1}
+024246 APPL [4] commitIndex:937,lastApplied:928
+024246 APPL [4] commitIndex:937,lastApplied:929
+024246 SERV [4] Get Op :{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:928
+024246 SERV [4] Apply req :46 from [392981217975752362] command index:928
+024247 SERV [4] append x 6 26 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 y
+024247 SNAP [4] Make Snapshot Raft state size :{1160} Encode bytes:{3791}, dup map size:{20} kvs size{20} , last command index:928
+024247 SNAP [4] Get snapshot from service,index:928,last included index :927 last included term :1  
+024247 SNAP [4] Update last included index:928 last included term:1
+024248 SNAP [4] Raft logs Snapshot bytes:{1097} log size:{16} VoteFor size{1}
+024248 SERV [4] Get Op :{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:929
+024248 SERV [4] Apply req :47 from [3114232046717081181] command index:929
+024249 SNAP [4] Make Snapshot Raft state size :{1097} Encode bytes:{3791}, dup map size:{20} kvs size{20} , last command index:929
+024249 SNAP [4] Get snapshot from service,index:929,last included index :928 last included term :1  
+024249 SNAP [4] Update last included index:929 last included term:1
+024249 SNAP [4] Raft logs Snapshot bytes:{1046} log size:{15} VoteFor size{1}
+024250 APPL [4] commitIndex:937,lastApplied:930
+024250 APPL [4] commitIndex:937,lastApplied:931
+024250 SERV [4] Get Op :{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:930
+024250 SERV [4] Apply req :48 from [525196837221099390] command index:930
+024250 SERV [4] append x 2 22 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 y
+024250 SNAP [4] Make Snapshot Raft state size :{1046} Encode bytes:{3799}, dup map size:{20} kvs size{20} , last command index:930
+024250 SNAP [4] Get snapshot from service,index:930,last included index :929 last included term :1  
+024250 SNAP [4] Update last included index:930 last included term:1
+024251 SNAP [4] Raft logs Snapshot bytes:{983} log size:{14} VoteFor size{1}
+024251 SERV [4] Get Op :{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:931
+024251 SERV [4] Apply req :48 from [405217578442606627] command index:931
+024251 APPL [4] commitIndex:937,lastApplied:932
+024251 APPL [4] commitIndex:937,lastApplied:933
+024251 SERV [4] Get Op :{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:932
+024251 SERV [4] Apply req :48 from [1461939644003585659] command index:932
+024251 SERV [4] append x 1 19 y to key:1, result:x 1 0 yx 1 1 yx 1 2 yx 1 3 yx 1 4 yx 1 5 yx 1 6 yx 1 7 yx 1 8 yx 1 9 yx 1 10 yx 1 11 yx 1 12 yx 1 13 yx 1 14 yx 1 15 yx 1 16 yx 1 17 yx 1 18 yx 1 19 y
+024251 SERV [4] Get Op :{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:933
+024251 SERV [4] Apply req :49 from [3915534648868102800] command index:933
+024251 SERV [4] append x 15 20 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 19 yx 15 20 y
+024252 APPL [4] commitIndex:937,lastApplied:934
+024252 APPL [4] commitIndex:937,lastApplied:935
+024252 SERV [4] Get Op :{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:934
+024252 SERV [4] Apply req :49 from [2334731223169722026] command index:934
+024252 SERV [4] Get Op :{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:935
+024252 SERV [4] Apply req :49 from [430258968771641921] command index:935
+024252 APPL [4] commitIndex:937,lastApplied:936
+024252 APPL [4] commitIndex:937,lastApplied:937
+024252 SERV [4] Get Op :{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:936
+024252 SERV [4] Apply req :47 from [392981217975752362] command index:936
+024252 SERV [4] append x 6 27 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 yx 6 27 y
+024252 SERV [4] Get Op :{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:937
+024252 SERV [4] Apply req :48 from [4571692801809747475] command index:937
+024252 SERV [4] append x 7 17 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 yx 7 17 y
+024394 SERV [1] PutAppend req from [3757869634891237132], args:&{Key:18 Value:x 18 20 y Op:Append ClientID:3757869634891237132 Seq:47}
+024395 LEAD [1] success append to [4] ,previndex 936 
+024395 LEAD [1] Update commit index from reply [4] cur match index:[944 0 942 944 937],cur commit index:944cur term:1
+024395 APPL [1] commitIndex:944,lastApplied:931
+024395 LEAD [1] success append to [4] ,previndex 939 
+024395 LEAD [1] Update commit index from reply [4] cur match index:[944 0 942 944 940],cur commit index:944cur term:1
+024395 LEAD [1] success append to [2] ,previndex 936 
+024395 LEAD [1] Update commit index from reply [2] cur match index:[944 0 944 944 940],cur commit index:944cur term:1
+024395 LEAD [1] success append to [0] ,previndex 944 
+024395 LEAD [1] Update commit index from reply [0] cur match index:[944 0 944 944 940],cur commit index:944cur term:1
+024396 LEAD [1] success append to [4] ,previndex 933 
+024396 LEAD [1] Update commit index from reply [4] cur match index:[944 0 944 944 944],cur commit index:944cur term:1
+024396 LEAD [1] get client command, term:1,log.index:945
+024396 SNAP [1] Raft logs Snapshot bytes:{1111} log size:{16} VoteFor size{1}
+024396 LEAD [1] leader broadcast in term 1
+024398 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024398 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024398 INFO [4] max log index :944
+024398 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:944,prev log index:944, args.log.len:1 server Logs.max_index:944server cur log length :14
+024398 SNAP [4] Raft logs Snapshot bytes:{1048} log size:{15} VoteFor size{1}
+024398 LOG1 [4] Update commit index from 937 to 944
+024399 LEAD [1] success append to [4] ,previndex 944 
+024399 LEAD [1] Update commit index from reply [4] cur match index:[944 0 944 944 945],cur commit index:944cur term:1
+024405 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024405 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024405 INFO [0] No conflict with append rpc from [1]!
+024406 LEAD [1] success append to [0] ,previndex 944 
+024406 LEAD [1] Update commit index from reply [0] cur match index:[944 0 944 944 945],cur commit index:944cur term:1
+024409 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:945 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024409 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024409 INFO [4] No conflict with append rpc from [1]!
+024410 LEAD [1] success append to [4] ,previndex 945 
+024410 LEAD [1] Update commit index from reply [4] cur match index:[944 0 944 944 945],cur commit index:944cur term:1
+024410 LEAD [1] get client command, term:1,log.index:946
+024410 SNAP [1] Raft logs Snapshot bytes:{1174} log size:{17} VoteFor size{1}
+024410 LEAD [1] leader broadcast in term 1
+024411 APPL [4] commitIndex:944,lastApplied:938
+024411 APPL [4] commitIndex:944,lastApplied:939
+024411 SERV [4] Get Op :{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:938
+024411 SERV [4] Apply req :46 from [998484006340595878] command index:938
+024412 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:945 PrevLogTerm:1 Logs:[{Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024412 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024412 INFO [4] max log index :945
+024412 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:944,prev log index:945, args.log.len:1 server Logs.max_index:945server cur log length :15
+024412 SNAP [4] Make Snapshot Raft state size :{1048} Encode bytes:{3833}, dup map size:{20} kvs size{20} , last command index:938
+024412 SNAP [4] Raft logs Snapshot bytes:{1111} log size:{16} VoteFor size{1}
+024413 LEAD [1] success append to [4] ,previndex 945 
+024413 LEAD [1] Update commit index from reply [4] cur match index:[944 0 944 944 946],cur commit index:944cur term:1
+024413 LEAD [1] get client command, term:1,log.index:947
+024414 SNAP [1] Raft logs Snapshot bytes:{1239} log size:{18} VoteFor size{1}
+024414 LEAD [1] leader broadcast in term 1
+024414 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024414 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024414 INFO [0] max log index :944
+024414 LOG1 [0] log Conflict with append rpc IN index:0! from leader [1],commit index:944,prev log index:944, args.log.len:2 server Logs.max_index:944server cur log length :17
+024415 SNAP [0] Raft logs Snapshot bytes:{1288} log size:{19} VoteFor size{1}
+024415 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:946 PrevLogTerm:1 Logs:[{Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024415 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024415 INFO [4] max log index :946
+024415 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:944,prev log index:946, args.log.len:1 server Logs.max_index:946server cur log length :16
+024415 SERV [1] Get Op :{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:0xc00080aea0 SubmitTerm:1},command index:931
+024415 SERV [1] Apply req :48 from [405217578442606627] command index:931
+024415 SNAP [4] Raft logs Snapshot bytes:{1176} log size:{17} VoteFor size{1}
+024415 LEAD [1] success append to [0] ,previndex 944 
+024416 LEAD [1] Update commit index from reply [0] cur match index:[946 0 944 944 946],cur commit index:944cur term:1
+024416 LEAD [1] update commit index to 946,term:1
+024417 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024417 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024417 INFO [0] No conflict with append rpc from [1]!
+024417 SNAP [4] Get snapshot from service,index:938,last included index :930 last included term :1  
+024417 SNAP [4] Update last included index:938 last included term:1
+024418 LEAD [1] success append to [0] ,previndex 944 
+024418 LEAD [1] Update commit index from reply [0] cur match index:[944 0 944 944 946],cur commit index:946cur term:1
+024418 SNAP [4] Raft logs Snapshot bytes:{719} log size:{9} VoteFor size{1}
+024418 SERV [4] Get Op :{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:939
+024418 SERV [4] Apply req :46 from [154814549369455169] command index:939
+024418 APPL [4] commitIndex:944,lastApplied:940
+024418 APPL [4] commitIndex:944,lastApplied:941
+024418 SERV [4] Get Op :{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:940
+024418 SERV [4] Apply req :47 from [2681727385298587641] command index:940
+024418 SERV [4] append x 14 16 y to key:14, result:x 14 0 yx 14 1 yx 14 2 yx 14 3 yx 14 4 yx 14 5 yx 14 6 yx 14 7 yx 14 8 yx 14 9 yx 14 10 yx 14 11 yx 14 12 yx 14 13 yx 14 14 yx 14 15 yx 14 16 y
+024418 SERV [4] Get Op :{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:941
+024418 SERV [4] Apply req :46 from [1474178570005764206] command index:941
+024418 APPL [4] commitIndex:944,lastApplied:942
+024418 APPL [4] commitIndex:944,lastApplied:943
+024418 SERV [4] Get Op :{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:942
+024418 SERV [4] Apply req :49 from [525196837221099390] command index:942
+024418 SERV [4] append x 2 23 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 yx 2 23 y
+024418 SERV [4] Get Op :{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:943
+024419 SERV [4] Apply req :47 from [1020216884932067422] command index:943
+024419 APPL [4] commitIndex:944,lastApplied:944
+024419 SERV [4] Get Op :{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:944
+024419 SERV [4] Apply req :47 from [2627355592479439439] command index:944
+024420 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024420 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024420 INFO [0] max log index :946
+024420 LOG1 [0] log Conflict with append rpc IN index:2! from leader [1],commit index:946,prev log index:944, args.log.len:3 server Logs.max_index:946server cur log length :19
+024420 SNAP [0] Raft logs Snapshot bytes:{1353} log size:{20} VoteFor size{1}
+024420 LOG1 [0] Update commit index from 944 to 946
+024421 LEAD [1] success append to [0] ,previndex 944 
+024421 LEAD [1] Update commit index from reply [0] cur match index:[947 0 944 944 946],cur commit index:946cur term:1
+024421 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024421 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024421 INFO [0] max log index :947
+024421 INFO [0] No conflict with append rpc from [1]!
+024422 LEAD [1] success append to [0] ,previndex 944 
+024422 LEAD [1] Update commit index from reply [0] cur match index:[947 0 944 944 946],cur commit index:946cur term:1
+024423 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024423 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024423 INFO [0] No conflict with append rpc from [1]!
+024423 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:946 PrevLogTerm:1 Logs:[{Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024423 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024423 INFO [4] max log index :947
+024423 INFO [4] No conflict with append rpc from [1]!
+024423 LOG1 [4] Update commit index from 944 to 946
+024424 LEAD [1] success append to [4] ,previndex 946 
+024424 LEAD [1] Update commit index from reply [4] cur match index:[947 0 944 944 947],cur commit index:946cur term:1
+024424 LEAD [1] update commit index to 947,term:1
+024424 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[] LeaderCommitIndex:946 IsHeartBeat:false}
+024424 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024424 INFO [0] No conflict with append rpc from [1]!
+024425 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024425 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024425 INFO [0] No conflict with append rpc from [1]!
+024425 LEAD [1] get client command, term:1,log.index:948
+024425 SNAP [1] Raft logs Snapshot bytes:{1304} log size:{19} VoteFor size{1}
+024425 APPL [1] commitIndex:947,lastApplied:932
+024425 LEAD [1] success append to [0] ,previndex 944 
+024425 LEAD [1] Update commit index from reply [0] cur match index:[944 0 944 944 947],cur commit index:947cur term:1
+024425 APPL [2] commitIndex:937,lastApplied:927
+024425 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:937 IsHeartBeat:false}
+024426 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024426 INFO [2] max log index :944
+024426 INFO [2] No conflict with append rpc from [1]!
+024426 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:942 PrevLogTerm:1 Logs:[{Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024426 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024426 INFO [2] max log index :944
+024426 INFO [2] No conflict with append rpc from [1]!
+024426 LOG1 [2] Update commit index from 937 to 944
+024426 SNAP [0] Make Snapshot Raft state size :{1353} Encode bytes:{3791}, dup map size:{20} kvs size{20} , last command index:928
+024426 SNAP [0] Get snapshot from service,index:928,last included index :927 last included term :1  
+024426 SNAP [0] Update last included index:928 last included term:1
+024425 LEAD [1] leader broadcast in term 1
+024427 SNAP [0] Raft logs Snapshot bytes:{1290} log size:{19} VoteFor size{1}
+024427 SERV [0] Get Op :{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:929
+024427 SERV [0] Apply req :47 from [3114232046717081181] command index:929
+024427 SNAP [0] Make Snapshot Raft state size :{1290} Encode bytes:{3791}, dup map size:{20} kvs size{20} , last command index:929
+024427 SNAP [0] Get snapshot from service,index:929,last included index :928 last included term :1  
+024427 SNAP [0] Update last included index:929 last included term:1
+024426 SERV [2] Get Op :{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:927
+024428 SERV [2] Apply req :47 from [4571692801809747475] command index:927
+024425 APPL [3] commitIndex:937,lastApplied:927
+024428 APPL [3] commitIndex:937,lastApplied:928
+024426 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024428 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024428 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024427 LEAD [1] success append to [2] ,previndex 936 
+024428 LEAD [1] Update commit index from reply [2] cur match index:[944 0 944 944 947],cur commit index:947cur term:1
+024428 LEAD [1] success append to [2] ,previndex 942 
+024428 LEAD [1] Update commit index from reply [2] cur match index:[944 0 944 944 947],cur commit index:947cur term:1
+024428 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024429 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024429 INFO [4] max log index :947
+024429 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:947,prev log index:947, args.log.len:1 server Logs.max_index:947server cur log length :9
+024430 SNAP [4] Raft logs Snapshot bytes:{784} log size:{10} VoteFor size{1}
+024430 LOG1 [4] Update commit index from 946 to 947
+024430 LEAD [1] success append to [4] ,previndex 947 
+024430 LEAD [1] Update commit index from reply [4] cur match index:[944 0 944 944 948],cur commit index:947cur term:1
+024431 SNAP [1] Make Snapshot Raft state size :{1304} Encode bytes:{3799}, dup map size:{20} kvs size{20} , last command index:931
+024431 SNAP [1] Get snapshot from service,index:931,last included index :929 last included term :1  
+024431 SNAP [1] Update last included index:931 last included term:1
+024431 SNAP [1] Raft logs Snapshot bytes:{1190} log size:{17} VoteFor size{1}
+024431 SERV [1] Leader send to Raft channel req :48 from [405217578442606627]
+024431 SERV [1] Get Op :{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:0xc00080b200 SubmitTerm:1},command index:932
+024432 SERV [1] Apply req :48 from [1461939644003585659] command index:932
+024432 SERV [1] append x 1 19 y to key:1, result:x 1 0 yx 1 1 yx 1 2 yx 1 3 yx 1 4 yx 1 5 yx 1 6 yx 1 7 yx 1 8 yx 1 9 yx 1 10 yx 1 11 yx 1 12 yx 1 13 yx 1 14 yx 1 15 yx 1 16 yx 1 17 yx 1 18 yx 1 19 y
+024432 SNAP [1] Make Snapshot Raft state size :{1190} Encode bytes:{3807}, dup map size:{20} kvs size{20} , last command index:932
+024432 SNAP [1] Get snapshot from service,index:932,last included index :931 last included term :1  
+024432 SNAP [1] Update last included index:932 last included term:1
+024433 SNAP [1] Raft logs Snapshot bytes:{1127} log size:{16} VoteFor size{1}
+024433 SERV [1] Leader send to Raft channel req :48 from [1461939644003585659]
+024434 SERV [1] GET req from [1461939644003585659], args:&{Key:1 ClientID:1461939644003585659 Seq:49}
+024434 LEAD [1] get client command, term:1,log.index:949
+024434 SNAP [1] Raft logs Snapshot bytes:{1177} log size:{17} VoteFor size{1}
+024435 LEAD [1] leader broadcast in term 1
+024436 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:948 PrevLogTerm:1 Logs:[{Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024436 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024436 INFO [4] max log index :948
+024436 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:947,prev log index:948, args.log.len:1 server Logs.max_index:948server cur log length :10
+024436 SNAP [4] Raft logs Snapshot bytes:{834} log size:{11} VoteFor size{1}
+024437 APPL [1] commitIndex:947,lastApplied:933
+024437 APPL [1] commitIndex:947,lastApplied:934
+024428 SNAP [0] Raft logs Snapshot bytes:{1239} log size:{18} VoteFor size{1}
+024437 SERV [1] Get Op :{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:0xc00080be00 SubmitTerm:1},command index:933
+024437 SERV [1] Apply req :49 from [3915534648868102800] command index:933
+024437 SERV [1] append x 15 20 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 19 yx 15 20 y
+024437 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024437 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024437 INFO [0] max log index :947
+024437 LOG1 [0] log Conflict with append rpc IN index:3! from leader [1],commit index:947,prev log index:944, args.log.len:4 server Logs.max_index:947server cur log length :18
+024438 SNAP [1] Make Snapshot Raft state size :{1177} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:933
+024438 SNAP [1] Get snapshot from service,index:933,last included index :932 last included term :1  
+024438 SNAP [1] Update last included index:933 last included term:1
+024438 SNAP [1] Raft logs Snapshot bytes:{1112} log size:{16} VoteFor size{1}
+024438 SERV [1] Leader send to Raft channel req :49 from [3915534648868102800]
+024438 SERV [1] Get Op :{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:0xc000846840 SubmitTerm:1},command index:934
+024438 SERV [1] GET req from [405217578442606627], args:&{Key:12 ClientID:405217578442606627 Seq:49}
+024439 LEAD [1] get client command, term:1,log.index:950
+024439 SNAP [1] Raft logs Snapshot bytes:{1163} log size:{17} VoteFor size{1}
+024439 LEAD [1] leader broadcast in term 1
+024440 LEAD [1] get client command, term:1,log.index:951
+024440 SNAP [1] Raft logs Snapshot bytes:{1226} log size:{18} VoteFor size{1}
+024440 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:948 PrevLogTerm:1 Logs:[{Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024440 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024440 INFO [4] max log index :949
+024440 LOG1 [4] log Conflict with append rpc IN index:1! from leader [1],commit index:947,prev log index:948, args.log.len:2 server Logs.max_index:949server cur log length :11
+024438 SERV [1] Apply req :49 from [2334731223169722026] command index:934
+024441 SNAP [4] Raft logs Snapshot bytes:{885} log size:{12} VoteFor size{1}
+024441 SNAP [1] Make Snapshot Raft state size :{1226} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:934
+024441 SNAP [1] Get snapshot from service,index:934,last included index :933 last included term :1  
+024441 SNAP [1] Update last included index:934 last included term:1
+024438 SNAP [0] Raft logs Snapshot bytes:{1304} log size:{19} VoteFor size{1}
+024441 LOG1 [0] Update commit index from 946 to 947
+024441 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:948 PrevLogTerm:1 Logs:[{Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024441 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024442 INFO [4] max log index :950
+024442 LOG1 [4] log Conflict with append rpc IN index:2! from leader [1],commit index:947,prev log index:948, args.log.len:3 server Logs.max_index:950server cur log length :12
+024442 SNAP [1] Raft logs Snapshot bytes:{1176} log size:{17} VoteFor size{1}
+024442 SERV [1] Leader send to Raft channel req :49 from [2334731223169722026]
+024442 LEAD [1] success append to [0] ,previndex 944 
+024442 LEAD [1] Update commit index from reply [0] cur match index:[948 0 944 944 948],cur commit index:947cur term:1
+024442 LEAD [1] update commit index to 948,term:1
+024442 SNAP [4] Raft logs Snapshot bytes:{948} log size:{13} VoteFor size{1}
+024443 LEAD [1] success append to [4] ,previndex 948 
+024443 LEAD [1] Update commit index from reply [4] cur match index:[948 0 944 944 951],cur commit index:948cur term:1
+024443 LEAD [1] leader broadcast in term 1
+024443 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:948 PrevLogTerm:1 Logs:[{Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024443 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024443 INFO [0] max log index :948
+024443 LOG1 [0] log Conflict with append rpc IN index:0! from leader [1],commit index:948,prev log index:948, args.log.len:3 server Logs.max_index:948server cur log length :19
+024443 SERV [1] PutAppend req from [2334731223169722026], args:&{Key:3 Value:x 3 20 y Op:Append ClientID:2334731223169722026 Seq:50}
+024443 LEAD [1] get client command, term:1,log.index:952
+024444 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:951 PrevLogTerm:1 Logs:[] LeaderCommitIndex:948 IsHeartBeat:false}
+024444 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024444 INFO [4] No conflict with append rpc from [1]!
+024444 LOG1 [4] Update commit index from 947 to 948
+024444 SNAP [1] Raft logs Snapshot bytes:{1239} log size:{18} VoteFor size{1}
+024444 LEAD [1] leader broadcast in term 1
+024444 LEAD [1] success append to [4] ,previndex 951 
+024444 LEAD [1] Update commit index from reply [4] cur match index:[948 0 944 944 951],cur commit index:948cur term:1
+024445 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:951 PrevLogTerm:1 Logs:[{Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024445 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024445 INFO [4] max log index :951
+024445 LOG1 [4] log Conflict with append rpc IN index:0! from leader [1],commit index:948,prev log index:951, args.log.len:1 server Logs.max_index:951server cur log length :13
+024428 SERV [3] Get Op :{Key:7 Value:x 7 16 y Operation:Append ClientID:4571692801809747475 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:927
+024445 SERV [3] Apply req :47 from [4571692801809747475] command index:927
+024445 SERV [3] append x 7 16 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 y
+024428 INFO [2] max log index :944
+024446 LOG1 [2] log Conflict with append rpc IN index:0! from leader [1],commit index:946,prev log index:944, args.log.len:3 server Logs.max_index:944server cur log length :20
+024446 SNAP [4] Raft logs Snapshot bytes:{1011} log size:{14} VoteFor size{1}
+024446 SNAP [2] Raft logs Snapshot bytes:{1546} log size:{23} VoteFor size{1}
+024446 LOG1 [2] Update commit index from 944 to 946
+024446 LEAD [1] success append to [4] ,previndex 951 
+024447 LEAD [1] Update commit index from reply [4] cur match index:[948 0 944 944 952],cur commit index:948cur term:1
+024428 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024447 LEAD [1] success append to [2] ,previndex 944 
+024447 LEAD [1] Update commit index from reply [2] cur match index:[948 0 947 944 952],cur commit index:948cur term:1
+024447 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024447 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024447 INFO [2] max log index :947
+024447 INFO [2] No conflict with append rpc from [1]!
+024447 LEAD [1] success append to [0] ,previndex 944 
+024448 LEAD [1] Update commit index from reply [0] cur match index:[944 0 947 944 952],cur commit index:948cur term:1
+024448 LEAD [1] success append to [0] ,previndex 947 
+024448 LEAD [1] Update commit index from reply [0] cur match index:[947 0 947 944 952],cur commit index:948cur term:1
+024448 SERV [1] GET req from [3915534648868102800], args:&{Key:15 ClientID:3915534648868102800 Seq:50}
+024448 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024448 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024448 INFO [2] max log index :947
+024428 SERV [2] append x 7 16 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 y
+024447 INFO [3] No conflict with append rpc from [1]!
+024448 LOG1 [3] Update commit index from 937 to 944
+024443 SNAP [0] Raft logs Snapshot bytes:{1468} log size:{22} VoteFor size{1}
+024450 LOG1 [0] Update commit index from 947 to 948
+024450 APPL [0] commitIndex:948,lastApplied:930
+024450 APPL [0] commitIndex:948,lastApplied:931
+024450 SERV [0] Get Op :{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:930
+024450 SERV [0] Apply req :48 from [525196837221099390] command index:930
+024450 SERV [0] append x 2 22 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 y
+024451 SNAP [0] Make Snapshot Raft state size :{1468} Encode bytes:{3799}, dup map size:{20} kvs size{20} , last command index:930
+024451 SNAP [0] Get snapshot from service,index:930,last included index :929 last included term :1  
+024451 SNAP [0] Update last included index:930 last included term:1
+024451 SNAP [0] Raft logs Snapshot bytes:{1405} log size:{21} VoteFor size{1}
+024451 SERV [0] Get Op :{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:931
+024452 SERV [0] Apply req :48 from [405217578442606627] command index:931
+024452 SNAP [0] Make Snapshot Raft state size :{1405} Encode bytes:{3799}, dup map size:{20} kvs size{20} , last command index:931
+024452 SNAP [0] Get snapshot from service,index:931,last included index :930 last included term :1  
+024452 SNAP [0] Update last included index:931 last included term:1
+024452 SNAP [0] Raft logs Snapshot bytes:{1354} log size:{20} VoteFor size{1}
+024452 APPL [0] commitIndex:948,lastApplied:932
+024453 APPL [0] commitIndex:948,lastApplied:933
+024452 SERV [0] Get Op :{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:932
+024453 SERV [0] Apply req :48 from [1461939644003585659] command index:932
+024453 SERV [0] append x 1 19 y to key:1, result:x 1 0 yx 1 1 yx 1 2 yx 1 3 yx 1 4 yx 1 5 yx 1 6 yx 1 7 yx 1 8 yx 1 9 yx 1 10 yx 1 11 yx 1 12 yx 1 13 yx 1 14 yx 1 15 yx 1 16 yx 1 17 yx 1 18 yx 1 19 y
+024453 SNAP [0] Make Snapshot Raft state size :{1354} Encode bytes:{3807}, dup map size:{20} kvs size{20} , last command index:932
+024453 SNAP [0] Get snapshot from service,index:932,last included index :931 last included term :1  
+024453 SNAP [0] Update last included index:932 last included term:1
+024454 SNAP [0] Raft logs Snapshot bytes:{1291} log size:{19} VoteFor size{1}
+024453 SERV [0] Get Op :{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:933
+024454 SERV [0] Apply req :49 from [3915534648868102800] command index:933
+024454 SERV [0] append x 15 20 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 19 yx 15 20 y
+024454 SNAP [0] Make Snapshot Raft state size :{1291} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:933
+024454 SNAP [0] Get snapshot from service,index:933,last included index :932 last included term :1  
+024454 SNAP [0] Update last included index:933 last included term:1
+024455 SNAP [0] Raft logs Snapshot bytes:{1226} log size:{18} VoteFor size{1}
+024448 LEAD [1] get client command, term:1,log.index:953
+024500 APPL [0] commitIndex:948,lastApplied:934
+024500 APPL [0] commitIndex:948,lastApplied:935
+024501 SERV [0] Get Op :{Key:3 Value: Operation:Get ClientID:2334731223169722026 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:934
+024448 LOG1 [2] log Conflict with append rpc IN index:0! from leader [1],commit index:948,prev log index:947, args.log.len:5 server Logs.max_index:947server cur log length :23
+024503 SNAP [2] Raft logs Snapshot bytes:{1838} log size:{28} VoteFor size{1}
+024503 LOG1 [2] Update commit index from 946 to 948
+024504 SNAP [1] Raft logs Snapshot bytes:{1290} log size:{19} VoteFor size{1}
+024503 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024505 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024505 INFO [2] max log index :952
+024505 INFO [2] No conflict with append rpc from [1]!
+024505 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024506 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024506 INFO [2] max log index :952
+024506 INFO [2] No conflict with append rpc from [1]!
+024506 LEAD [1] success append to [4] ,previndex 948 
+024497 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[] LeaderCommitIndex:944 IsHeartBeat:false}
+024506 LEAD [1] Update commit index from reply [4] cur match index:[947 0 947 944 950],cur commit index:948cur term:1
+024507 APPL [1] commitIndex:948,lastApplied:935
+024507 APPL [1] commitIndex:948,lastApplied:936
+024507 SERV [1] Get Op :{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:0xc000846b40 SubmitTerm:1},command index:935
+024507 SERV [1] Apply req :49 from [430258968771641921] command index:935
+024506 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024508 INFO [3] No conflict with append rpc from [1]!
+024509 LEAD [1] success append to [2] ,previndex 944 
+024509 LEAD [1] Update commit index from reply [2] cur match index:[947 0 947 944 950],cur commit index:948cur term:1
+024510 LEAD [1] success append to [2] ,previndex 947 
+024510 LEAD [1] Update commit index from reply [2] cur match index:[947 0 952 944 950],cur commit index:948cur term:1
+024511 LEAD [1] success append to [2] ,previndex 944 
+024501 SERV [0] Apply req :49 from [2334731223169722026] command index:934
+024506 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024512 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024512 INFO [2] max log index :952
+024512 INFO [2] No conflict with append rpc from [1]!
+024512 SNAP [0] Make Snapshot Raft state size :{1226} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:934
+024512 SNAP [0] Get snapshot from service,index:934,last included index :933 last included term :1  
+024512 SNAP [0] Update last included index:934 last included term:1
+024513 SNAP [0] Raft logs Snapshot bytes:{1176} log size:{17} VoteFor size{1}
+024513 SERV [0] Get Op :{Key:17 Value: Operation:Get ClientID:430258968771641921 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:935
+024514 SERV [0] Apply req :49 from [430258968771641921] command index:935
+024514 SNAP [0] Make Snapshot Raft state size :{1176} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:935
+024514 SNAP [0] Get snapshot from service,index:935,last included index :934 last included term :1  
+024515 SNAP [0] Update last included index:935 last included term:1
+024515 SNAP [0] Raft logs Snapshot bytes:{1125} log size:{16} VoteFor size{1}
+024515 APPL [0] commitIndex:948,lastApplied:936
+024516 APPL [0] commitIndex:948,lastApplied:937
+024516 SERV [0] Get Op :{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:936
+024516 SERV [0] Apply req :47 from [392981217975752362] command index:936
+024516 SERV [0] append x 6 27 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 yx 6 27 y
+024517 SNAP [0] Make Snapshot Raft state size :{1125} Encode bytes:{3824}, dup map size:{20} kvs size{20} , last command index:936
+024517 SNAP [0] Get snapshot from service,index:936,last included index :935 last included term :1  
+024517 SNAP [0] Update last included index:936 last included term:1
+024511 LEAD [1] Update commit index from reply [2] cur match index:[947 0 947 944 950],cur commit index:948cur term:1
+024518 LEAD [1] success append to [3] ,previndex 944 
+024518 LEAD [1] Update commit index from reply [3] cur match index:[947 0 947 944 950],cur commit index:948cur term:1
+024518 SNAP [1] Make Snapshot Raft state size :{1290} Encode bytes:{3816}, dup map size:{20} kvs size{20} , last command index:935
+024518 SNAP [1] Get snapshot from service,index:935,last included index :934 last included term :1  
+024518 SNAP [1] Update last included index:935 last included term:1
+024519 SNAP [1] Raft logs Snapshot bytes:{1239} log size:{18} VoteFor size{1}
+024519 SERV [1] Leader send to Raft channel req :49 from [430258968771641921]
+024519 SERV [1] Get Op :{Key:6 Value:x 6 27 y Operation:Append ClientID:392981217975752362 Seq:47 ReplyCh:0xc0009241e0 SubmitTerm:1},command index:936
+024519 SERV [1] Apply req :47 from [392981217975752362] command index:936
+024519 SERV [1] append x 6 27 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 yx 6 27 y
+024520 SNAP [0] Raft logs Snapshot bytes:{1062} log size:{15} VoteFor size{1}
+024520 SERV [0] Get Op :{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:937
+024520 SERV [0] Apply req :48 from [4571692801809747475] command index:937
+024521 SERV [0] append x 7 17 y to key:7, result:x 7 0 yx 7 1 yx 7 2 yx 7 3 yx 7 4 yx 7 5 yx 7 6 yx 7 7 yx 7 8 yx 7 9 yx 7 10 yx 7 11 yx 7 12 yx 7 13 yx 7 14 yx 7 15 yx 7 16 yx 7 17 y
+024521 SNAP [0] Make Snapshot Raft state size :{1062} Encode bytes:{3833}, dup map size:{20} kvs size{20} , last command index:937
+024521 SNAP [0] Get snapshot from service,index:937,last included index :936 last included term :1  
+024521 SNAP [0] Update last included index:937 last included term:1
+024522 SNAP [0] Raft logs Snapshot bytes:{999} log size:{14} VoteFor size{1}
+024522 APPL [0] commitIndex:948,lastApplied:938
+024522 APPL [0] commitIndex:948,lastApplied:939
+024522 SERV [0] Get Op :{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:938
+024522 SERV [0] Apply req :46 from [998484006340595878] command index:938
+024522 SERV [0] Get Op :{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:939
+024523 SERV [0] Apply req :46 from [154814549369455169] command index:939
+024523 APPL [0] commitIndex:948,lastApplied:940
+024523 APPL [0] commitIndex:948,lastApplied:941
+024523 SERV [0] Get Op :{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:940
+024523 SERV [0] Apply req :47 from [2681727385298587641] command index:940
+024523 SERV [0] append x 14 16 y to key:14, result:x 14 0 yx 14 1 yx 14 2 yx 14 3 yx 14 4 yx 14 5 yx 14 6 yx 14 7 yx 14 8 yx 14 9 yx 14 10 yx 14 11 yx 14 12 yx 14 13 yx 14 14 yx 14 15 yx 14 16 y
+024523 SERV [0] Get Op :{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:941
+024523 SERV [0] Apply req :46 from [1474178570005764206] command index:941
+024523 APPL [0] commitIndex:948,lastApplied:942
+024523 APPL [0] commitIndex:948,lastApplied:943
+024523 SERV [0] Get Op :{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:942
+024524 SERV [0] Apply req :49 from [525196837221099390] command index:942
+024524 SERV [0] append x 2 23 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 yx 2 23 y
+024524 SERV [0] Get Op :{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:943
+024524 SERV [0] Apply req :47 from [1020216884932067422] command index:943
+024524 APPL [0] commitIndex:948,lastApplied:944
+024524 APPL [0] commitIndex:948,lastApplied:945
+024524 SERV [0] Get Op :{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:944
+024524 SERV [0] Apply req :47 from [2627355592479439439] command index:944
+024524 SERV [0] Get Op :{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:945
+024524 SERV [0] Apply req :47 from [3757869634891237132] command index:945
+024519 TIMR Leader[1] start broadcast in term:1
+024525 APPL [0] commitIndex:948,lastApplied:946
+024524 SERV [0] append x 18 20 y to key:18, result:x 18 0 yx 18 1 yx 18 2 yx 18 3 yx 18 4 yx 18 5 yx 18 6 yx 18 7 yx 18 8 yx 18 9 yx 18 10 yx 18 11 yx 18 12 yx 18 13 yx 18 14 yx 18 15 yx 18 16 yx 18 17 yx 18 18 yx 18 19 yx 18 20 y
+024525 SERV [0] Get Op :{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:946
+024525 SERV [0] Apply req :48 from [2895900521174901390] command index:946
+024525 SERV [0] append x 9 20 y to key:9, result:x 9 0 yx 9 1 yx 9 2 yx 9 3 yx 9 4 yx 9 5 yx 9 6 yx 9 7 yx 9 8 yx 9 9 yx 9 10 yx 9 11 yx 9 12 yx 9 13 yx 9 14 yx 9 15 yx 9 16 yx 9 17 yx 9 18 yx 9 19 yx 9 20 y
+024525 APPL [0] commitIndex:948,lastApplied:947
+024525 APPL [0] commitIndex:948,lastApplied:948
+024525 SERV [0] Get Op :{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:947
+024525 SERV [0] Apply req :47 from [3937107831004704350] command index:947
+024525 SERV [0] append x 13 24 y to key:13, result:x 13 0 yx 13 1 yx 13 2 yx 13 3 yx 13 4 yx 13 5 yx 13 6 yx 13 7 yx 13 8 yx 13 9 yx 13 10 yx 13 11 yx 13 12 yx 13 13 yx 13 14 yx 13 15 yx 13 16 yx 13 17 yx 13 18 yx 13 19 yx 13 20 yx 13 21 yx 13 22 yx 13 23 yx 13 24 y
+024525 SERV [0] Get Op :{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:948
+024525 SERV [0] Apply req :48 from [3114232046717081181] command index:948
+024525 SERV [0] append x 11 21 y to key:11, result:x 11 0 yx 11 1 yx 11 2 yx 11 3 yx 11 4 yx 11 5 yx 11 6 yx 11 7 yx 11 8 yx 11 9 yx 11 10 yx 11 11 yx 11 12 yx 11 13 yx 11 14 yx 11 15 yx 11 16 yx 11 17 yx 11 18 yx 11 19 yx 11 20 yx 11 21 y
+024512 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024614 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024614 INFO [3] max log index :944
+024614 LOG1 [3] log Conflict with append rpc IN index:0! from leader [1],commit index:946,prev log index:944, args.log.len:3 server Logs.max_index:944server cur log length :18
+024615 SNAP [3] Raft logs Snapshot bytes:{1416} log size:{21} VoteFor size{1}
+024615 LOG1 [3] Update commit index from 944 to 946
+024616 SERV [1] GET req from [430258968771641921], args:&{Key:17 ClientID:430258968771641921 Seq:50}
+024512 LEAD [1] leader broadcast in term 1
+024618 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:953 Command:{Key:15 Value: Operation:Get ClientID:3915534648868102800 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024619 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024619 INFO [0] max log index :951
+024619 LOG1 [0] log Conflict with append rpc IN index:4! from leader [1],commit index:948,prev log index:947, args.log.len:6 server Logs.max_index:951server cur log length :14
+024619 SNAP [0] Raft logs Snapshot bytes:{1113} log size:{16} VoteFor size{1}
+024620 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024620 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024620 INFO [3] max log index :947
+024620 INFO [3] No conflict with append rpc from [1]!
+024621 LEAD [1] get client command, term:1,log.index:954
+024621 SNAP [1] Raft logs Snapshot bytes:{1289} log size:{19} VoteFor size{1}
+024621 LEAD [1] success append to [4] ,previndex 948 
+024621 LEAD [1] Update commit index from reply [4] cur match index:[947 0 947 944 949],cur commit index:948cur term:1
+024623 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:953 Command:{Key:15 Value: Operation:Get ClientID:3915534648868102800 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:954 Command:{Key:4 Value: Operation:Get ClientID:1226840347509520762 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024623 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024623 INFO [3] max log index :947
+024623 LOG1 [3] log Conflict with append rpc IN index:3! from leader [1],commit index:948,prev log index:944, args.log.len:10 server Logs.max_index:947server cur log length :21
+024512 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:936 PrevLogTerm:1 Logs:[{Term:1 Index:937 Command:{Key:7 Value:x 7 17 y Operation:Append ClientID:4571692801809747475 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:938 Command:{Key:10 Value: Operation:Get ClientID:998484006340595878 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:939 Command:{Key:16 Value: Operation:Get ClientID:154814549369455169 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:940 Command:{Key:14 Value:x 14 16 y Operation:Append ClientID:2681727385298587641 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:941 Command:{Key:8 Value: Operation:Get ClientID:1474178570005764206 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:942 Command:{Key:2 Value:x 2 23 y Operation:Append ClientID:525196837221099390 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:943 Command:{Key:19 Value: Operation:Get ClientID:1020216884932067422 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:944 Command:{Key:0 Value: Operation:Get ClientID:2627355592479439439 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:944 IsHeartBeat:false}
+024623 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024623 INFO [2] max log index :952
+024623 INFO [2] No conflict with append rpc from [1]!
+024623 APPL [2] commitIndex:948,lastApplied:928
+024623 SNAP [3] Raft logs Snapshot bytes:{1809} log size:{28} VoteFor size{1}
+024623 LOG1 [3] Update commit index from 946 to 948
+024623 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024624 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024624 INFO [2] max log index :952
+024624 INFO [2] No conflict with append rpc from [1]!
+024624 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024624 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024624 INFO [2] max log index :952
+024624 INFO [2] No conflict with append rpc from [1]!
+024624 LEAD [1] leader broadcast in term 1
+024624 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:946 IsHeartBeat:false}
+024624 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024525 LEAD [1] leader broadcast in term 1
+024624 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024624 INFO [2] max log index :952
+024625 INFO [2] No conflict with append rpc from [1]!
+024625 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024625 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024625 INFO [2] max log index :952
+024625 INFO [2] No conflict with append rpc from [1]!
+024624 LEAD [1] success append to [3] ,previndex 944 
+024625 INFO [2] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:953 Command:{Key:15 Value: Operation:Get ClientID:3915534648868102800 Seq:50 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024625 INFO [2] CheckPrevLog from leader [1] args:%!v(MISSING)
+024625 INFO [2] max log index :952
+024625 LOG1 [2] log Conflict with append rpc IN index:5! from leader [1],commit index:948,prev log index:947, args.log.len:6 server Logs.max_index:952server cur log length :28
+024624 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024626 INFO [3] max log index :954
+024626 INFO [3] No conflict with append rpc from [1]!
+024627 SNAP [2] Make Snapshot Raft state size :{1838} Encode bytes:{3765}, dup map size:{20} kvs size{20} , last command index:927
+024627 APPL [4] commitIndex:948,lastApplied:945
+024627 APPL [4] commitIndex:948,lastApplied:946
+024627 SERV [4] Get Op :{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:945
+024628 SERV [4] Apply req :47 from [3757869634891237132] command index:945
+024628 SERV [4] append x 18 20 y to key:18, result:x 18 0 yx 18 1 yx 18 2 yx 18 3 yx 18 4 yx 18 5 yx 18 6 yx 18 7 yx 18 8 yx 18 9 yx 18 10 yx 18 11 yx 18 12 yx 18 13 yx 18 14 yx 18 15 yx 18 16 yx 18 17 yx 18 18 yx 18 19 yx 18 20 y
+024625 LEAD [1] Update commit index from reply [3] cur match index:[947 0 947 954 949],cur commit index:948cur term:1
+024629 SNAP [4] Make Snapshot Raft state size :{1011} Encode bytes:{3859}, dup map size:{20} kvs size{20} , last command index:945
+024629 SNAP [4] Get snapshot from service,index:945,last included index :938 last included term :1  
+024629 SNAP [4] Update last included index:945 last included term:1
+024629 SNAP [4] Raft logs Snapshot bytes:{616} log size:{7} VoteFor size{1}
+024629 LEAD [1] success append to [2] ,previndex 944 
+024629 LEAD [1] Update commit index from reply [2] cur match index:[947 0 947 954 949],cur commit index:948cur term:1
+024629 SERV [4] Get Op :{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:946
+024629 SERV [4] Apply req :48 from [2895900521174901390] command index:946
+024629 SERV [4] append x 9 20 y to key:9, result:x 9 0 yx 9 1 yx 9 2 yx 9 3 yx 9 4 yx 9 5 yx 9 6 yx 9 7 yx 9 8 yx 9 9 yx 9 10 yx 9 11 yx 9 12 yx 9 13 yx 9 14 yx 9 15 yx 9 16 yx 9 17 yx 9 18 yx 9 19 yx 9 20 y
+024630 APPL [4] commitIndex:948,lastApplied:947
+024630 APPL [4] commitIndex:948,lastApplied:948
+024630 SERV [4] Get Op :{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:947
+024630 SERV [4] Apply req :47 from [3937107831004704350] command index:947
+024630 SERV [4] append x 13 24 y to key:13, result:x 13 0 yx 13 1 yx 13 2 yx 13 3 yx 13 4 yx 13 5 yx 13 6 yx 13 7 yx 13 8 yx 13 9 yx 13 10 yx 13 11 yx 13 12 yx 13 13 yx 13 14 yx 13 15 yx 13 16 yx 13 17 yx 13 18 yx 13 19 yx 13 20 yx 13 21 yx 13 22 yx 13 23 yx 13 24 y
+024630 SERV [4] Get Op :{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:948
+024630 SERV [4] Apply req :48 from [3114232046717081181] command index:948
+024630 SERV [4] append x 11 21 y to key:11, result:x 11 0 yx 11 1 yx 11 2 yx 11 3 yx 11 4 yx 11 5 yx 11 6 yx 11 7 yx 11 8 yx 11 9 yx 11 10 yx 11 11 yx 11 12 yx 11 13 yx 11 14 yx 11 15 yx 11 16 yx 11 17 yx 11 18 yx 11 19 yx 11 20 yx 11 21 y
+024630 INFO [3] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:944 PrevLogTerm:1 Logs:[{Term:1 Index:945 Command:{Key:18 Value:x 18 20 y Operation:Append ClientID:3757869634891237132 Seq:47 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:946 Command:{Key:9 Value:x 9 20 y Operation:Append ClientID:2895900521174901390 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:947 Command:{Key:13 Value:x 13 24 y Operation:Append ClientID:3937107831004704350 Seq:47 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:947 IsHeartBeat:false}
+024630 INFO [3] CheckPrevLog from leader [1] args:%!v(MISSING)
+024630 INFO [3] max log index :954
+024630 INFO [3] No conflict with append rpc from [1]!
+024631 INFO [0] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:947 PrevLogTerm:1 Logs:[{Term:1 Index:948 Command:{Key:11 Value:x 11 21 y Operation:Append ClientID:3114232046717081181 Seq:48 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:949 Command:{Key:1 Value: Operation:Get ClientID:1461939644003585659 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:953 Command:{Key:15 Value: Operation:Get ClientID:3915534648868102800 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:954 Command:{Key:4 Value: Operation:Get ClientID:1226840347509520762 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024631 INFO [0] CheckPrevLog from leader [1] args:%!v(MISSING)
+024631 INFO [0] max log index :953
+024631 LOG1 [0] log Conflict with append rpc IN index:6! from leader [1],commit index:948,prev log index:947, args.log.len:7 server Logs.max_index:953server cur log length :16
+024631 LEAD [1] success append to [3] ,previndex 944 
+024631 LEAD [1] Update commit index from reply [3] cur match index:[947 0 947 947 949],cur commit index:948cur term:1
+024631 INFO [4] RECEIVE APPEND RPC from leader [1] me.term:1, args:&{Term:1 LeaderID:1 PrevLogIndex:949 PrevLogTerm:1 Logs:[{Term:1 Index:950 Command:{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:49 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:951 Command:{Key:5 Value:x 5 25 y Operation:Append ClientID:2833456260529463041 Seq:46 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:952 Command:{Key:3 Value:x 3 20 y Operation:Append ClientID:2334731223169722026 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:953 Command:{Key:15 Value: Operation:Get ClientID:3915534648868102800 Seq:50 ReplyCh:<nil> SubmitTerm:1}} {Term:1 Index:954 Command:{Key:4 Value: Operation:Get ClientID:1226840347509520762 Seq:48 ReplyCh:<nil> SubmitTerm:1}}] LeaderCommitIndex:948 IsHeartBeat:false}
+024632 INFO [4] CheckPrevLog from leader [1] args:%!v(MISSING)
+024632 INFO [4] max log index :952
+024632 LOG1 [4] log Conflict with append rpc IN index:3! from leader [1],commit index:948,prev log index:949, args.log.len:5 server Logs.max_index:952server cur log length :7
+024632 SNAP [4] Raft logs Snapshot bytes:{717} log size:{9} VoteFor size{1}
+024633 LEAD [1] success append to [4] ,previndex 949 
+024633 LEAD [1] Update commit index from reply [4] cur match index:[947 0 947 947 954],cur commit index:948cur term:1
+024626 SNAP [2] Raft logs Snapshot bytes:{1889} log size:{29} VoteFor size{1}
+024633 LEAD [1] success append to [2] ,previndex 947 
+024633 LEAD [1] Update commit index from reply [2] cur match index:[947 0 953 947 954],cur commit index:948cur term:1
+024633 SNAP [2] Get snapshot from service,index:927,last included index :924 last included term :1  
+024634 SNAP [2] Update last included index:927 last included term:1
+024634 SNAP [2] Raft logs Snapshot bytes:{1696} log size:{26} VoteFor size{1}
+024634 SERV [2] Get Op :{Key:6 Value:x 6 26 y Operation:Append ClientID:392981217975752362 Seq:46 ReplyCh:<nil> SubmitTerm:1},command index:928
+024634 SERV [2] Apply req :46 from [392981217975752362] command index:928
+024634 SERV [2] append x 6 26 y to key:6, result:x 6 0 yx 6 1 yx 6 2 yx 6 3 yx 6 4 yx 6 5 yx 6 6 yx 6 7 yx 6 8 yx 6 9 yx 6 10 yx 6 11 yx 6 12 yx 6 13 yx 6 14 yx 6 15 yx 6 16 yx 6 17 yx 6 18 yx 6 19 yx 6 20 yx 6 21 yx 6 22 yx 6 23 yx 6 24 yx 6 25 yx 6 26 y
+024635 SNAP [2] Make Snapshot Raft state size :{1696} Encode bytes:{3773}, dup map size:{20} kvs size{20} , last command index:928
+024635 SNAP [2] Get snapshot from service,index:928,last included index :927 last included term :1  
+024635 SNAP [2] Update last included index:928 last included term:1
+024635 SNAP [2] Raft logs Snapshot bytes:{1633} log size:{25} VoteFor size{1}
+024635 APPL [2] commitIndex:948,lastApplied:929
+024635 APPL [2] commitIndex:948,lastApplied:930
+024635 SERV [2] Get Op :{Key:11 Value: Operation:Get ClientID:3114232046717081181 Seq:47 ReplyCh:<nil> SubmitTerm:1},command index:929
+024635 SERV [2] Apply req :47 from [3114232046717081181] command index:929
+024636 SNAP [2] Make Snapshot Raft state size :{1633} Encode bytes:{3773}, dup map size:{20} kvs size{20} , last command index:929
+024636 SNAP [2] Get snapshot from service,index:929,last included index :928 last included term :1  
+024636 SNAP [2] Update last included index:929 last included term:1
+024636 SNAP [2] Raft logs Snapshot bytes:{1582} log size:{24} VoteFor size{1}
+024636 SERV [2] Get Op :{Key:2 Value:x 2 22 y Operation:Append ClientID:525196837221099390 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:930
+024636 SERV [2] Apply req :48 from [525196837221099390] command index:930
+024636 SERV [2] append x 2 22 y to key:2, result:x 2 0 yx 2 1 yx 2 2 yx 2 3 yx 2 4 yx 2 5 yx 2 6 yx 2 7 yx 2 8 yx 2 9 yx 2 10 yx 2 11 yx 2 12 yx 2 13 yx 2 14 yx 2 15 yx 2 16 yx 2 17 yx 2 18 yx 2 19 yx 2 20 yx 2 21 yx 2 22 y
+024637 SNAP [2] Make Snapshot Raft state size :{1582} Encode bytes:{3781}, dup map size:{20} kvs size{20} , last command index:930
+024637 SNAP [2] Get snapshot from service,index:930,last included index :929 last included term :1  
+024637 SNAP [2] Update last included index:930 last included term:1
+024638 SNAP [2] Raft logs Snapshot bytes:{1519} log size:{23} VoteFor size{1}
+024638 APPL [2] commitIndex:948,lastApplied:931
+024638 APPL [2] commitIndex:948,lastApplied:932
+024638 SERV [2] Get Op :{Key:12 Value: Operation:Get ClientID:405217578442606627 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:931
+024638 SERV [2] Apply req :48 from [405217578442606627] command index:931
+024638 SNAP [2] Make Snapshot Raft state size :{1519} Encode bytes:{3781}, dup map size:{20} kvs size{20} , last command index:931
+024639 SNAP [2] Get snapshot from service,index:931,last included index :930 last included term :1  
+024639 SNAP [2] Update last included index:931 last included term:1
+024639 SNAP [2] Raft logs Snapshot bytes:{1468} log size:{22} VoteFor size{1}
+024639 SERV [2] Get Op :{Key:1 Value:x 1 19 y Operation:Append ClientID:1461939644003585659 Seq:48 ReplyCh:<nil> SubmitTerm:1},command index:932
+024639 SERV [2] Apply req :48 from [1461939644003585659] command index:932
+024639 SERV [2] append x 1 19 y to key:1, result:x 1 0 yx 1 1 yx 1 2 yx 1 3 yx 1 4 yx 1 5 yx 1 6 yx 1 7 yx 1 8 yx 1 9 yx 1 10 yx 1 11 yx 1 12 yx 1 13 yx 1 14 yx 1 15 yx 1 16 yx 1 17 yx 1 18 yx 1 19 y
+024639 SNAP [2] Make Snapshot Raft state size :{1468} Encode bytes:{3789}, dup map size:{20} kvs size{20} , last command index:932
+024640 SNAP [2] Get snapshot from service,index:932,last included index :931 last included term :1  
+024640 SNAP [2] Update last included index:932 last included term:1
+024640 SNAP [2] Raft logs Snapshot bytes:{1405} log size:{21} VoteFor size{1}
+024640 APPL [2] commitIndex:948,lastApplied:933
+024640 APPL [2] commitIndex:948,lastApplied:934
+024640 SERV [2] Get Op :{Key:15 Value:x 15 20 y Operation:Append ClientID:3915534648868102800 Seq:49 ReplyCh:<nil> SubmitTerm:1},command index:933
+024640 SERV [2] Apply req :49 from [3915534648868102800] command index:933
+024640 SERV [2] append x 15 20 y to key:15, result:x 15 0 yx 15 1 yx 15 2 yx 15 3 yx 15 4 yx 15 5 yx 15 6 yx 15 7 yx 15 8 yx 15 9 yx 15 10 yx 15 11 yx 15 12 yx 15 13 yx 15 14 yx 15 15 yx 15 16 yx 15 17 yx 15 18 yx 15 20 y

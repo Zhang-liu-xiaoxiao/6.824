@@ -137,7 +137,7 @@ func (rf *Raft) persist() {
 	e.Encode(rf.LastIncludedIndex)
 	e.Encode(rf.LastIncludedTerm)
 	data := writer.Bytes()
-	Debug(dSnap, "[%d] Raft logs Snapshot bytes:{%d} log size:{%d} "+
+	Debug(dSnap, "[%d] Persist Raft logs Snapshot bytes:{%d} log size:{%d} "+
 		"VoteFor size{%d}",
 		rf.me, len(data), len(rf.Logs), len(rf.VoteFor))
 	rf.persister.SaveRaftState(data)
