@@ -50,6 +50,7 @@ type KVServer struct {
 	leaderCh  chan Op
 
 	//replyCh map[int]chan ApplyRes
+	lastIncludedIndex int
 }
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
@@ -167,10 +168,12 @@ func (kv *KVServer) ReadRaftChMessage() {
 				kv.mu.Unlock()
 			}
 		} else if m.CommandValid {
-			Debug(dServer, "[%d] Get Op :%+v", kv.me, m.Command.(Op))
-
+			Debug(dServer, "[%d] Get Op :%+v index:%d", kv.me, m.Command.(Op), m.CommandIndex)
 			op, _ := m.Command.(Op)
 			kv.mu.Lock()
+			if m.CommandIndex <= kv.lastIncludedIndex {
+				return
+			}
 			var err Err = OK
 			v := kv.doGet(op)
 			if kv.CheckAndFillDupMap(op.ClientID, op.Seq) {
@@ -181,11 +184,12 @@ func (kv *KVServer) ReadRaftChMessage() {
 					kv.doPutOrAppend(op)
 				}
 			}
+			kv.lastIncludedIndex = m.CommandIndex
 			kv.mu.Unlock()
 			curTerm, isLeader := kv.rf.GetState()
 
 			if kv.rf.GetStateSize() > kv.maxraftstate && kv.maxraftstate != -1 {
-				go kv.makeSnapshot(m)
+				kv.makeSnapshot(m)
 			}
 			if isLeader && curTerm == op.SubmitTerm {
 				res := ApplyRes{
@@ -226,6 +230,8 @@ func (kv *KVServer) doPutOrAppend(op Op) {
 		} else {
 			kv.Kvs[op.Key] = op.Value
 		}
+		Debug(dServer, "[%d] KVS : %+v", kv.me, kv.Kvs)
+
 	}
 }
 func (kv *KVServer) doGet(op Op) string {
@@ -327,9 +333,14 @@ func (kv *KVServer) ingestSnap(snapshot []byte) {
 		Debug(dServer, "snapshot decode error")
 		panic(nil)
 	}
-
+	if lastIncludedIndex <= kv.lastIncludedIndex {
+		Debug(dServer, "[%d] snapshot earlier , give up ", kv.me)
+		return
+	}
 	kv.DupDetect = dupDetect
 	kv.Kvs = kvs
+	kv.lastIncludedIndex = lastIncludedIndex
+
 }
 
 func (kv *KVServer) makeSnapshot(m raft.ApplyMsg) {
@@ -343,4 +354,5 @@ func (kv *KVServer) makeSnapshot(m raft.ApplyMsg) {
 		"VoteFor size{%d}", kv.me, kv.rf.GetStateSize(), len(w.Bytes()), unsafe.Sizeof(kv.DupDetect), unsafe.Sizeof(kv.Kvs))
 	kv.mu.Unlock()
 	kv.rf.Snapshot(m.CommandIndex, w.Bytes())
+	//kv.lastIncludedIndex = m.CommandIndex
 }
