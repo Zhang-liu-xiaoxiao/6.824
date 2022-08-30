@@ -30,8 +30,8 @@ type Op struct {
 	Operation  string
 	ClientID   int64
 	Seq        int32
-	ReplyCh    chan ApplyRes
 	SubmitTerm int
+	Index      int
 }
 
 type KVServer struct {
@@ -47,24 +47,32 @@ type KVServer struct {
 	// client id -> [seq -> exist]
 	Kvs       map[string]string
 	DupDetect map[int64]map[int32]bool
-	leaderCh  chan Op
+	waitChMap map[int]chan Op
 
 	//replyCh map[int]chan ApplyRes
 	lastIncludedIndex int
+	lastApplied       int
 }
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
 	reply.Err = OK
-	//Debug(dServer, "[%d] GET req from [%d], args:%+v", kv.me, args.ClientID, args)
-	term, _ := kv.rf.GetState()
+	if kv.killed() {
+		reply.Err = ErrWrongLeader
+		return
+	}
+	Debug(dServer, "[%d] GET req from [%d], args:%+v", kv.me, args.ClientID, args)
+	term, ifLeader := kv.rf.GetState()
+	if !ifLeader {
+		reply.Err = ErrWrongLeader
+		return
+	}
 
 	op := Op{
 		Key:        args.Key,
 		Operation:  GET,
 		ClientID:   args.ClientID,
 		Seq:        args.Seq,
-		ReplyCh:    make(chan ApplyRes, 10),
 		SubmitTerm: term,
 	}
 	kv.submitGetOp(op, args, reply)
@@ -73,16 +81,22 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 
 func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	reply.Err = OK
-
-	//Debug(dServer, "[%d] PutAppend req from [%d], args:%+v", kv.me, args.ClientID, args)
-	term, _ := kv.rf.GetState()
+	if kv.killed() {
+		reply.Err = ErrWrongLeader
+		return
+	}
+	term, ifLeader := kv.rf.GetState()
+	if !ifLeader {
+		reply.Err = ErrWrongLeader
+		return
+	}
+	Debug(dServer, "[%d] PutAppend req from [%d], args:%+v", kv.me, args.ClientID, args)
 	op := Op{
 		Key:        args.Key,
 		Value:      args.Value,
 		Operation:  args.Op,
 		ClientID:   args.ClientID,
 		Seq:        args.Seq,
-		ReplyCh:    make(chan ApplyRes, 10),
 		SubmitTerm: term,
 	}
 	// Your code here.
@@ -139,68 +153,90 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
 	kv.DupDetect = make(map[int64]map[int32]bool)
 	kv.Kvs = make(map[string]string)
+	kv.waitChMap = make(map[int]chan Op)
+
 	snapshot := persister.ReadSnapshot()
-	r := bytes.NewBuffer(snapshot)
-	d := labgob.NewDecoder(r)
-	var lastIncludedIndex int
-	var dupDetect map[int64]map[int32]bool
-	var kvs map[string]string
-	if d.Decode(&lastIncludedIndex) != nil ||
-		d.Decode(&dupDetect) != nil ||
-		d.Decode(&kvs) != nil {
-		Debug(dServer, "[%d] initial snapshot decode error", kv.me)
-	} else {
-		kv.DupDetect = dupDetect
-		kv.Kvs = kvs
-	}
+	kv.decodeSnapShot(snapshot)
 	//kv.replyCh = make(map[int]chan ApplyRes)
 	// You may need initialization code here.
 	go kv.ReadRaftChMessage()
 	return kv
 }
 
-func (kv *KVServer) ReadRaftChMessage() {
-	for m := range kv.applyCh {
-		if m.SnapshotValid {
-			if kv.rf.CondInstallSnapshot(m.SnapshotTerm, m.SnapshotIndex, m.Snapshot) {
-				kv.mu.Lock()
-				kv.ingestSnap(m.Snapshot)
-				kv.mu.Unlock()
-			}
-		} else if m.CommandValid {
-			Debug(dServer, "[%d] Get Op :%+v index:%d", kv.me, m.Command.(Op), m.CommandIndex)
-			op, _ := m.Command.(Op)
-			kv.mu.Lock()
-			if m.CommandIndex <= kv.lastIncludedIndex {
-				return
-			}
-			var err Err = OK
-			v := kv.doGet(op)
-			if kv.CheckAndFillDupMap(op.ClientID, op.Seq) {
-				err = ErrDupReq
-			} else {
-				Debug(dServer, "[%d] Apply req :%d from [%d]", kv.me, op.Seq, op.ClientID)
-				if op.Operation == PUT || op.Operation == APPEND {
-					kv.doPutOrAppend(op)
-				}
-			}
-			kv.lastIncludedIndex = m.CommandIndex
-			kv.mu.Unlock()
-			curTerm, isLeader := kv.rf.GetState()
+func (kv *KVServer) decodeSnapShot(snapshot []byte) {
+	if len(snapshot) < 1 {
+		return
+	}
+	r := bytes.NewBuffer(snapshot)
+	d := labgob.NewDecoder(r)
+	var dupDetect map[int64]map[int32]bool
+	var kvs map[string]string
+	if d.Decode(&dupDetect) != nil ||
+		d.Decode(&kvs) != nil {
+		Debug(dServer, "[%d] initial snapshot decode error", kv.me)
+	} else {
+		kv.DupDetect = dupDetect
+		kv.Kvs = kvs
+		Debug(dServer, "[%d] decode snapshot kvs:%+v", kv.me, kvs)
+	}
+}
 
-			if kv.rf.GetStateSize() > kv.maxraftstate && kv.maxraftstate != -1 {
-				kv.makeSnapshot(m)
-			}
-			if isLeader && curTerm == op.SubmitTerm {
-				res := ApplyRes{
-					Value: v,
-					Err:   err,
+func (kv *KVServer) ReadRaftChMessage() {
+	for {
+		if kv.killed() {
+			return
+		}
+		select {
+		case m := <-kv.applyCh:
+			if m.SnapshotValid {
+				Debug(dSnap, "[%d] Snap valid from raft ,m.snapshotindex:%d,m.command index:%d", kv.me, m.SnapshotIndex, m.CommandIndex)
+				if kv.rf.CondInstallSnapshot(m.SnapshotTerm, m.SnapshotIndex, m.Snapshot) {
+					kv.mu.Lock()
+					if m.SnapshotIndex <= kv.lastApplied {
+						kv.mu.Unlock()
+						continue
+					}
+					kv.decodeSnapShot(m.Snapshot)
+					kv.lastIncludedIndex = m.SnapshotIndex
+					kv.mu.Unlock()
 				}
-				op.ReplyCh <- res
-				Debug(dServer, "[%d] After send to channel req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+			}
+			if m.CommandValid {
+				Debug(dSnap, "[%d] Get Op :%+v index:%d", kv.me, m.Command.(Op), m.CommandIndex)
+				op, _ := m.Command.(Op)
+				kv.mu.Lock()
+				if m.CommandIndex <= kv.lastIncludedIndex {
+					kv.mu.Unlock()
+					continue
+				}
+				kv.doGet(op)
+				if kv.CheckAndFillDupMap(op.ClientID, op.Seq) {
+				} else {
+					Debug(dServer, "[%d] Apply req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+					if op.Operation == PUT || op.Operation == APPEND {
+						kv.doPutOrAppend(op)
+					}
+				}
+				if kv.lastApplied < m.CommandIndex {
+					kv.lastApplied = m.CommandIndex
+				}
+				kv.mu.Unlock()
+				//curTerm, isLeader := kv.rf.GetState()
+
+				if kv.rf.GetStateSize() > kv.maxraftstate && kv.maxraftstate != -1 {
+					kv.makeSnapshot(m)
+				}
+				curTerm, isLeader := kv.rf.GetState()
+				//kv.getWaitCh(m.CommandIndex) <- op
+				if isLeader && curTerm == op.SubmitTerm {
+					kv.getWaitCh(m.CommandIndex) <- op
+
+					Debug(dServer, "[%d] After send to channel req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+				}
 			}
 		}
 	}
+
 }
 
 // return if already exist
@@ -225,11 +261,7 @@ func (kv *KVServer) doPutOrAppend(op Op) {
 	if op.Operation == PUT {
 		kv.Kvs[op.Key] = op.Value
 	} else if op.Operation == APPEND {
-		if _, exist := kv.Kvs[op.Key]; exist {
-			kv.Kvs[op.Key] = kv.Kvs[op.Key] + op.Value
-		} else {
-			kv.Kvs[op.Key] = op.Value
-		}
+		kv.Kvs[op.Key] = kv.Kvs[op.Key] + op.Value
 		Debug(dServer, "[%d] KVS : %+v", kv.me, kv.Kvs)
 
 	}
@@ -244,27 +276,33 @@ func (kv *KVServer) doGet(op Op) string {
 
 func (kv *KVServer) submitPutAppendOp(op Op, args *PutAppendArgs, reply *PutAppendReply) {
 
-	if _, term, ok := kv.rf.Start(op); ok {
+	if index, term, ok := kv.rf.Start(op); ok {
 		//var ch chan ApplyRes
 		//kv.mu.Lock()
 		//kv.replyCh[index] = make(chan ApplyRes, 1)
 		//ch = kv.replyCh[index]
 		//kv.mu.Unlock()
-		for {
-			select {
-			case res := <-op.ReplyCh:
-				reply.Err = res.Err
-				return
-			case <-time.After(3 * time.Second):
-				// can't reach agreement , maybe partition or lose leadership
-				Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
-				newTerm, isLeader := kv.rf.GetState()
-				if isLeader && newTerm == term {
-					reply.Err = ErrLeaderTimeOut
-				} else {
-					reply.Err = ErrWrongLeader
-				}
-				return
+		ch := kv.getWaitCh(index)
+		defer func() {
+			kv.mu.Lock()
+			delete(kv.waitChMap, index)
+			kv.mu.Unlock()
+		}()
+		select {
+		case res := <-ch:
+			if op.ClientID != res.ClientID || op.Seq != res.Seq {
+				reply.Err = ErrWrongLeader
+			} else {
+				reply.Err = OK
+			}
+		case <-time.After(100 * time.Millisecond):
+			// can't reach agreement , maybe partition or lose leadership
+			Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
+			newTerm, isLeader := kv.rf.GetState()
+			if isLeader && newTerm == term {
+				reply.Err = ErrLeaderTimeOut
+			} else {
+				reply.Err = ErrWrongLeader
 			}
 		}
 	} else {
@@ -276,28 +314,37 @@ func (kv *KVServer) submitPutAppendOp(op Op, args *PutAppendArgs, reply *PutAppe
 
 func (kv *KVServer) submitGetOp(op Op, args *GetArgs, reply *GetReply) {
 
-	if _, term, ok := kv.rf.Start(op); ok {
+	if index, term, ok := kv.rf.Start(op); ok {
 		//var ch chan ApplyRes
 		//kv.mu.Lock()
 		//kv.replyCh[index] = make(chan ApplyRes, 1)
 		//ch = kv.replyCh[index]
 		//kv.mu.Unlock()
-		for {
-			select {
-			case res := <-op.ReplyCh:
-				reply.Value = res.Value
-				reply.Err = res.Err
-				return
-			case <-time.After(3 * time.Second):
-				Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
-				newTerm, isLeader := kv.rf.GetState()
-				if isLeader && newTerm == term {
-					reply.Err = ErrLeaderTimeOut
-				} else {
-					reply.Err = ErrWrongLeader
-				}
-				return
+		ch := kv.getWaitCh(index)
+		defer func() {
+			kv.mu.Lock()
+			delete(kv.waitChMap, index)
+			kv.mu.Unlock()
+		}()
+		select {
+		case res := <-ch:
+			if op.ClientID != res.ClientID || op.Seq != res.Seq {
+				reply.Err = ErrWrongLeader
+			} else {
+				reply.Err = OK
+				kv.mu.Lock()
+				reply.Value = kv.Kvs[args.Key]
+				kv.mu.Unlock()
 			}
+		case <-time.After(100 * time.Millisecond):
+			Debug(dServer, "[%d] apply time out ,args :%+v", kv.me, args)
+			newTerm, isLeader := kv.rf.GetState()
+			if isLeader && newTerm == term {
+				reply.Err = ErrLeaderTimeOut
+			} else {
+				reply.Err = ErrWrongLeader
+			}
+
 		}
 	} else {
 		//Debug(dServer, "[%d] No leader , reqs:%+v return", kv.me, args)
@@ -316,37 +363,9 @@ func (kv *KVServer) clearDupDetectMap(clientID int64, seq int32) {
 	//kv.mu.Unlock()
 }
 
-func (kv *KVServer) ingestSnap(snapshot []byte) {
-	Debug(dServer, "[%d] install snapshot ", kv.me)
-
-	if snapshot == nil {
-		Debug(dServer, "[%d] nil snapshot", kv.me)
-	}
-	r := bytes.NewBuffer(snapshot)
-	d := labgob.NewDecoder(r)
-	var lastIncludedIndex int
-	var dupDetect map[int64]map[int32]bool
-	var kvs map[string]string
-	if d.Decode(&lastIncludedIndex) != nil ||
-		d.Decode(&dupDetect) != nil ||
-		d.Decode(&kvs) != nil {
-		Debug(dServer, "snapshot decode error")
-		panic(nil)
-	}
-	if lastIncludedIndex <= kv.lastIncludedIndex {
-		Debug(dServer, "[%d] snapshot earlier , give up ", kv.me)
-		return
-	}
-	kv.DupDetect = dupDetect
-	kv.Kvs = kvs
-	kv.lastIncludedIndex = lastIncludedIndex
-
-}
-
 func (kv *KVServer) makeSnapshot(m raft.ApplyMsg) {
 	w := new(bytes.Buffer)
 	e := labgob.NewEncoder(w)
-	e.Encode(m.CommandIndex)
 	kv.mu.Lock()
 	e.Encode(kv.DupDetect)
 	e.Encode(kv.Kvs)
@@ -355,4 +374,15 @@ func (kv *KVServer) makeSnapshot(m raft.ApplyMsg) {
 	kv.mu.Unlock()
 	kv.rf.Snapshot(m.CommandIndex, w.Bytes())
 	//kv.lastIncludedIndex = m.CommandIndex
+}
+
+func (kv *KVServer) getWaitCh(index int) chan Op {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+	ch, exist := kv.waitChMap[index]
+	if !exist {
+		kv.waitChMap[index] = make(chan Op, 1)
+		ch = kv.waitChMap[index]
+	}
+	return ch
 }

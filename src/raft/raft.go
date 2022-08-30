@@ -114,6 +114,18 @@ func (rf *Raft) needPersist(termNeedPersist *bool) {
 	}
 }
 
+func (rf *Raft) persistData() []byte {
+	writer := new(bytes.Buffer)
+	e := labgob.NewEncoder(writer)
+	e.Encode(rf.CurrentTerm)
+	e.Encode(rf.VoteFor)
+	e.Encode(rf.Logs)
+	e.Encode(rf.LastIncludedIndex)
+	e.Encode(rf.LastIncludedTerm)
+	data := writer.Bytes()
+	return data
+}
+
 //
 // save Raft's persistent state to stable storage,
 // where it can later be retrieved after a crash and restart.
@@ -128,15 +140,7 @@ func (rf *Raft) persist() {
 	// e.Encode(rf.yyy)
 	// Data := w.Bytes()
 	// rf.persister.SaveRaftState(Data)
-
-	writer := new(bytes.Buffer)
-	e := labgob.NewEncoder(writer)
-	e.Encode(rf.CurrentTerm)
-	e.Encode(rf.VoteFor)
-	e.Encode(rf.Logs)
-	e.Encode(rf.LastIncludedIndex)
-	e.Encode(rf.LastIncludedTerm)
-	data := writer.Bytes()
+	data := rf.persistData()
 	Debug(dSnap, "[%d] Raft logs Snapshot bytes:{%d} log size:{%d} "+
 		"VoteFor size{%d}",
 		rf.me, len(data), len(rf.Logs), len(rf.VoteFor))
@@ -203,16 +207,17 @@ func (rf *Raft) CondInstallSnapshot(lastIncludedTerm int, lastIncludedIndex int,
 // that index. Raft should now trim its log as much as possible.
 func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// Your code here (2D).
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
 	if rf.killed() {
 		return
 	}
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
 	Debug(dSnap, "[%d] Get snapshot from service,index:%d,"+
 		"last included index :%d "+
 		"last included term :%d "+
 		" ", rf.me, index, rf.LastIncludedIndex, rf.LastIncludedTerm)
-	if rf.LastIncludedIndex >= index {
+
+	if rf.LastIncludedIndex >= index || index > rf.commitIndex {
 		Debug(dSnap, "[%d] already snap for index %d", rf.me, index)
 		return
 	}
@@ -221,11 +226,16 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	rf.deleteSnappedLog(index)
 	rf.LastIncludedIndex = index
 
+	if index > rf.lastApplied {
+		rf.lastApplied = index
+	}
+	if index > rf.commitIndex {
+		rf.commitIndex = index
+	}
 	Debug(dSnap, "[%d] Update last included index:%d "+
 		"last included term:%d", rf.me, rf.LastIncludedIndex, rf.LastIncludedTerm)
 
-	rf.persister.SaveStateAndSnapshot(nil, snapshot)
-	rf.persist()
+	rf.persister.SaveStateAndSnapshot(rf.persistData(), snapshot)
 }
 
 //
@@ -396,21 +406,24 @@ func Make(peers []*labrpc.ClientEnd, me int,
 }
 
 func (rf *Raft) ApplyCommit() {
-	for {
+	for rf.killed() == false {
 		rf.mu.Lock()
+		massages := make([]ApplyMsg, 0)
 		for rf.commitIndex > rf.lastApplied {
 			rf.lastApplied++
 			Debug(dApply, "[%d] commitIndex:%d,lastApplied:%d", rf.me, rf.commitIndex, rf.lastApplied)
 			msg := ApplyMsg{
-				CommandValid: true,
-				Command:      rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
-				CommandIndex: rf.lastApplied,
+				CommandValid:  true,
+				SnapshotValid: false,
+				Command:       rf.Logs[rf.log2sliceIndex(rf.lastApplied)].Command,
+				CommandIndex:  rf.lastApplied,
 			}
-			rf.mu.Unlock()
-			rf.applyCh <- msg
-			rf.mu.Lock()
+			massages = append(massages, msg)
 		}
 		rf.mu.Unlock()
+		for _, massage := range massages {
+			rf.applyCh <- massage
+		}
 		time.Sleep(15 * time.Millisecond)
 	}
 

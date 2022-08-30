@@ -66,7 +66,7 @@ func (ck *Clerk) Get(key string) string {
 			index++
 			continue
 		}
-		//Debug(dClerk, "[%d] receive GET reply %+v", ck.clerkID, reply)
+		Debug(dClerk, "[%d] receive GET reply %+v", ck.clerkID, reply)
 
 		if reply.Err == ErrDupReq || reply.Err == OK || reply.Err == "" {
 			ck.lastLeader = index
@@ -108,7 +108,7 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 			index++
 			continue
 		}
-		//Debug(dClerk, "[%d] receive PUT APPEND reply %+v", ck.clerkID, reply)
+		Debug(dClerk, "[%d] receive PUT APPEND reply %+v", ck.clerkID, reply)
 		if reply.Err == ErrDupReq || reply.Err == OK || reply.Err == "" {
 			ck.lastLeader = index
 			break

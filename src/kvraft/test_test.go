@@ -315,6 +315,8 @@ func GenericTest(t *testing.T, part string, nclients int, nservers int, unreliab
 			// won't return until that server discovers a new term
 			// has started.
 			cfg.ConnectAll()
+			Debug(dTest, "3B partition ConnectAll")
+
 			// wait for a while so that we have a new term
 			time.Sleep(electionTimeout)
 		}

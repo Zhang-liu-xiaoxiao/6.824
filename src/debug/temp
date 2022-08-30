@@ -1,0 +1,676 @@
+005981 SERV [1] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16: 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+005981 SNAP [1] Get Op :{Key:10 Value: Operation:Get ClientID:3883474498306303931 Seq:5 SubmitTerm:1 Index:0} index:69
+005981 SERV [1] Apply req :5 from [3883474498306303931]
+005981 SNAP [1] Get Op :{Key:19 Value: Operation:Get ClientID:2337902116808241087 Seq:4 SubmitTerm:1 Index:0} index:70
+005981 SERV [1] Apply req :4 from [2337902116808241087]
+005981 SNAP [1] Get Op :{Key:16 Value:x 16 0 y Operation:Append ClientID:4521230128347888870 Seq:4 SubmitTerm:1 Index:0} index:71
+005982 SERV [1] Apply req :4 from [4521230128347888870]
+005982 SERV [1] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+005983 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+005983 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+005983 INFO [3] max log index :81
+005983 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+005979 SNAP [4] Get Op :{Key:16 Value:x 16 0 y Operation:Append ClientID:4521230128347888870 Seq:4 SubmitTerm:1 Index:0} index:71
+005983 SERV [4] Apply req :4 from [4521230128347888870]
+005983 SERV [4] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+005981 SNAP [2] Raft logs Snapshot bytes:{938} log size:{13} VoteFor size{1}
+005979 SNAP [2] Get Op :{Key:11 Value: Operation:Get ClientID:3326223868431754694 Seq:4 SubmitTerm:1 Index:0} index:74
+005984 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+005984 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+005984 INFO [2] max log index :83
+005984 INFO [2] No conflict with append rpc from [0]!
+005983 LOG1 [3] log Conflict with append rpc IN index:0! from leader [0],commit index:81,prev log index:81, args.log.len:2 server Logs.max_index:81server cur log length :13
+005985 SNAP [3] Raft logs Snapshot bytes:{1036} log size:{15} VoteFor size{0}
+005984 SERV [2] Apply req :4 from [3326223868431754694]
+005986 SNAP [2] Get Op :{Key:1 Value:x 1 1 y Operation:Append ClientID:1888553039085820653 Seq:5 SubmitTerm:1 Index:0} index:75
+005986 SERV [2] Apply req :5 from [1888553039085820653]
+005986 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+005986 SNAP [2] Get Op :{Key:9 Value:x 9 2 y Operation:Append ClientID:2372933477340011601 Seq:4 SubmitTerm:1 Index:0} index:76
+005986 SERV [2] Apply req :4 from [2372933477340011601]
+005986 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+005986 SNAP [2] Get Op :{Key:14 Value:x 14 2 y Operation:Append ClientID:1792809351174460141 Seq:5 SubmitTerm:1 Index:0} index:77
+005987 SERV [2] Apply req :5 from [1792809351174460141]
+005987 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+005987 SNAP [2] Get Op :{Key:8 Value: Operation:Get ClientID:1974055479754427486 Seq:4 SubmitTerm:1 Index:0} index:78
+005987 SERV [2] Apply req :4 from [1974055479754427486]
+005987 SNAP [2] Get Op :{Key:5 Value: Operation:Get ClientID:3078078767998619821 Seq:4 SubmitTerm:1 Index:0} index:79
+005987 SERV [2] Apply req :4 from [3078078767998619821]
+005987 SNAP [2] Get Op :{Key:18 Value:x 18 1 y Operation:Append ClientID:1757314530180328562 Seq:5 SubmitTerm:1 Index:0} index:80
+005987 SERV [2] Apply req :5 from [1757314530180328562]
+005987 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+005988 SNAP [2] Get Op :{Key:15 Value: Operation:Get ClientID:3272677217935111091 Seq:4 SubmitTerm:1 Index:0} index:81
+005988 SERV [2] Apply req :4 from [3272677217935111091]
+005979 LEAD [0] Update commit index from reply [4] cur match index:[0 59 81 81 81],cur commit index:81cur term:1
+005988 LEAD [0] success append to [4] ,previndex 71
+005988 LEAD [0] Update commit index from reply [4] cur match index:[0 59 81 81 72],cur commit index:81cur term:1
+005988 LEAD [0] success append to [4] ,previndex 67
+005988 LEAD [0] Update commit index from reply [4] cur match index:[0 59 81 81 76],cur commit index:81cur term:1
+005988 LEAD [0] success append to [4] ,previndex 67
+005988 LEAD [0] Update commit index from reply [4] cur match index:[0 59 81 81 76],cur commit index:81cur term:1
+005988 LEAD [0] send Install rpc to [1],last include index 63 prev log index:0
+005988 LEAD [0] success append to [2] ,previndex 59
+005988 LEAD [0] Update commit index from reply [2] cur match index:[0 59 74 81 76],cur commit index:81cur term:1
+005988 LEAD [0] success append to [2] ,previndex 59
+005988 LEAD [0] Update commit index from reply [2] cur match index:[0 59 76 81 76],cur commit index:81cur term:1
+005988 LEAD [0] success append to [2] ,previndex 59
+005989 LEAD [0] Update commit index from reply [2] cur match index:[0 59 76 81 76],cur commit index:81cur term:1
+005989 LEAD [0] success append to [2] ,previndex 59
+005989 LEAD [0] Update commit index from reply [2] cur match index:[0 59 74 81 76],cur commit index:81cur term:1
+005989 LEAD [0] success append to [2] ,previndex 59
+005989 LEAD [0] Update commit index from reply [2] cur match index:[0 59 76 81 76],cur commit index:81cur term:1
+005989 LEAD [0] success append to [1] ,previndex 54
+005989 LEAD [0] Update commit index from reply [1] cur match index:[0 69 76 81 76],cur commit index:81cur term:1
+005989 LEAD [0] success append to [1] ,previndex 76
+005989 LEAD [0] Update commit index from reply [1] cur match index:[0 79 76 81 76],cur commit index:81cur term:1
+005989 LEAD [0] success append to [4] ,previndex 67
+005989 LEAD [0] Update commit index from reply [4] cur match index:[0 79 76 81 73],cur commit index:81cur term:1
+005989 LEAD [0] success append to [4] ,previndex 67
+005989 LEAD [0] Update commit index from reply [4] cur match index:[0 79 76 81 78],cur commit index:81cur term:1
+005989 LEAD [0] success append to [2] ,previndex 59
+005989 LEAD [0] Update commit index from reply [2] cur match index:[0 79 80 81 78],cur commit index:81cur term:1
+005989 LEAD [0] success append to [2] ,previndex 69
+005989 LEAD [0] Update commit index from reply [2] cur match index:[0 79 71 81 78],cur commit index:81cur term:1
+005989 LEAD [0] success append to [3] ,previndex 65
+005989 LEAD [0] Update commit index from reply [3] cur match index:[0 79 71 74 78],cur commit index:81cur term:1
+005990 LEAD [0] success append to [3] ,previndex 65
+005990 LEAD [0] Update commit index from reply [3] cur match index:[0 79 71 72 78],cur commit index:81cur term:1
+005990 LEAD [0] success append to [1] ,previndex 71
+006011 LEAD [0] Update commit index from reply [1] cur match index:[0 81 71 72 78],cur commit index:81cur term:1
+006012 LEAD [0] Update commit index from reply [1] cur match index:[0 59 71 72 78],cur commit index:81cur term:1
+005979 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006012 LEAD [0] success append to [3] ,previndex 65
+006013 LEAD [0] Update commit index from reply [3] cur match index:[0 59 71 74 78],cur commit index:81cur term:1
+006013 INFO [4] max log index :81
+006014 INFO [4] No conflict with append rpc from [0]!
+006014 LOG1 [4] Update commit index from 71 to 81
+006013 LEAD [0] success append to [3] ,previndex 65
+006014 LEAD [0] Update commit index from reply [3] cur match index:[0 59 71 81 78],cur commit index:81cur term:1
+006014 LEAD [0] success append to [3] ,previndex 81
+006014 LEAD [0] Update commit index from reply [3] cur match index:[0 59 71 81 78],cur commit index:81cur term:1
+006015 LEAD [0] send Install rpc to [1],last include index 63 prev log index:0
+005981 LEAD [0] leader broadcast in term 1
+005983 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006021 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+006021 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006015 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006129 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006129 INFO [4] max log index :81
+006129 LOG1 [4] log Conflict with append rpc IN index:7! from leader [0],commit index:81,prev log index:74, args.log.len:8 server Logs.max_index:81server cur log length :14
+006130 SNAP [4] Raft logs Snapshot bytes:{1036} log size:{15} VoteFor size{1}
+006131 APPL [4] commitIndex:81,lastApplied:72
+006131 APPL [4] commitIndex:81,lastApplied:73
+006131 APPL [4] commitIndex:81,lastApplied:74
+006131 APPL [4] commitIndex:81,lastApplied:75
+006131 APPL [4] commitIndex:81,lastApplied:76
+006131 APPL [4] commitIndex:81,lastApplied:77
+006131 APPL [4] commitIndex:81,lastApplied:78
+006131 APPL [4] commitIndex:81,lastApplied:79
+006131 APPL [4] commitIndex:81,lastApplied:80
+006131 APPL [4] commitIndex:81,lastApplied:81
+006131 SNAP [4] Get Op :{Key:6 Value: Operation:Get ClientID:2676501136465301508 Seq:4 SubmitTerm:1 Index:0} index:72
+006131 SERV [4] Apply req :4 from [2676501136465301508]
+006132 SNAP [4] Raft state size :{1036} Encode bytes:{565} log size:{8} VoteFor size{8}
+006132 SNAP [4] Get snapshot from service,index:72,last included index :67 last included term :1
+006132 SNAP [4] Update last included index:72 last included term:1
+006132 SNAP [4] Raft logs Snapshot bytes:{763} log size:{10} VoteFor size{1}
+006132 SNAP [4] Get Op :{Key:3 Value: Operation:Get ClientID:287004769962920161 Seq:3 SubmitTerm:1 Index:0} index:73
+006132 SERV [4] Apply req :3 from [287004769962920161]
+006132 SNAP [4] Get Op :{Key:11 Value: Operation:Get ClientID:3326223868431754694 Seq:4 SubmitTerm:1 Index:0} index:74
+006132 SERV [4] Apply req :4 from [3326223868431754694]
+006133 SNAP [4] Get Op :{Key:1 Value:x 1 1 y Operation:Append ClientID:1888553039085820653 Seq:5 SubmitTerm:1 Index:0} index:75
+006133 SERV [4] Apply req :5 from [1888553039085820653]
+006133 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+006133 SNAP [4] Get Op :{Key:9 Value:x 9 2 y Operation:Append ClientID:2372933477340011601 Seq:4 SubmitTerm:1 Index:0} index:76
+006133 SERV [4] Apply req :4 from [2372933477340011601]
+006133 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006133 SNAP [4] Get Op :{Key:14 Value:x 14 2 y Operation:Append ClientID:1792809351174460141 Seq:5 SubmitTerm:1 Index:0} index:77
+006133 SERV [4] Apply req :5 from [1792809351174460141]
+006133 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006133 SNAP [4] Get Op :{Key:8 Value: Operation:Get ClientID:1974055479754427486 Seq:4 SubmitTerm:1 Index:0} index:78
+006133 SERV [4] Apply req :4 from [1974055479754427486]
+006133 SNAP [4] Get Op :{Key:5 Value: Operation:Get ClientID:3078078767998619821 Seq:4 SubmitTerm:1 Index:0} index:79
+006134 SERV [4] Apply req :4 from [3078078767998619821]
+006134 SNAP [4] Get Op :{Key:18 Value:x 18 1 y Operation:Append ClientID:1757314530180328562 Seq:5 SubmitTerm:1 Index:0} index:80
+006134 SERV [4] Apply req :5 from [1757314530180328562]
+006134 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006134 SNAP [4] Get Op :{Key:15 Value: Operation:Get ClientID:3272677217935111091 Seq:4 SubmitTerm:1 Index:0} index:81
+006134 SERV [4] Apply req :4 from [3272677217935111091]
+006134 LEAD [0] send Install rpc to [1],last include index 63 prev log index:0
+006134 LEAD [0] success append to [3] ,previndex 65
+006135 LEAD [0] Update commit index from reply [3] cur match index:[0 59 71 76 78],cur commit index:81cur term:1
+006135 LEAD [0] send Install rpc to [1],last include index 63 prev log index:0
+006135 LEAD [0] send Install rpc to [1],last include index 63 prev log index:0
+006135 LEAD [0] success append to [2] ,previndex 81
+006135 LEAD [0] Update commit index from reply [2] cur match index:[0 59 83 76 78],cur commit index:81cur term:1
+006135 LEAD [0] success append to [2] ,previndex 81
+006135 LEAD [0] Update commit index from reply [2] cur match index:[0 59 83 76 78],cur commit index:81cur term:1
+006135 LEAD [0] success append to [3] ,previndex 81
+006135 LEAD [0] Update commit index from reply [3] cur match index:[0 59 83 83 78],cur commit index:81cur term:1
+006135 LEAD [0] update commit index to 83,term:1
+006135 LEAD [0] success append to [3] ,previndex 65
+006135 LEAD [0] Update commit index from reply [3] cur match index:[0 59 83 71 78],cur commit index:83cur term:1
+006135 LEAD [0] success append to [4] ,previndex 74
+006135 LEAD [0] Update commit index from reply [4] cur match index:[0 59 83 71 81],cur commit index:83cur term:1
+006136 LEAD [0] Update commit index from reply [1] cur match index:[0 63 83 71 81],cur commit index:83cur term:1
+006136 APPL [0] commitIndex:83,lastApplied:64
+006136 APPL [0] commitIndex:83,lastApplied:65
+006136 APPL [0] commitIndex:83,lastApplied:66
+006136 APPL [0] commitIndex:83,lastApplied:67
+006136 APPL [0] commitIndex:83,lastApplied:68
+006136 APPL [0] commitIndex:83,lastApplied:69
+006136 APPL [0] commitIndex:83,lastApplied:70
+006136 APPL [0] commitIndex:83,lastApplied:71
+006136 APPL [0] commitIndex:83,lastApplied:72
+006136 APPL [0] commitIndex:83,lastApplied:73
+006136 APPL [0] commitIndex:83,lastApplied:74
+006136 APPL [0] commitIndex:83,lastApplied:75
+006136 APPL [0] commitIndex:83,lastApplied:76
+006136 APPL [0] commitIndex:83,lastApplied:77
+006136 APPL [0] commitIndex:83,lastApplied:78
+006136 APPL [0] commitIndex:83,lastApplied:79
+006136 APPL [0] commitIndex:83,lastApplied:80
+006136 APPL [0] commitIndex:83,lastApplied:81
+006136 APPL [0] commitIndex:83,lastApplied:82
+006137 APPL [0] commitIndex:83,lastApplied:83
+006137 LEAD [0] Update commit index from reply [1] cur match index:[0 63 83 71 81],cur commit index:83cur term:1
+006137 LEAD [0] success append to [4] ,previndex 74
+006137 LEAD [0] Update commit index from reply [4] cur match index:[0 63 83 71 82],cur commit index:83cur term:1
+006138 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006138 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006138 INFO [2] max log index :83
+006139 INFO [2] No conflict with append rpc from [0]!
+006139 LEAD [0] success append to [2] ,previndex 71
+006139 LEAD [0] Update commit index from reply [2] cur match index:[0 63 83 71 82],cur commit index:83cur term:1
+006140 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006140 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006140 INFO [3] max log index :83
+006140 INFO [3] No conflict with append rpc from [0]!
+006141 LEAD [0] success append to [3] ,previndex 81
+006141 LEAD [0] Update commit index from reply [3] cur match index:[0 63 83 83 82],cur commit index:83cur term:1
+006142 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+006142 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006142 LEAD [0] Update commit index from reply [1] cur match index:[0 63 83 83 82],cur commit index:83cur term:1
+006144 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006144 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006144 INFO [2] max log index :83
+006144 INFO [2] No conflict with append rpc from [0]!
+006144 LEAD [0] success append to [2] ,previndex 71
+006145 LEAD [0] Update commit index from reply [2] cur match index:[0 63 83 83 82],cur commit index:83cur term:1
+006146 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006146 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006146 INFO [3] max log index :83
+006146 INFO [3] No conflict with append rpc from [0]!
+006147 LEAD [0] success append to [3] ,previndex 81
+006147 LEAD [0] Update commit index from reply [3] cur match index:[0 63 83 83 82],cur commit index:83cur term:1
+006148 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006148 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006148 INFO [4] max log index :82
+006148 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:83,prev log index:82, args.log.len:1 server Logs.max_index:82server cur log length :10
+006148 SNAP [4] Raft logs Snapshot bytes:{826} log size:{11} VoteFor size{1}
+006148 LOG1 [4] Update commit index from 81 to 83
+006149 LEAD [0] success append to [4] ,previndex 82
+006149 LEAD [0] Update commit index from reply [4] cur match index:[0 63 83 83 83],cur commit index:83cur term:1
+006150 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+006150 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006150 LEAD [0] Update commit index from reply [1] cur match index:[0 63 83 83 83],cur commit index:83cur term:1
+006151 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006151 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006151 INFO [4] No conflict with append rpc from [0]!
+006152 LEAD [0] success append to [4] ,previndex 83
+006152 LEAD [0] Update commit index from reply [4] cur match index:[0 63 83 83 83],cur commit index:83cur term:1
+006153 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+006153 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006153 LEAD [0] Update commit index from reply [1] cur match index:[0 63 83 83 83],cur commit index:83cur term:1
+006154 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:63
+006154 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006154 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006154 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006154 INFO [4] No conflict with append rpc from [0]!
+006155 LEAD [0] success append to [4] ,previndex 83
+006155 LEAD [0] Update commit index from reply [4] cur match index:[0 63 83 83 83],cur commit index:83cur term:1
+006155 SNAP [0] Get Op :{Key:17 Value: Operation:Get ClientID:2347613339093033488 Seq:4 SubmitTerm:1 Index:0} index:64
+006155 SERV [0] Apply req :4 from [2347613339093033488]
+006155 SNAP [0] Raft state size :{1319} Encode bytes:{535} log size:{8} VoteFor size{8}
+006155 SNAP [0] Get snapshot from service,index:64,last included index :63 last included term :1
+006155 SNAP [0] Update last included index:64 last included term:1
+006156 SNAP [0] Raft logs Snapshot bytes:{1270} log size:{19} VoteFor size{1}
+006156 SNAP [0] Get Op :{Key:0 Value: Operation:Get ClientID:4493988012771468945 Seq:3 SubmitTerm:1 Index:0} index:65
+006156 SERV [0] Apply req :3 from [4493988012771468945]
+006156 SNAP [0] Raft state size :{1270} Encode bytes:{535} log size:{8} VoteFor size{8}
+006157 SNAP [0] Get snapshot from service,index:65,last included index :64 last included term :1
+006157 SNAP [0] Update last included index:65 last included term:1
+006157 SNAP [0] Raft logs Snapshot bytes:{1221} log size:{18} VoteFor size{1}
+006158 LEAD [0] get client command, term:1,log.index:84
+006159 SNAP [0] Raft logs Snapshot bytes:{1270} log size:{19} VoteFor size{1}
+006159 LEAD [0] leader broadcast in term 1
+006160 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006160 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006160 INFO [4] max log index :83
+006160 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:83,prev log index:83, args.log.len:1 server Logs.max_index:83server cur log length :11
+006160 SNAP [4] Raft logs Snapshot bytes:{875} log size:{12} VoteFor size{1}
+006161 LEAD [0] success append to [4] ,previndex 83
+006161 LEAD [0] Update commit index from reply [4] cur match index:[0 63 83 83 84],cur commit index:83cur term:1
+006162 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006162 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006162 INFO [2] max log index :83
+006162 LOG1 [2] log Conflict with append rpc IN index:0! from leader [0],commit index:83,prev log index:83, args.log.len:1 server Logs.max_index:83server cur log length :13
+006163 SNAP [2] Raft logs Snapshot bytes:{987} log size:{14} VoteFor size{1}
+006163 LOG1 [2] Update commit index from 81 to 83
+006163 LEAD [0] success append to [2] ,previndex 83
+006163 LEAD [0] Update commit index from reply [2] cur match index:[0 63 84 83 84],cur commit index:83cur term:1
+006163 LEAD [0] update commit index to 84,term:1
+006164 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006164 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006164 INFO [3] max log index :83
+006164 LOG1 [3] log Conflict with append rpc IN index:0! from leader [0],commit index:84,prev log index:83, args.log.len:1 server Logs.max_index:83server cur log length :15
+006165 SNAP [3] Raft logs Snapshot bytes:{1085} log size:{16} VoteFor size{0}
+006165 LOG1 [3] Update commit index from 81 to 84
+006165 LEAD [0] success append to [3] ,previndex 83
+006165 LEAD [0] Update commit index from reply [3] cur match index:[0 63 84 84 84],cur commit index:84cur term:1
+006167 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006167 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006167 INFO [2] No conflict with append rpc from [0]!
+006167 LOG1 [2] Update commit index from 83 to 84
+006167 LEAD [0] success append to [2] ,previndex 84
+006167 LEAD [0] Update commit index from reply [2] cur match index:[0 63 84 84 84],cur commit index:84cur term:1
+006168 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006168 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006168 INFO [3] No conflict with append rpc from [0]!
+006169 LEAD [0] success append to [3] ,previndex 84
+006169 LEAD [0] Update commit index from reply [3] cur match index:[0 63 84 84 84],cur commit index:84cur term:1
+006169 LEAD [0] send Install rpc to [1],last include index 65 prev log index:0
+006170 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:65
+006170 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006170 LEAD [0] Update commit index from reply [1] cur match index:[0 65 84 84 84],cur commit index:84cur term:1
+006174 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006174 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006174 INFO [2] No conflict with append rpc from [0]!
+006175 LEAD [0] success append to [2] ,previndex 84
+006175 LEAD [0] Update commit index from reply [2] cur match index:[0 65 84 84 84],cur commit index:84cur term:1
+006175 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006176 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006176 INFO [3] No conflict with append rpc from [0]!
+006176 LEAD [0] success append to [3] ,previndex 84
+006176 LEAD [0] Update commit index from reply [3] cur match index:[0 65 84 84 84],cur commit index:84cur term:1
+006178 LEAD [0] get client command, term:1,log.index:85
+006178 SNAP [0] Raft logs Snapshot bytes:{1320} log size:{20} VoteFor size{1}
+006178 LEAD [0] leader broadcast in term 1
+006179 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006179 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006179 INFO [4] max log index :84
+006179 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:84,prev log index:84, args.log.len:1 server Logs.max_index:84server cur log length :12
+006180 SNAP [4] Raft logs Snapshot bytes:{925} log size:{13} VoteFor size{1}
+006180 LOG1 [4] Update commit index from 83 to 84
+006180 LEAD [0] success append to [4] ,previndex 84
+006180 LEAD [0] Update commit index from reply [4] cur match index:[0 65 84 84 85],cur commit index:84cur term:1
+006180 SNAP [0] Get Op :{Key:7 Value:x 7 1 y Operation:Append ClientID:1534458488631051859 Seq:4 SubmitTerm:1 Index:0} index:66
+006180 SERV [0] Apply req :4 from [1534458488631051859]
+006180 SERV [0] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16: 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2: 3: 4:x 4 0 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+006181 SNAP [0] Raft state size :{1320} Encode bytes:{542} log size:{8} VoteFor size{8}
+006181 SNAP [0] Get snapshot from service,index:66,last included index :65 last included term :1
+006181 SNAP [0] Update last included index:66 last included term:1
+006181 SNAP [0] Raft logs Snapshot bytes:{1259} log size:{19} VoteFor size{1}
+006181 SNAP [0] Get Op :{Key:2 Value:x 2 0 y Operation:Append ClientID:3195347096372805865 Seq:5 SubmitTerm:1 Index:0} index:67
+006181 SERV [0] Apply req :5 from [3195347096372805865]
+006181 SERV [0] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16: 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+006182 SNAP [0] Raft state size :{1259} Encode bytes:{549} log size:{8} VoteFor size{8}
+006182 SNAP [0] Get snapshot from service,index:67,last included index :66 last included term :1
+006182 SNAP [0] Update last included index:67 last included term:1
+006182 SNAP [0] Raft logs Snapshot bytes:{1198} log size:{18} VoteFor size{1}
+006184 LEAD [0] get client command, term:1,log.index:86
+006184 SNAP [0] Raft logs Snapshot bytes:{1259} log size:{19} VoteFor size{1}
+006184 LEAD [0] leader broadcast in term 1
+006185 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006185 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006185 INFO [4] max log index :85
+006185 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:84,prev log index:85, args.log.len:1 server Logs.max_index:85server cur log length :13
+006186 SNAP [4] Raft logs Snapshot bytes:{986} log size:{14} VoteFor size{1}
+006186 LEAD [0] success append to [4] ,previndex 85
+006186 LEAD [0] Update commit index from reply [4] cur match index:[0 65 84 84 86],cur commit index:84cur term:1
+006186 LEAD [0] send Install rpc to [1],last include index 67 prev log index:0
+006187 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:67
+006187 SNAP [1] req last included index:67 <= req.last included index:1 ,just return
+006188 LEAD [0] Update commit index from reply [1] cur match index:[0 67 84 84 86],cur commit index:84cur term:1
+006189 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006189 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006189 INFO [2] max log index :84
+006189 LOG1 [2] log Conflict with append rpc IN index:0! from leader [0],commit index:84,prev log index:84, args.log.len:2 server Logs.max_index:84server cur log length :14
+006190 SNAP [2] Raft logs Snapshot bytes:{1098} log size:{16} VoteFor size{1}
+006191 LEAD [0] success append to [2] ,previndex 84
+006191 LEAD [0] Update commit index from reply [2] cur match index:[0 67 86 84 86],cur commit index:84cur term:1
+006191 LEAD [0] update commit index to 86,term:1
+006192 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006192 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006192 INFO [3] max log index :84
+006192 LOG1 [3] log Conflict with append rpc IN index:0! from leader [0],commit index:86,prev log index:84, args.log.len:2 server Logs.max_index:84server cur log length :16
+006193 SNAP [3] Raft logs Snapshot bytes:{1196} log size:{18} VoteFor size{0}
+006193 LOG1 [3] Update commit index from 84 to 86
+006193 LEAD [0] success append to [3] ,previndex 84
+006193 LEAD [0] Update commit index from reply [3] cur match index:[0 67 86 86 86],cur commit index:86cur term:1
+006195 INFO [1] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006195 INFO [1] CheckPrevLog from leader [0] args:%!v(MISSING)
+006195 INFO [1] max log index :81
+006195 LOG1 [1] log Conflict with append rpc IN index:14! from leader [0],commit index:86,prev log index:67, args.log.len:19 server Logs.max_index:81server cur log length :14
+006195 SNAP [1] Raft logs Snapshot bytes:{1259} log size:{19} VoteFor size{1}
+006195 LOG1 [1] Update commit index from 71 to 86
+006196 LEAD [0] success append to [1] ,previndex 67
+006196 LEAD [0] Update commit index from reply [1] cur match index:[0 86 86 86 86],cur commit index:86cur term:1
+006197 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006197 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006197 INFO [2] No conflict with append rpc from [0]!
+006197 LOG1 [2] Update commit index from 84 to 86
+006198 LEAD [0] success append to [2] ,previndex 86
+006198 LEAD [0] Update commit index from reply [2] cur match index:[0 86 86 86 86],cur commit index:86cur term:1
+006198 LEAD [0] Update commit index from reply [1] cur match index:[0 63 86 86 86],cur commit index:86cur term:1
+006199 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006199 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006199 INFO [3] No conflict with append rpc from [0]!
+006199 LEAD [0] success append to [3] ,previndex 86
+006199 LEAD [0] Update commit index from reply [3] cur match index:[0 63 86 86 86],cur commit index:86cur term:1
+006201 LEAD [0] get client command, term:1,log.index:87
+006202 SNAP [0] Raft logs Snapshot bytes:{1308} log size:{20} VoteFor size{1}
+006202 LEAD [0] leader broadcast in term 1
+006203 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006203 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006203 INFO [4] max log index :86
+006203 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:86,prev log index:86, args.log.len:1 server Logs.max_index:86server cur log length :14
+006203 SNAP [4] Raft logs Snapshot bytes:{1035} log size:{15} VoteFor size{1}
+006203 LOG1 [4] Update commit index from 84 to 86
+006204 LEAD [0] success append to [4] ,previndex 86
+006204 LEAD [0] Update commit index from reply [4] cur match index:[0 63 86 86 87],cur commit index:86cur term:1
+006204 SNAP [0] Get Op :{Key:4 Value:x 4 1 y Operation:Append ClientID:2942643821118172360 Seq:4 SubmitTerm:1 Index:0} index:68
+006204 SERV [0] Apply req :4 from [2942643821118172360]
+006204 SERV [0] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16: 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+006204 SNAP [0] Raft state size :{1308} Encode bytes:{557} log size:{8} VoteFor size{8}
+006205 SNAP [0] Get snapshot from service,index:68,last included index :67 last included term :1
+006205 SNAP [0] Update last included index:68 last included term:1
+006205 SNAP [0] Raft logs Snapshot bytes:{1247} log size:{19} VoteFor size{1}
+006205 SNAP [0] Get Op :{Key:10 Value: Operation:Get ClientID:3883474498306303931 Seq:5 SubmitTerm:1 Index:0} index:69
+006205 SERV [0] Apply req :5 from [3883474498306303931]
+006205 SNAP [0] Raft state size :{1247} Encode bytes:{557} log size:{8} VoteFor size{8}
+006206 SNAP [0] Get snapshot from service,index:69,last included index :68 last included term :1
+006206 SNAP [0] Update last included index:69 last included term:1
+006206 SNAP [0] Raft logs Snapshot bytes:{1197} log size:{18} VoteFor size{1}
+006208 LEAD [0] get client command, term:1,log.index:88
+006208 SNAP [0] Raft logs Snapshot bytes:{1260} log size:{19} VoteFor size{1}
+006208 LEAD [0] leader broadcast in term 1
+006210 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006210 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006210 INFO [4] max log index :87
+006210 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:86,prev log index:87, args.log.len:1 server Logs.max_index:87server cur log length :15
+006210 SNAP [4] Raft logs Snapshot bytes:{1098} log size:{16} VoteFor size{1}
+006210 LEAD [0] success append to [4] ,previndex 87
+006211 LEAD [0] Update commit index from reply [4] cur match index:[0 63 86 86 88],cur commit index:86cur term:1
+006211 LEAD [0] send Install rpc to [1],last include index 69 prev log index:0
+006211 SNAP [1] RECEIVE Install SNAP RPC from leader [0], me.lastincludedindex:67, req.lastincludeindex:69
+006211 SNAP [1] discard preceding , exist in :1 rf.logs:[{Term:1 Index:68 Command:{Key:4 Value:x 4 1 y Operation:Append ClientID:2942643821118172360 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:69 Command:{Key:10 Value: Operation:Get ClientID:3883474498306303931 Seq:5 SubmitTerm:1 Index:0}} {Term:1 Index:70 Command:{Key:19 Value: Operation:Get ClientID:2337902116808241087 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:71 Command:{Key:16 Value:x 16 0 y Operation:Append ClientID:4521230128347888870 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:72 Command:{Key:6 Value: Operation:Get ClientID:2676501136465301508 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:73 Command:{Key:3 Value: Operation:Get ClientID:287004769962920161 Seq:3 SubmitTerm:1 Index:0}} {Term:1 Index:74 Command:{Key:11 Value: Operation:Get ClientID:3326223868431754694 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:75 Command:{Key:1 Value:x 1 1 y Operation:Append ClientID:1888553039085820653 Seq:5 SubmitTerm:1 Index:0}} {Term:1 Index:76 Command:{Key:9 Value:x 9 2 y Operation:Append ClientID:2372933477340011601 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:77 Command:{Key:14 Value:x 14 2 y Operation:Append ClientID:1792809351174460141 Seq:5 SubmitTerm:1 Index:0}} {Term:1 Index:78 Command:{Key:8 Value: Operation:Get ClientID:1974055479754427486 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:79 Command:{Key:5 Value: Operation:Get ClientID:3078078767998619821 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:80 Command:{Key:18 Value:x 18 1 y Operation:Append ClientID:1757314530180328562 Seq:5 SubmitTerm:1 Index:0}} {Term:1 Index:81 Command:{Key:15 Value: Operation:Get ClientID:3272677217935111091 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:82 Command:{Key:13 Value:x 13 1 y Operation:Append ClientID:2891819866203735670 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:83 Command:{Key:12 Value:x 12 1 y Operation:Append ClientID:4555118105840851184 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:84 Command:{Key:0 Value: Operation:Get ClientID:4493988012771468945 Seq:4 SubmitTerm:1 Index:0}} {Term:1 Index:85 Command:{Key:17 Value: Operation:Get ClientID:2347613339093033488 Seq:5 SubmitTerm:1 Index:0}} {Term:1 Index:86 Command:{Key:2 Value:x 2 1 y Operation:Append ClientID:3195347096372805865 Seq:6 SubmitTerm:1 Index:0}}]
+006212 SNAP [1] Raft logs Snapshot bytes:{1148} log size:{17} VoteFor size{1}
+006213 LEAD [0] Update commit index from reply [1] cur match index:[0 69 86 86 88],cur commit index:86cur term:1
+006214 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006214 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006214 INFO [2] max log index :86
+006214 LOG1 [2] log Conflict with append rpc IN index:0! from leader [0],commit index:86,prev log index:86, args.log.len:2 server Logs.max_index:86server cur log length :16
+006215 SNAP [2] Raft logs Snapshot bytes:{1210} log size:{18} VoteFor size{1}
+006215 LEAD [0] success append to [2] ,previndex 86
+006215 LEAD [0] Update commit index from reply [2] cur match index:[0 69 88 86 88],cur commit index:86cur term:1
+006215 LEAD [0] update commit index to 88,term:1
+006216 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006216 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006216 INFO [3] max log index :86
+006216 LOG1 [3] log Conflict with append rpc IN index:0! from leader [0],commit index:88,prev log index:86, args.log.len:2 server Logs.max_index:86server cur log length :18
+006217 SNAP [3] Raft logs Snapshot bytes:{1308} log size:{20} VoteFor size{0}
+006217 LOG1 [3] Update commit index from 86 to 88
+006217 LEAD [0] success append to [3] ,previndex 86
+006217 LEAD [0] Update commit index from reply [3] cur match index:[0 69 88 88 88],cur commit index:88cur term:1
+006219 INFO [1] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006219 INFO [1] CheckPrevLog from leader [0] args:%!v(MISSING)
+006219 INFO [1] max log index :86
+006219 LOG1 [1] log Conflict with append rpc IN index:17! from leader [0],commit index:88,prev log index:69, args.log.len:19 server Logs.max_index:86server cur log length :17
+006219 SNAP [1] Raft logs Snapshot bytes:{1260} log size:{19} VoteFor size{1}
+006219 LOG1 [1] Update commit index from 86 to 88
+006220 LEAD [0] success append to [1] ,previndex 69
+006220 LEAD [0] Update commit index from reply [1] cur match index:[0 88 88 88 88],cur commit index:88cur term:1
+006221 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006221 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006221 INFO [2] No conflict with append rpc from [0]!
+006221 LOG1 [2] Update commit index from 86 to 88
+006222 LEAD [0] success append to [2] ,previndex 88
+006222 LEAD [0] Update commit index from reply [2] cur match index:[0 88 88 88 88],cur commit index:88cur term:1
+006223 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006223 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006223 INFO [3] No conflict with append rpc from [0]!
+006223 LEAD [0] success append to [3] ,previndex 88
+006223 LEAD [0] Update commit index from reply [3] cur match index:[0 88 88 88 88],cur commit index:88cur term:1
+006224 LEAD [0] get client command, term:1,log.index:89
+006225 SNAP [0] Raft logs Snapshot bytes:{1309} log size:{20} VoteFor size{1}
+006225 LEAD [0] leader broadcast in term 1
+006226 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006226 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006226 INFO [4] max log index :88
+006226 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:88,prev log index:88, args.log.len:1 server Logs.max_index:88server cur log length :16
+006226 SNAP [4] Raft logs Snapshot bytes:{1147} log size:{17} VoteFor size{1}
+006226 LOG1 [4] Update commit index from 86 to 88
+006227 LEAD [0] success append to [4] ,previndex 88
+006227 LEAD [0] Update commit index from reply [4] cur match index:[0 88 88 88 89],cur commit index:88cur term:1
+006227 SNAP [0] Get Op :{Key:19 Value: Operation:Get ClientID:2337902116808241087 Seq:4 SubmitTerm:1 Index:0} index:70
+006227 SERV [0] Apply req :4 from [2337902116808241087]
+006228 SNAP [0] Raft state size :{1309} Encode bytes:{557} log size:{8} VoteFor size{8}
+006228 SNAP [0] Get snapshot from service,index:70,last included index :69 last included term :1
+006228 SNAP [0] Update last included index:70 last included term:1
+006228 SNAP [0] Raft logs Snapshot bytes:{1259} log size:{19} VoteFor size{1}
+006228 SNAP [0] Get Op :{Key:16 Value:x 16 0 y Operation:Append ClientID:4521230128347888870 Seq:4 SubmitTerm:1 Index:0} index:71
+006228 SERV [0] Apply req :4 from [4521230128347888870]
+006228 SERV [0] KVS : map[0: 1:x 1 0 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]
+006229 SNAP [0] Raft state size :{1259} Encode bytes:{565} log size:{8} VoteFor size{8}
+006229 SNAP [0] Get snapshot from service,index:71,last included index :70 last included term :1
+006229 SNAP [0] Update last included index:71 last included term:1
+006230 APPL [2] commitIndex:88,lastApplied:82
+006230 APPL [2] commitIndex:88,lastApplied:83
+006230 SNAP [1] Snap valid from raft ,m.snapshotindex:69,m.command index:0
+006231 SERV [map[%!d(string=0):%!d(string=) %!d(string=1):%!d(string=x 1 0 y) %!d(string=10):%!d(string=x 10 0 yx 10 1 y) %!d(string=11):%!d(string=x 11 0 yx 11 1 y) %!d(string=12):%!d(string=x 12 0 y) %!d(string=13):%!d(string=x 13 0 y) %!d(string=14):%!d(string=x 14 0 yx 14 1 y) %!d(string=15):%!d(string=x 15 0 yx 15 1 y) %!d(string=16):%!d(string=) %!d(string=17):%!d(string=x 17 0 y) %!d(string=18):%!d(string=x 18 0 y) %!d(string=19):%!d(string=x 19 0 y) %!d(string=2):%!d(string=x 2 0 y) %!d(string=3):%!d(string=) %!d(string=4):%!d(string=x 4 0 yx 4 1 y) %!d(string=5):%!d(string=x 5 0 yx 5 1 y) %!d(string=6):%!d(string=) %!d(string=7):%!d(string=x 7 0 yx 7 1 y) %!d(string=8):%!d(string=x 8 0 yx 8 1 y) %!d(string=9):%!d(string=x 9 0 yx 9 1 y)]] decode snapshot kvs:%!v(MISSING)
+006230 APPL [2] commitIndex:88,lastApplied:84
+006231 APPL [2] commitIndex:88,lastApplied:85
+006231 APPL [2] commitIndex:88,lastApplied:86
+006231 APPL [2] commitIndex:88,lastApplied:87
+006231 APPL [2] commitIndex:88,lastApplied:88
+006231 SNAP [2] Get Op :{Key:13 Value:x 13 1 y Operation:Append ClientID:2891819866203735670 Seq:4 SubmitTerm:1 Index:0} index:82
+006231 SERV [2] Apply req :4 from [2891819866203735670]
+006230 APPL [1] commitIndex:88,lastApplied:72
+006231 APPL [1] commitIndex:88,lastApplied:73
+006231 APPL [1] commitIndex:88,lastApplied:74
+006231 APPL [1] commitIndex:88,lastApplied:75
+006232 APPL [1] commitIndex:88,lastApplied:76
+006231 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006232 APPL [1] commitIndex:88,lastApplied:77
+006232 APPL [1] commitIndex:88,lastApplied:78
+006232 APPL [1] commitIndex:88,lastApplied:79
+006232 APPL [1] commitIndex:88,lastApplied:80
+006232 APPL [1] commitIndex:88,lastApplied:81
+006232 APPL [1] commitIndex:88,lastApplied:82
+006232 APPL [1] commitIndex:88,lastApplied:83
+006232 APPL [1] commitIndex:88,lastApplied:84
+006232 APPL [1] commitIndex:88,lastApplied:85
+006232 APPL [1] commitIndex:88,lastApplied:86
+006232 APPL [1] commitIndex:88,lastApplied:87
+006232 APPL [1] commitIndex:88,lastApplied:88
+006232 SNAP [1] Get Op :{Key:6 Value: Operation:Get ClientID:2676501136465301508 Seq:4 SubmitTerm:1 Index:0} index:72
+006232 SERV [1] Apply req :4 from [2676501136465301508]
+006232 SNAP [2] Raft state size :{1210} Encode bytes:{603} log size:{8} VoteFor size{8}
+006232 SNAP [2] Get snapshot from service,index:82,last included index :70 last included term :1
+006232 SNAP [2] Update last included index:82 last included term:1
+006232 SNAP [1] Raft state size :{1260} Encode bytes:{557} log size:{8} VoteFor size{8}
+006233 SNAP [1] Get snapshot from service,index:72,last included index :69 last included term :1
+006233 SNAP [1] Update last included index:72 last included term:1
+006233 SNAP [1] Raft logs Snapshot bytes:{1098} log size:{16} VoteFor size{1}
+006233 SNAP [1] Get Op :{Key:3 Value: Operation:Get ClientID:287004769962920161 Seq:3 SubmitTerm:1 Index:0} index:73
+006233 SERV [1] Apply req :3 from [287004769962920161]
+006233 SNAP [2] Raft logs Snapshot bytes:{540} log size:{6} VoteFor size{1}
+006233 SNAP [2] Get Op :{Key:12 Value:x 12 1 y Operation:Append ClientID:4555118105840851184 Seq:4 SubmitTerm:1 Index:0} index:83
+006233 SERV [2] Apply req :4 from [4555118105840851184]
+006233 SNAP [1] Raft state size :{1098} Encode bytes:{557} log size:{8} VoteFor size{8}
+006233 SNAP [1] Get snapshot from service,index:73,last included index :72 last included term :1
+006233 SNAP [1] Update last included index:73 last included term:1
+006233 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006234 SNAP [1] Raft logs Snapshot bytes:{1049} log size:{15} VoteFor size{1}
+006234 SNAP [1] Get Op :{Key:11 Value: Operation:Get ClientID:3326223868431754694 Seq:4 SubmitTerm:1 Index:0} index:74
+006234 SERV [1] Apply req :4 from [3326223868431754694]
+006233 SNAP [2] Get Op :{Key:0 Value: Operation:Get ClientID:4493988012771468945 Seq:4 SubmitTerm:1 Index:0} index:84
+006234 SNAP [1] Raft state size :{1049} Encode bytes:{557} log size:{8} VoteFor size{8}
+006234 SNAP [1] Get snapshot from service,index:74,last included index :73 last included term :1
+006234 SNAP [1] Update last included index:74 last included term:1
+006234 SNAP [1] Raft logs Snapshot bytes:{999} log size:{14} VoteFor size{1}
+006234 SERV [2] Apply req :4 from [4493988012771468945]
+006235 SNAP [2] Get Op :{Key:17 Value: Operation:Get ClientID:2347613339093033488 Seq:5 SubmitTerm:1 Index:0} index:85
+006235 SERV [2] Apply req :5 from [2347613339093033488]
+006235 SNAP [2] Get Op :{Key:2 Value:x 2 1 y Operation:Append ClientID:3195347096372805865 Seq:6 SubmitTerm:1 Index:0} index:86
+006235 SERV [2] Apply req :6 from [3195347096372805865]
+006235 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006235 SNAP [2] Get Op :{Key:7 Value: Operation:Get ClientID:1534458488631051859 Seq:5 SubmitTerm:1 Index:0} index:87
+006235 SERV [2] Apply req :5 from [1534458488631051859]
+006235 SNAP [2] Get Op :{Key:10 Value:x 10 2 y Operation:Append ClientID:3883474498306303931 Seq:6 SubmitTerm:1 Index:0} index:88
+006235 SERV [2] Apply req :6 from [3883474498306303931]
+006235 APPL [4] commitIndex:88,lastApplied:82
+006235 APPL [4] commitIndex:88,lastApplied:83
+006235 SERV [2] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 yx 10 2 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006235 APPL [4] commitIndex:88,lastApplied:84
+006235 APPL [4] commitIndex:88,lastApplied:85
+006235 APPL [4] commitIndex:88,lastApplied:86
+006236 APPL [4] commitIndex:88,lastApplied:87
+006236 APPL [4] commitIndex:88,lastApplied:88
+006236 APPL [3] commitIndex:88,lastApplied:82
+006236 SNAP [4] Get Op :{Key:13 Value:x 13 1 y Operation:Append ClientID:2891819866203735670 Seq:4 SubmitTerm:1 Index:0} index:82
+006236 APPL [3] commitIndex:88,lastApplied:83
+006236 SERV [4] Apply req :4 from [2891819866203735670]
+006236 APPL [3] commitIndex:88,lastApplied:84
+006236 APPL [3] commitIndex:88,lastApplied:85
+006236 APPL [3] commitIndex:88,lastApplied:86
+006236 APPL [3] commitIndex:88,lastApplied:87
+006236 APPL [3] commitIndex:88,lastApplied:88
+006236 SNAP [3] Get Op :{Key:13 Value:x 13 1 y Operation:Append ClientID:2891819866203735670 Seq:4 SubmitTerm:1 Index:0} index:82
+006236 SERV [3] Apply req :4 from [2891819866203735670]
+006236 SERV [3] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006237 SNAP [3] Raft state size :{1308} Encode bytes:{603} log size:{8} VoteFor size{8}
+006237 SNAP [3] Get snapshot from service,index:82,last included index :68 last included term :1
+006237 SNAP [3] Update last included index:82 last included term:1
+006237 SNAP [3] Raft logs Snapshot bytes:{538} log size:{6} VoteFor size{0}
+006237 SNAP [3] Get Op :{Key:12 Value:x 12 1 y Operation:Append ClientID:4555118105840851184 Seq:4 SubmitTerm:1 Index:0} index:83
+006237 SERV [3] Apply req :4 from [4555118105840851184]
+006238 SERV [3] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006238 SNAP [3] Get Op :{Key:0 Value: Operation:Get ClientID:4493988012771468945 Seq:4 SubmitTerm:1 Index:0} index:84
+006238 SERV [3] Apply req :4 from [4493988012771468945]
+006238 SNAP [3] Get Op :{Key:17 Value: Operation:Get ClientID:2347613339093033488 Seq:5 SubmitTerm:1 Index:0} index:85
+006238 SERV [3] Apply req :5 from [2347613339093033488]
+006238 SNAP [3] Get Op :{Key:2 Value:x 2 1 y Operation:Append ClientID:3195347096372805865 Seq:6 SubmitTerm:1 Index:0} index:86
+006238 SERV [3] Apply req :6 from [3195347096372805865]
+006238 SERV [3] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006238 SNAP [3] Get Op :{Key:7 Value: Operation:Get ClientID:1534458488631051859 Seq:5 SubmitTerm:1 Index:0} index:87
+006238 SERV [3] Apply req :5 from [1534458488631051859]
+006238 SNAP [3] Get Op :{Key:10 Value:x 10 2 y Operation:Append ClientID:3883474498306303931 Seq:6 SubmitTerm:1 Index:0} index:88
+006238 SERV [3] Apply req :6 from [3883474498306303931]
+006239 SERV [3] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 yx 10 2 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006235 SNAP [0] Raft logs Snapshot bytes:{1196} log size:{18} VoteFor size{1}
+006239 SNAP [0] Get Op :{Key:6 Value: Operation:Get ClientID:2676501136465301508 Seq:4 SubmitTerm:1 Index:0} index:72
+006239 SERV [0] Apply req :4 from [2676501136465301508]
+006239 SNAP [0] Raft state size :{1196} Encode bytes:{565} log size:{8} VoteFor size{8}
+006239 SNAP [0] Get snapshot from service,index:72,last included index :71 last included term :1
+006239 SNAP [0] Update last included index:72 last included term:1
+006240 SNAP [0] Raft logs Snapshot bytes:{1147} log size:{17} VoteFor size{1}
+006241 LEAD [0] get client command, term:1,log.index:90
+006241 SNAP [0] Raft logs Snapshot bytes:{1208} log size:{18} VoteFor size{1}
+006241 LEAD [0] leader broadcast in term 1
+006242 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006242 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006243 INFO [4] max log index :89
+006243 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:88,prev log index:89, args.log.len:1 server Logs.max_index:89server cur log length :17
+006243 SNAP [4] Raft logs Snapshot bytes:{1208} log size:{18} VoteFor size{1}
+006243 LEAD [0] success append to [4] ,previndex 89
+006244 LEAD [0] Update commit index from reply [4] cur match index:[0 88 88 88 90],cur commit index:88cur term:1
+006236 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006244 SNAP [4] Raft state size :{1208} Encode bytes:{603} log size:{8} VoteFor size{8}
+006244 SNAP [4] Get snapshot from service,index:82,last included index :72 last included term :1
+006245 SNAP [4] Update last included index:82 last included term:1
+006245 SNAP [4] Raft logs Snapshot bytes:{650} log size:{8} VoteFor size{1}
+006245 SNAP [4] Get Op :{Key:12 Value:x 12 1 y Operation:Append ClientID:4555118105840851184 Seq:4 SubmitTerm:1 Index:0} index:83
+006245 SERV [4] Apply req :4 from [4555118105840851184]
+006245 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006245 SNAP [4] Get Op :{Key:0 Value: Operation:Get ClientID:4493988012771468945 Seq:4 SubmitTerm:1 Index:0} index:84
+006245 SERV [4] Apply req :4 from [4493988012771468945]
+006245 SNAP [4] Get Op :{Key:17 Value: Operation:Get ClientID:2347613339093033488 Seq:5 SubmitTerm:1 Index:0} index:85
+006246 SERV [4] Apply req :5 from [2347613339093033488]
+006246 SNAP [4] Get Op :{Key:2 Value:x 2 1 y Operation:Append ClientID:3195347096372805865 Seq:6 SubmitTerm:1 Index:0} index:86
+006246 SERV [4] Apply req :6 from [3195347096372805865]
+006246 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006246 SNAP [4] Get Op :{Key:7 Value: Operation:Get ClientID:1534458488631051859 Seq:5 SubmitTerm:1 Index:0} index:87
+006246 SERV [4] Apply req :5 from [1534458488631051859]
+006246 SNAP [4] Get Op :{Key:10 Value:x 10 2 y Operation:Append ClientID:3883474498306303931 Seq:6 SubmitTerm:1 Index:0} index:88
+006246 SERV [4] Apply req :6 from [3883474498306303931]
+006246 SERV [4] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 yx 10 2 y 11:x 11 0 yx 11 1 y 12:x 12 0 yx 12 1 y 13:x 13 0 yx 13 1 y 14:x 14 0 yx 14 1 yx 14 2 y 15:x 15 0 yx 15 1 y 16:x 16 0 y 17:x 17 0 y 18:x 18 0 yx 18 1 y 19:x 19 0 y 2:x 2 0 yx 2 1 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 yx 9 2 y]
+006247 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006247 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006247 INFO [2] max log index :88
+006247 LOG1 [2] log Conflict with append rpc IN index:0! from leader [0],commit index:88,prev log index:88, args.log.len:2 server Logs.max_index:88server cur log length :6
+006248 SNAP [2] Raft logs Snapshot bytes:{650} log size:{8} VoteFor size{1}
+006248 LEAD [0] success append to [2] ,previndex 88
+006249 LEAD [0] Update commit index from reply [2] cur match index:[0 88 90 88 90],cur commit index:88cur term:1
+006249 LEAD [0] update commit index to 90,term:1
+006250 LEAD [0] get client command, term:1,log.index:91
+006250 SNAP [0] Raft logs Snapshot bytes:{1258} log size:{19} VoteFor size{1}
+006250 LEAD [0] leader broadcast in term 1
+006251 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006251 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006252 INFO [4] max log index :90
+006252 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:90,prev log index:90, args.log.len:1 server Logs.max_index:90server cur log length :8
+006252 SNAP [4] Raft logs Snapshot bytes:{700} log size:{9} VoteFor size{1}
+006252 LOG1 [4] Update commit index from 88 to 90
+006253 LEAD [0] success append to [4] ,previndex 90
+006253 LEAD [0] Update commit index from reply [4] cur match index:[0 88 90 88 91],cur commit index:90cur term:1
+006253 SNAP [0] Get Op :{Key:3 Value: Operation:Get ClientID:287004769962920161 Seq:3 SubmitTerm:1 Index:0} index:73
+006253 SERV [0] Apply req :3 from [287004769962920161]
+006253 SNAP [0] Raft state size :{1258} Encode bytes:{565} log size:{8} VoteFor size{8}
+006253 SNAP [0] Get snapshot from service,index:73,last included index :72 last included term :1
+006254 SNAP [0] Update last included index:73 last included term:1
+006254 SNAP [0] Raft logs Snapshot bytes:{1209} log size:{18} VoteFor size{1}
+006254 SNAP [0] Get Op :{Key:11 Value: Operation:Get ClientID:3326223868431754694 Seq:4 SubmitTerm:1 Index:0} index:74
+006254 SERV [0] Apply req :4 from [3326223868431754694]
+006254 SNAP [0] Raft state size :{1209} Encode bytes:{565} log size:{8} VoteFor size{8}
+006254 SNAP [0] Get snapshot from service,index:74,last included index :73 last included term :1
+006254 SNAP [0] Update last included index:74 last included term:1
+006255 SNAP [0] Raft logs Snapshot bytes:{1159} log size:{17} VoteFor size{1}
+006256 LEAD [0] get client command, term:1,log.index:92
+006256 SNAP [0] Raft logs Snapshot bytes:{1222} log size:{18} VoteFor size{1}
+006256 LEAD [0] leader broadcast in term 1
+006257 INFO [4] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006257 INFO [4] CheckPrevLog from leader [0] args:%!v(MISSING)
+006257 INFO [4] max log index :91
+006257 LOG1 [4] log Conflict with append rpc IN index:0! from leader [0],commit index:90,prev log index:91, args.log.len:1 server Logs.max_index:91server cur log length :9
+006258 SNAP [4] Raft logs Snapshot bytes:{763} log size:{10} VoteFor size{1}
+006259 LEAD [0] success append to [4] ,previndex 91
+006259 LEAD [0] Update commit index from reply [4] cur match index:[0 88 90 88 92],cur commit index:90cur term:1
+006260 INFO [1] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006260 INFO [1] CheckPrevLog from leader [0] args:%!v(MISSING)
+006260 INFO [1] max log index :88
+006260 LOG1 [1] log Conflict with append rpc IN index:0! from leader [0],commit index:90,prev log index:88, args.log.len:4 server Logs.max_index:88server cur log length :14
+006260 SNAP [1] Raft logs Snapshot bytes:{1222} log size:{18} VoteFor size{1}
+006260 LOG1 [1] Update commit index from 88 to 90
+006261 LEAD [0] success append to [1] ,previndex 88
+006261 LEAD [0] Update commit index from reply [1] cur match index:[0 92 90 88 92],cur commit index:90cur term:1
+006261 LEAD [0] update commit index to 92,term:1
+006262 INFO [2] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006262 INFO [2] CheckPrevLog from leader [0] args:%!v(MISSING)
+006262 INFO [2] max log index :90
+006262 LOG1 [2] log Conflict with append rpc IN index:0! from leader [0],commit index:92,prev log index:90, args.log.len:2 server Logs.max_index:90server cur log length :8
+006262 SNAP [2] Raft logs Snapshot bytes:{763} log size:{10} VoteFor size{1}
+006262 LOG1 [2] Update commit index from 88 to 92
+006263 LEAD [0] success append to [2] ,previndex 90
+006263 LEAD [0] Update commit index from reply [2] cur match index:[0 92 92 88 92],cur commit index:92cur term:1
+006264 INFO [3] RECEIVE APPEND RPC from leader [0] me.term:1, args:%!v(MISSING)
+006264 INFO [3] CheckPrevLog from leader [0] args:%!v(MISSING)
+006264 INFO [3] max log index :88
+006264 LOG1 [3] log Conflict with append rpc IN index:0! from leader [0],commit index:92,prev log index:88, args.log.len:4 server Logs.max_index:88server cur log length :6
+006264 SNAP [3] Raft logs Snapshot bytes:{761} log size:{10} VoteFor size{0}
+006264 LOG1 [3] Update commit index from 88 to 92
+006265 LEAD [0] success append to [3] ,previndex 88
+006265 LEAD [0] Update commit index from reply [3] cur match index:[0 92 92 92 92],cur commit index:92cur term:1
+006234 SNAP [1] Get Op :{Key:1 Value:x 1 1 y Operation:Append ClientID:1888553039085820653 Seq:5 SubmitTerm:1 Index:0} index:75
+006265 SERV [1] Apply req :5 from [1888553039085820653]
+006265 SERV [1] KVS : map[0: 1:x 1 0 yx 1 1 y 10:x 10 0 yx 10 1 y 11:x 11 0 yx 11 1 y 12:x 12 0 y 13:x 13 0 y 14:x 14 0 yx 14 1 y 15:x 15 0 yx 15 1 y 16: 17:x 17 0 y 18:x 18 0 y 19:x 19 0 y 2:x 2 0 y 3: 4:x 4 0 yx 4 1 y 5:x 5 0 yx 5 1 y 6: 7:x 7 0 yx 7 1 y 8:x 8 0 yx 8 1 y 9:x 9 0 yx 9 1 y]

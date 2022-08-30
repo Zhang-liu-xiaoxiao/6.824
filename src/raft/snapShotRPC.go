@@ -14,13 +14,13 @@ type InstallSnapShotResp struct {
 
 func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapShotResp) {
 	rf.mu.Lock()
-	defer rf.mu.Unlock()
 	Debug(dSnap, "[%d] RECEIVE Install SNAP RPC from leader [%d],"+
-		" me.term:%d,", rf.me, req.LeaderId, rf.CurrentTerm)
+		" me.lastincludedindex:%d, req.lastincludeindex:%d", rf.me, req.LeaderId, rf.LastIncludedIndex, req.LastIncludedIndex)
 	if req.Term < rf.CurrentTerm {
 		resp.Term = rf.CurrentTerm
 		Debug(dSnap, "[%d] REJECT Install SNAP RPC from lower leader [%d],"+
 			"in term:%d, me.term:%d", rf.me, req.LeaderId, req.Term, rf.CurrentTerm)
+		rf.mu.Unlock()
 		return
 	}
 	rf.status = Follower
@@ -28,13 +28,14 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	rf.CurrentTerm = req.Term
 	resp.Term = rf.CurrentTerm
 
-	if req.LastIncludedIndex <= rf.lastApplied {
-		Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, rf.lastApplied, req.LastIncludedIndex)
-		return
-	}
+	//if req.LastIncludedIndex <= rf.lastApplied {
+	//	Debug(dSnap, "[%d] Apply %d > req.last included index:%d,just return", rf.me, rf.lastApplied, req.LastIncludedIndex)
+	//	return
+	//}
 
 	if req.LastIncludedIndex <= rf.LastIncludedIndex {
-		Debug(dSnap, "[%d] last included index = req.last included index,just return")
+		Debug(dSnap, "[%d] req last included index:%d <= rf.last included index:%d ,just return", rf.me, rf.LastIncludedIndex, rf.LastIncludedIndex)
+		rf.mu.Unlock()
 		return
 	}
 	if index := rf.checkIsExistSnapshot(req); index != -1 {
@@ -42,11 +43,6 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 		Debug(dSnap, "[%d] discard preceding , exist in :%d "+
 			"rf.logs:%+v", rf.me, index, rf.Logs)
 
-		if rf.LastIncludedIndex >= req.LastIncludedIndex {
-			Debug(dSnap, "[%d] last included index:%d "+
-				"> leader send install rpc:%d ", rf.me, rf.LastIncludedIndex, req.LastIncludedIndex)
-			return
-		}
 		var logsCp []LogEntry
 		logsCp = append(logsCp, rf.Logs[index+1:]...)
 		rf.Logs = logsCp
@@ -69,17 +65,20 @@ func (rf *Raft) HandleInstallSnapRPC(req *InstallSnapShotReq, resp *InstallSnapS
 	if rf.lastApplied < req.LastIncludedIndex {
 		rf.lastApplied = req.LastIncludedIndex
 	}
+	//rf.lastApplied = req.LastIncludedIndex
 
-	rf.persister.SaveStateAndSnapshot(nil, req.Data)
-	rf.persist()
+	rf.persister.SaveStateAndSnapshot(rf.persistData(), req.Data)
 	rf.mu.Unlock()
+
 	rf.applyCh <- msg
-	rf.mu.Lock()
 
 }
 
 func (rf *Raft) checkIsExistSnapshot(req *InstallSnapShotReq) int {
 
+	if rf.maxLogIndex() <= req.LastIncludedIndex {
+		return -1
+	}
 	for i, log := range rf.Logs {
 		if log.Index == req.LastIncludedIndex && log.Term == req.LastIncludedTerm {
 			return i

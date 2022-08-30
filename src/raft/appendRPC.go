@@ -279,9 +279,11 @@ func (rf *Raft) processAppendRPCReply(i int, args RequestAppendEntries, leaderId
 	}
 	if reply.Succeeded {
 		Debug(dLeader, "[%d] success append to [%d] ,previndex %d ", leaderId, i, args.PrevLogIndex)
+		//if args.PrevLogIndex+len(args.Logs) > rf.matchIndex[i] {
 		rf.matchIndex[i] = args.PrevLogIndex + len(args.Logs)
 		rf.nextIndex[i] = rf.matchIndex[i] + 1
 		rf.UpdateCommitIndex(i)
+		//}
 		//rf.mu.Unlock()
 		return true
 	}
