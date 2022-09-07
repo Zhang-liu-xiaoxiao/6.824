@@ -40,6 +40,8 @@ type Clerk struct {
 	config   shardctrler.Config
 	make_end func(string) *labrpc.ClientEnd
 	// You will have to modify this struct.
+	ClientID int64
+	Seq      int
 }
 
 //
@@ -56,6 +58,8 @@ func MakeClerk(ctrlers []*labrpc.ClientEnd, make_end func(string) *labrpc.Client
 	ck.sm = shardctrler.MakeClerk(ctrlers)
 	ck.make_end = make_end
 	// You'll have to add code here.
+	ck.ClientID = nrand()
+	ck.Seq = 0
 	return ck
 }
 
@@ -68,6 +72,9 @@ func MakeClerk(ctrlers []*labrpc.ClientEnd, make_end func(string) *labrpc.Client
 func (ck *Clerk) Get(key string) string {
 	args := GetArgs{}
 	args.Key = key
+	args.ClientID = ck.ClientID
+	args.Seq = ck.Seq
+	ck.Seq++
 
 	for {
 		shard := key2shard(key)
@@ -104,7 +111,9 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	args.Key = key
 	args.Value = value
 	args.Op = op
-
+	args.ClientID = ck.ClientID
+	args.Seq = ck.Seq
+	ck.Seq++
 
 	for {
 		shard := key2shard(key)
