@@ -27,6 +27,7 @@ const CLIENT = "Client"
 const UPDATECONFIG = "UpdateConfig"
 const RECEIVESHARDS = "ReceiveShards"
 const STARTGC = "StartGC"
+const EMPTYLOG = "EmptyLog"
 
 const NORMAL = "Normal"
 const NEEDTORECEIVE = "NeedToReceive"
@@ -88,6 +89,10 @@ type ReceiveShardsCommand struct {
 type StartGCCommand struct {
 	ConfigNum  int
 	ShardsNums []int
+}
+
+type EmptyLogCommand struct {
+	Empty interface{}
 }
 
 type ShardData struct {

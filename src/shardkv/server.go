@@ -213,6 +213,17 @@ func (kv *ShardKV) pushShardsLoop() {
 	}
 }
 
+func (kv *ShardKV) checkEmptyLogLoop() {
+	if !kv.rf.CheckIfLogsInCurTerm() {
+		term, _ := kv.rf.GetState()
+		command := ServerGenericCommand{
+			Operation:  EMPTYLOG,
+			SubmitTerm: term,
+		}
+		kv.rf.Start(command)
+	}
+}
+
 func (kv *ShardKV) getChangedShards(newConf shardctrler.Config) (needToPush map[int][]int, get map[int][]int) {
 	var newShards []int
 	var oldShards []int
@@ -300,6 +311,8 @@ func (kv *ShardKV) readRaft() {
 					response = kv.gcShards(&m)
 				case RECEIVESHARDS:
 					response = kv.receiveShards(&m)
+				case EMPTYLOG:
+					response = kv.applyEmptyLog(&m)
 				}
 				kv.mu.Unlock()
 				if kv.rf.GetStateSize() > kv.maxraftstate && kv.maxraftstate != -1 {
@@ -579,6 +592,10 @@ func (kv *ShardKV) startGC(configNum int, shards []ShardData) {
 	}
 }
 
+func (kv *ShardKV) applyEmptyLog(m *raft.ApplyMsg) CommandResponse {
+	return CommandResponse{Err: OK}
+}
+
 //
 // servers[] contains the ports of the servers in this group.
 //
@@ -642,5 +659,6 @@ func StartServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persister,
 	go kv.readRaft()
 	go kv.monitor(kv.readConfigLoop, 100)
 	go kv.monitor(kv.pushShardsLoop, 50)
+	go kv.monitor(kv.checkEmptyLogLoop, 150)
 	return kv
 }

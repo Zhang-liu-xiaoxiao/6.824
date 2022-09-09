@@ -91,6 +91,20 @@ type Raft struct {
 	LastIncludedTerm  int
 }
 
+func (rf *Raft) CheckIfLogsInCurTerm() bool {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if len(rf.Logs) == 0 {
+		return false
+	}
+	if rf.Logs[len(rf.Logs)-1].Term == rf.CurrentTerm {
+		return true
+	} else {
+		return false
+	}
+
+}
+
 // return CurrentTerm and whether this server
 // believes it is the leader.
 func (rf *Raft) GetState() (int, bool) {
