@@ -42,7 +42,7 @@ const (
 	dWarn         logTopic = "WARN"
 	dServer       logTopic = "SERV"
 	dLeaderServer logTopic = "LDSV"
-	dShardKv      logTopic = "DSKV"
+	dShardKv      logTopic = "SHKV"
 )
 
 func getVerbosity() int {

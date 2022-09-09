@@ -55,7 +55,7 @@ func getVerbosity() int {
 	//		log.Fatalf("Invalid verbosity %v", v)
 	//	}
 	//}
-	return 1
+	return 0
 }
 
 func Debug(topic logTopic, format string, a ...interface{}) {

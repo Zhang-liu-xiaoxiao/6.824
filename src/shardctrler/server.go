@@ -266,7 +266,7 @@ func (sc *ShardCtrler) readRaftCh() {
 				//sc.getWaitCh(m.CommandIndex) <- op
 				if isLeader && curTerm == op.Term {
 					sc.getWaitCh(msg.CommandIndex) <- op
-					Debug(dServer, "[%d] After send to channel req :%d from [%d]", sc.me, op.Seq, op.ClientID)
+					//Debug(dServer, "[%d] Response to channel req :%d from [%d]", sc.me, op.Seq, op.ClientID)
 				}
 			}
 		}
@@ -384,7 +384,7 @@ func (sc *ShardCtrler) reBalanceGroup(config *Config) {
 		}
 		gidShardsNum[gid] = gidShardsNum[gid] + 1
 	}
-	Debug(dSharedController, "[%d] Group shards count :%+v", sc.me, gidShardsNum)
+	Debug(dSharedController, "[%d] Group shards before rebalance  :%+v", sc.me, gidShardsNum)
 	sortedGroup := sortGroupShard(gidShardsNum)
 
 	tRemain := remain
@@ -429,6 +429,8 @@ func (sc *ShardCtrler) reBalanceGroup(config *Config) {
 
 		}
 	}
+	Debug(dSharedController, "[%d] Group shards after rebalance  :%+v", sc.me, config.Shards)
+
 }
 
 func sortGroupShard(GroupMap map[int]int) []int {

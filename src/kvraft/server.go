@@ -212,7 +212,7 @@ func (kv *KVServer) ReadRaftChMessage() {
 				kv.doGet(op)
 				if kv.CheckAndFillDupMap(op.ClientID, op.Seq) {
 				} else {
-					Debug(dServer, "[%d] Apply req :%d from [%d]", kv.me, op.Seq, op.ClientID)
+					//Debug(dServer, "[%d] Apply req :%d from [%d]", kv.me, op.Seq, op.ClientID)
 					if op.Operation == PUT || op.Operation == APPEND {
 						kv.doPutOrAppend(op)
 					}

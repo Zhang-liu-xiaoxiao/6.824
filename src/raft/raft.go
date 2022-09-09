@@ -252,10 +252,10 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 // term. the third return value is true if this server believes it is
 // the leader.
 //
-func (rf *Raft) Start(command interface{}) (int, int, bool) {
-	index := -1
-	term := -1
-	isLeader := false
+func (rf *Raft) Start(command interface{}) (index int, term int, isLeader bool) {
+	index = -1
+	term = -1
+	isLeader = false
 
 	// Your code here (2B).
 	rf.mu.Lock()
