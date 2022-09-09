@@ -36,15 +36,18 @@ type ShardKV struct {
 func (kv *ShardKV) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
 	//Debug(dShardKv, "[%d]{%d} GET req from [%d], args:%+v", kv.me, kv.gid, args.ClientID, args)
+	kv.mu.Lock()
+	if !kv.shardCanServe(key2shard(args.Key)) {
+		reply.Err = ErrWrongGroup
+		Debug(dShardKv, "[%d]{%d} wrong group", kv.me, kv.gid)
+		kv.mu.Unlock()
+		return
+	}
 	term, ifLeader := kv.rf.GetState()
 	if !ifLeader {
 		reply.Err = ErrWrongLeader
-		return
-	}
-	kv.mu.Lock()
-	if !kv.shardCanServe(key2shard(args.Key)) {
+		Debug(dShardKv, "[%d]{%d} wrong leader", kv.me, kv.gid)
 		kv.mu.Unlock()
-		reply.Err = ErrWrongGroup
 		return
 	}
 	kv.mu.Unlock()
@@ -69,13 +72,16 @@ func (kv *ShardKV) Get(args *GetArgs, reply *GetReply) {
 	select {
 	case c := <-ch:
 		var res = c.Data.(ClientOpCommand)
+		reply.Err = OK
 		if op.ClientID != res.ClientID || op.Seq != res.Seq {
 			reply.Err = ErrWrongLeader
 		} else {
-			reply.Err = OK
 			kv.mu.Lock()
 			reply.Value = kv.Shards[key2shard(args.Key)].Kvs[args.Key]
 			kv.mu.Unlock()
+		}
+		if c.Err != OK {
+			reply.Err = ErrWrongGroup
 		}
 	case <-time.After(100 * time.Millisecond):
 		reply.Err = ErrWrongLeader
